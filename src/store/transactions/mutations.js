@@ -5,7 +5,6 @@ export function add(state, tx) {
 export function addMany(state, txs) {
   if (!Array.isArray(txs)) throw 'No way dude'
   txs.map(t => {
-    // eslint-disable-next-line no-console
     state.txns[t.result.seqNo] = t
   })
 }

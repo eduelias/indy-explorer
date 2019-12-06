@@ -2,37 +2,23 @@
   <q-page class="flex flex-center">
     <q-dialog v-model="dialog" full-width>
       <q-card class="q-pa-md">
-        <vue-json-pretty :data="txnData"></vue-json-pretty> </q-card
-      >ßß
+        <vue-json-pretty :data="txnData"></vue-json-pretty>
+      </q-card>
     </q-dialog>
-    <q-list borderd separator style="max-width: 800px; margin-top:20px">
+    <q-list borderd separator>
       <q-card
         clickable
         v-ripple
         v-for="(item, index) in dedupe(getTransactions())"
         :key="index"
+        class="q-ma-md"
+        style="width: 400px"
       >
-        <div v-if="item">
-          <q-card-section>
-            <div class="text-h6">
-              {{
-                item.txnMetadata.txnTime ||
-                  new Date('1970-01-01') | moment('YYYY-MM-DD HH:mm:ss')
-              }}
-            </div>
-            <div class="text-subtitle2">From: {{ item.txn.metadata.from }}</div>
-            <div class="text-subtitle3">TxId: {{ item.txnMetadata.txnId }}</div>
-          </q-card-section>
-          <q-separator dark />
-
-          <q-card-actions>
-            <div>Type: {{ findType(item.txn.type) }}</div>
-            <q-space />
-            <q-btn flat @click="openDialog(item)"
-              >Tx #:{{ item.txnMetadata.seqNo }}</q-btn
-            >
-          </q-card-actions>
-        </div>
+        <type-router
+          :item="item"
+          :type="findType(item.txn.type)"
+          v-on:openDialog="openDialog"
+        ></type-router>
       </q-card>
     </q-list>
   </q-page>
@@ -41,6 +27,7 @@
 <script>
 import VueJsonPretty from 'vue-json-pretty'
 import { mapState, mapGetters } from 'vuex'
+import TypeRouter from '../components/TypeRouter.vue'
 
 const types = {
   '0': 'NODE',
@@ -67,6 +54,7 @@ export default {
   },
   components: {
     VueJsonPretty,
+    TypeRouter,
   },
   computed: {
     ...mapState('transactions', ['txns']),
