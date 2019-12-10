@@ -6,7 +6,7 @@
     <schema v-else-if="item.type == '101'" :item="item"></schema>
     <aml v-else-if="item.type == '5'" :item="item"></aml>
     <taa v-else-if="item.type == '4'" :item="item"></taa>
-    <div v-else>{{ item }}</div>
+    <vue-json-pretty v-else :data="item"></vue-json-pretty>
   </div>
 </template>
 
@@ -16,6 +16,7 @@ import CredDef from '../dataprops/CredDefData.vue'
 import Schema from '../dataprops/SchemaData.vue'
 import Aml from '../dataprops/AmlData.vue'
 import Taa from '../dataprops/TaaData.vue'
+import VueJsonPretty from 'vue-json-pretty'
 
 export default {
   components: {
@@ -24,6 +25,7 @@ export default {
     Schema,
     Aml,
     Taa,
+    VueJsonPretty,
   },
   props: {
     item: Object,

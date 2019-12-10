@@ -18,12 +18,11 @@
       <txn-metadata
         :item="item.txnMetadata"
         color="indigo"
+        type="AML"
       ></txn-metadata>
     </q-card-section>
     <q-card-section class="q-ma-none q-pa-none bg-white">
-      <required-signature
-        :item="item.reqSignature"
-      ></required-signature>
+      <required-signature :item="item.reqSignature"></required-signature>
     </q-card-section>
 
     <q-expansion-item
@@ -34,17 +33,16 @@
       expand-icon-class="text-grey-9"
     >
       <template v-slot:header>
-        <q-item-section avatar class="text-weight-bold">
-          ({{ item.txn.data.version }})
-        </q-item-section>
+        <q-item-section avatar class="text-weight-bold"
+          >({{ item.txn.data.version }})</q-item-section
+        >
         <q-item-section>
           <a
             :href="item.txn.data.amlContext"
             target="_blank"
             class="ellipsis"
+            >{{ item.txn.metadata.digest.slice(0, 32) }}</a
           >
-            {{ item.txn.metadata.digest.slice(0, 32) }}
-          </a>
         </q-item-section>
       </template>
       <txn-data :item="item.txn"></txn-data>

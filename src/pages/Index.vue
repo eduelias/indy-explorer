@@ -11,11 +11,15 @@
         v-for="(fprop, index) in Object.keys(filter)"
         :key="index"
         :selected.sync="filter[fprop]"
-      >{{ fprop }}</q-chip>
+        >{{ fprop }}</q-chip
+      >
     </div>
     <br />
     <div class="row">
       <q-list class="column">
+        <div class="h4 centered" style="width:400px">
+          DOMAIN
+        </div>
         <div
           v-for="(item, index) in dedupe(getTransactions().DOMAIN)"
           :key="index"
@@ -24,44 +28,73 @@
           <q-card
             v-if="filter[findType(item.txn.type)]"
             clickable
-            class="q-ma-sm"
+            class="DomainContainer q-ma-sm"
             style="width: 400px"
           >
-            <type-router :item="item" :type="findType(item.txn.type)" v-on:openDialog="openDialog"></type-router>
+            <type-router
+              :item="item"
+              :type="findType(item.txn.type)"
+              v-on:openDialog="openDialog"
+            ></type-router>
           </q-card>
+        </div>
+        <div v-if="listHasItems('DomainContainer')">
+          No items.
         </div>
       </q-list>
       <q-list borderd separator class="column">
-        <q-card
-          clickable
+        <div class="h4 centered" style="width:400px">
+          CONFIG
+        </div>
+        <div
           v-for="(item, index) in dedupe(getTransactions().CONFIG)"
           :key="index"
-          class="q-ma-sm"
-          style="width: 400px"
+          class="q-ma-none"
         >
-          <type-router
-            :item="item"
-            :type="findType(item.txn.type)"
-            v-on:openDialog="openDialog"
-            :filter="filter"
-          ></type-router>
-        </q-card>
+          <q-card
+            v-if="filter[findType(item.txn.type)]"
+            clickable
+            class="ConfigContainer q-ma-sm"
+            style="width: 400px"
+          >
+            <type-router
+              :item="item"
+              :type="findType(item.txn.type)"
+              v-on:openDialog="openDialog"
+              :filter="filter"
+            ></type-router>
+          </q-card>
+        </div>
+        <div v-if="listHasItems('ConfigContainer')">
+          No items.
+        </div>
       </q-list>
       <q-list borderd separator class="column">
-        <q-card
-          clickable
+        <div class="h4 centered" style="width:400px">
+          POOL
+        </div>
+        <div
           v-for="(item, index) in dedupe(getTransactions().POOL)"
           :key="index"
-          class="q-ma-md"
-          style="width: 400px"
+          class="q-ma-none"
         >
-          <type-router
-            :item="item"
-            :type="findType(item.txn.type)"
-            v-on:openDialog="openDialog"
-            :filter="filter"
-          ></type-router>
-        </q-card>
+          <q-card
+            v-if="filter[findType(item.txn.type)]"
+            :key="index"
+            class="PoolContainer q-ma-md"
+            style="width: 400px"
+          >
+            <type-router
+              :item="item"
+              :type="findType(item.txn.type)"
+              v-on:openDialog="openDialog"
+              :filter="filter"
+            ></type-router>
+          </q-card>
+        </div>
+        <div v-if="listHasItems('PoolContainer')">
+          No items.
+        </div>
       </q-list>
     </div>
   </q-page>
@@ -73,11 +106,11 @@ import { mapState, mapGetters } from 'vuex'
 import TypeRouter from '../components/TypeRouter.vue'
 
 const types = {
-  // '0': 'NODE',
+  '0': 'NODE',
   '1': 'NYM',
   '4': 'TXN_AUTHOR_AGREEMENT',
   '5': 'TXN_AUTHOR_AGREEMENT_AML',
-  //'100': 'ATTRIB',
+  '100': 'ATTRIB',
   '101': 'SCHEMA',
   '102': 'CRED_DEF',
   // '109': 'POOL_UPGRADE',
@@ -104,9 +137,12 @@ export default {
       dialog: false,
       types: types,
       filter: {
+        NODE: true,
         NYM: true,
         CRED_DEF: true,
         SCHEMA: true,
+        ATTRIB: true,
+        TXN_AUTHOR_AGREEMENT: true,
         TXN_AUTHOR_AGREEMENT_AML: true,
       },
       txnData: {},
@@ -130,6 +166,9 @@ export default {
     openDialog: function(item) {
       this.txnData = item
       this.dialog = true
+    },
+    listHasItems: function(id) {
+      return false
     },
   },
   created: function() {

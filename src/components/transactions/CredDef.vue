@@ -17,12 +17,11 @@
       <txn-metadata
         :item="item.txnMetadata"
         color="light-green"
+        type="CRED_DEF"
       ></txn-metadata>
     </q-card-section>
     <q-card-section class="q-ma-none q-pa-none bg-white">
-      <required-signature
-        :item="item.reqSignature"
-      ></required-signature>
+      <required-signature :item="item.reqSignature"></required-signature>
     </q-card-section>
     <q-expansion-item
       dense

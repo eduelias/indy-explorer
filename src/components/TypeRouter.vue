@@ -1,6 +1,11 @@
 <template>
   <div :id="item.rootHash">
-    <nym-transaction v-if="type == 'NYM'" :item="item" :type="type" v-on:openDialog="openDialog"></nym-transaction>
+    <nym-transaction
+      v-if="type == 'NYM'"
+      :item="item"
+      :type="type"
+      v-on:openDialog="openDialog"
+    ></nym-transaction>
     <author-agreement-aml
       v-else-if="type == 'TXN_AUTHOR_AGREEMENT_AML'"
       :item="item"
@@ -25,7 +30,18 @@
       :type="type"
       v-on:openDialog="openDialog"
     ></cred-def-transaction>
-    <generic-transaction v-else :item="item" :type="type" v-on:openDialog="openDialog"></generic-transaction>
+    <node
+      v-else-if="type == 'NODE'"
+      :item="item"
+      :type="type"
+      v-on:openDialog="openDialog"
+    ></node>
+    <generic-transaction
+      v-else
+      :item="item"
+      :type="type"
+      v-on:openDialog="openDialog"
+    ></generic-transaction>
   </div>
 </template>
 
@@ -36,6 +52,7 @@ import NymTransaction from './transactions/Nym.vue'
 import CredDefTransaction from './transactions/CredDef.vue'
 import AuthorAgreementAml from './transactions/Aml.vue'
 import TxnAuthorAgreement from './transactions/Taa.vue'
+import Node from './transactions/Node.vue'
 
 export default {
   components: {
@@ -45,6 +62,7 @@ export default {
     GenericTransaction,
     AuthorAgreementAml,
     TxnAuthorAgreement,
+    Node,
   },
   props: {
     supportedTypes: Object,
