@@ -1,46 +1,56 @@
 <template>
-  <nym-transaction
-    v-if="type == 'NYM'"
-    :item="item"
-    :type="type"
-    v-on:openDialog="openDialog"
-  ></nym-transaction>
-  <schema-transaction
-    v-else-if="type == 'SCHEMA'"
-    :item="item"
-    :type="type"
-    v-on:openDialog="openDialog"
-  ></schema-transaction>
-  <cred-def-transaction
-    v-else-if="type == 'CRED_DEF'"
-    :item="item"
-    :type="type"
-    v-on:openDialog="openDialog"
-  ></cred-def-transaction>
-  <generic-transaction
-    v-else
-    :item="item"
-    :type="type"
-    v-on:openDialog="openDialog"
-  ></generic-transaction>
+  <div :id="item.rootHash">
+    <nym-transaction v-if="type == 'NYM'" :item="item" :type="type" v-on:openDialog="openDialog"></nym-transaction>
+    <author-agreement-aml
+      v-else-if="type == 'TXN_AUTHOR_AGREEMENT_AML'"
+      :item="item"
+      :type="type"
+      v-on:openDialog="openDialog"
+    ></author-agreement-aml>
+    <txn-author-agreement
+      v-else-if="type == 'TXN_AUTHOR_AGREEMENT'"
+      :item="item"
+      :type="type"
+      v-on:openDialog="openDialog"
+    ></txn-author-agreement>
+    <schema-transaction
+      v-else-if="type == 'SCHEMA'"
+      :item="item"
+      :type="type"
+      v-on:openDialog="openDialog"
+    ></schema-transaction>
+    <cred-def-transaction
+      v-else-if="type == 'CRED_DEF'"
+      :item="item"
+      :type="type"
+      v-on:openDialog="openDialog"
+    ></cred-def-transaction>
+    <generic-transaction v-else :item="item" :type="type" v-on:openDialog="openDialog"></generic-transaction>
+  </div>
 </template>
 
 <script>
-import GenericTransaction from './transactions/Generic.vue'
 import SchemaTransaction from './transactions/Schema.vue'
+import GenericTransaction from './transactions/Generic.vue'
 import NymTransaction from './transactions/Nym.vue'
 import CredDefTransaction from './transactions/CredDef.vue'
+import AuthorAgreementAml from './transactions/Aml.vue'
+import TxnAuthorAgreement from './transactions/Taa.vue'
 
 export default {
   components: {
-    GenericTransaction,
     SchemaTransaction,
     NymTransaction,
     CredDefTransaction,
+    GenericTransaction,
+    AuthorAgreementAml,
+    TxnAuthorAgreement,
   },
   props: {
+    supportedTypes: Object,
     item: Object,
     type: String,
+    filter: Object,
   },
   methods: {
     openDialog: function(data) {

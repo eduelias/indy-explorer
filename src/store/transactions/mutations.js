@@ -1,14 +1,11 @@
-export function add(state, tx) {
-  state.txns.unshift(tx)
-}
-
-export function addMany(state, txs) {
-  if (!Array.isArray(txs)) throw 'No way dude'
-  txs.map(t => {
-    state.txns[t.result.seqNo] = t
-  })
+export function add(state, { ledger, data }) {
+  state.txns[ledger].unshift(data)
 }
 
 export function clearTxns(state) {
-  state.txns = []
+  state.txns = {
+    DOMAIN: [],
+    POOL: [],
+    CONFIG: [],
+  }
 }

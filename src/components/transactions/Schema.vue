@@ -1,6 +1,5 @@
 <template>
   <div
-    q-ripple
     v-if="item"
     class="q-pa-none q-pl-xs cursor-pointer"
     style="border-left:3px yellow solid"
@@ -11,7 +10,10 @@
     >
       SCHEMA - {{ formatDate(item.txnMetadata.txnTime) }}
     </div>
-    <q-card-section class="q-pa-none bg-yellow-1">
+    <q-card-section
+      class="q-pa-none bg-yellow-1"
+      @click="openDialog(item)"
+    >
       <txn-metadata
         :item="item.txnMetadata"
         color="yellow"

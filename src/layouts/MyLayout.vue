@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated class="bg-teal">
       <q-toolbar>
         <q-toolbar-title>Tykn Ledger Explorer</q-toolbar-title>
 

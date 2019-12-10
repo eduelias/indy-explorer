@@ -5,10 +5,10 @@
     v-if="item"
     @click="openDialog(item)"
   >
-    <div :class="`text-${color}-8 text-h5 q-pa-none`">
+    <div :class="`text-${color}-8 text-h5 q-pa-none row`">
       #{{ item.seqNo }}
     </div>
-    <q-tooltip>{{ item.txnId }}</q-tooltip>
+    <q-tooltip v-if="item.txnId">{{ item.txnId }}</q-tooltip>
     <q-space></q-space>
     <div v-if="item.txnTime" :class="`text-overline text-${color}-8`">
       {{ formatDate(item.txnTime) }}

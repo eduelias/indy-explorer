@@ -1,16 +1,16 @@
 <template>
   <div
-    :id="`NYM${item.txn.data.dest}`"
+    :id="`TAA${item.txn.data.version}`"
     v-if="item"
-    style="border-left:3px teal solid"
+    style="border-left:3px brown solid"
     class="q-pa-none q-ma-none q-pa-none"
   >
     <div
       style="font-size: 0.8em; line-height: 1.2em"
-      class="text-teal-3 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder"
-    >NYM - {{ formatDate(item.txnMetadata.txnTime) }}</div>
-    <q-card-section class="q-pa-none q-ma-none bg-teal-2 cursor-pointer" @click="openDialog(item)">
-      <txn-metadata :item="item.txnMetadata" color="teal"></txn-metadata>
+      class="text-brown-3 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder"
+    >TAA - {{ formatDate(item.txnMetadata.txnTime) }}</div>
+    <q-card-section class="q-pa-none q-ma-none bg-brown-2 cursor-pointer" @click="openDialog(item)">
+      <txn-metadata :item="item.txnMetadata" color="brown"></txn-metadata>
     </q-card-section>
     <q-card-section class="q-ma-none q-pa-none bg-white">
       <required-signature :item="item.reqSignature"></required-signature>
@@ -24,10 +24,13 @@
       expand-icon-class="text-grey-9"
     >
       <template v-slot:header>
-        <q-item-section avatar class="text-weight-bold">{{ item.txn.data.dest }}</q-item-section>
+        <q-item-section avatar class="text-weight-bold">({{ item.txn.data.version }})</q-item-section>
         <q-item-section>
-          as
-          {{ translateRole(item.txn.data.role) }}
+          <a
+            :href="item.txn.data.amlContext"
+            target="_blank"
+            class="ellipsis"
+          >{{ item.txn.metadata.digest.slice(0, 32) }}</a>
         </q-item-section>
       </template>
       <txn-data :item="item.txn"></txn-data>
@@ -41,12 +44,6 @@ import TxnMetadata from '../props/TxnMetadata.vue'
 import TxnData from '../props/TxDataRouter.vue'
 import moment from 'moment'
 import { date } from 'quasar'
-
-const roles = {
-  '0': 'TRUSTEE',
-  '2': 'STEWARD',
-  '101': 'TRUST_ANCHOR',
-}
 
 export default {
   components: {

@@ -1,3 +1,8 @@
 export default {
-  txns: [],
+  txns: {
+    DOMAIN: [],
+    POOL: [],
+    CONFIG: [],
+  },
+  highlighted: null,
 }

@@ -1,26 +1,69 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="q-ma-none q-mt-md flex flex-center column">
     <q-dialog v-model="dialog" full-width>
       <q-card class="q-pa-md">
         <vue-json-pretty :data="txnData"></vue-json-pretty>
       </q-card>
     </q-dialog>
-    <q-list borderd separator>
-      <q-card
-        clickable
-        v-ripple
-        v-for="(item, index) in dedupe(getTransactions())"
+    <div class="row">
+      <q-chip
+        size="sm"
+        v-for="(fprop, index) in Object.keys(filter)"
         :key="index"
-        class="q-ma-md"
-        style="width: 400px"
-      >
-        <type-router
-          :item="item"
-          :type="findType(item.txn.type)"
-          v-on:openDialog="openDialog"
-        ></type-router>
-      </q-card>
-    </q-list>
+        :selected.sync="filter[fprop]"
+      >{{ fprop }}</q-chip>
+    </div>
+    <br />
+    <div class="row">
+      <q-list class="column">
+        <div
+          v-for="(item, index) in dedupe(getTransactions().DOMAIN)"
+          :key="index"
+          class="q-ma-none"
+        >
+          <q-card
+            v-if="filter[findType(item.txn.type)]"
+            clickable
+            class="q-ma-sm"
+            style="width: 400px"
+          >
+            <type-router :item="item" :type="findType(item.txn.type)" v-on:openDialog="openDialog"></type-router>
+          </q-card>
+        </div>
+      </q-list>
+      <q-list borderd separator class="column">
+        <q-card
+          clickable
+          v-for="(item, index) in dedupe(getTransactions().CONFIG)"
+          :key="index"
+          class="q-ma-sm"
+          style="width: 400px"
+        >
+          <type-router
+            :item="item"
+            :type="findType(item.txn.type)"
+            v-on:openDialog="openDialog"
+            :filter="filter"
+          ></type-router>
+        </q-card>
+      </q-list>
+      <q-list borderd separator class="column">
+        <q-card
+          clickable
+          v-for="(item, index) in dedupe(getTransactions().POOL)"
+          :key="index"
+          class="q-ma-md"
+          style="width: 400px"
+        >
+          <type-router
+            :item="item"
+            :type="findType(item.txn.type)"
+            v-on:openDialog="openDialog"
+            :filter="filter"
+          ></type-router>
+        </q-card>
+      </q-list>
+    </div>
   </q-page>
 </template>
 
@@ -30,25 +73,42 @@ import { mapState, mapGetters } from 'vuex'
 import TypeRouter from '../components/TypeRouter.vue'
 
 const types = {
-  '0': 'NODE',
+  // '0': 'NODE',
   '1': 'NYM',
-  '100': 'ATTRIB',
+  '4': 'TXN_AUTHOR_AGREEMENT',
+  '5': 'TXN_AUTHOR_AGREEMENT_AML',
+  //'100': 'ATTRIB',
   '101': 'SCHEMA',
   '102': 'CRED_DEF',
-  '109': 'POOL_UPGRADE',
-  '110': 'NODE_UPGRADE',
-  '111': 'POOL_CONFIG',
-  '3': 'GET_TXN',
-  '104': 'GET_ATTR',
-  '105': 'GET_NYM',
-  '107': 'GET_SCHEMA',
-  '108': 'GET_CRED_DEF',
+  // '109': 'POOL_UPGRADE',
+  // '110': 'NODE_UPGRADE',
+  // '111': 'POOL_CONFIG',
+  // '3': 'GET_TXN',
+  // '104': 'GET_ATTR',
+  // '105': 'GET_NYM',
+  // '107': 'GET_SCHEMA',
+  // '108': 'GET_CRED_DEF',
+}
+
+const generateFilters = function() {
+  const r = {}
+  for (const prop of Object.values(types)) {
+    r[prop] = true
+  }
+  return r
 }
 
 export default {
   data() {
     return {
       dialog: false,
+      types: types,
+      filter: {
+        NYM: true,
+        CRED_DEF: true,
+        SCHEMA: true,
+        TXN_AUTHOR_AGREEMENT_AML: true,
+      },
       txnData: {},
     }
   },
@@ -72,7 +132,11 @@ export default {
       this.dialog = true
     },
   },
-  mounted() {
+  created: function() {
+    const $vm = this
+    Object.values(types).map(x => ($vm.filter[x] = true))
+  },
+  mounted: function() {
     this.$store.dispatch('transactions/connect')
   },
   name: 'PageIndex',

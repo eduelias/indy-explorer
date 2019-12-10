@@ -1,6 +1,5 @@
 <template>
   <div
-    q-ripple
     v-if="item"
     style="border-left:3px green solid"
     class="q-pa-none cursor-pointer"
@@ -11,7 +10,10 @@
     >
       CRED_DEF - {{ formatDate(item.txnMetadata.txnTime) }}
     </div>
-    <q-card-section class="q-pa-none bg-light-green-1">
+    <q-card-section
+      class="q-pa-none bg-light-green-1"
+      @click="openDialog(item)"
+    >
       <txn-metadata
         :item="item.txnMetadata"
         color="light-green"
@@ -22,7 +24,6 @@
         :item="item.reqSignature"
       ></required-signature>
     </q-card-section>
-    <q-separator />
     <q-expansion-item
       dense
       expand-icon-toggle
