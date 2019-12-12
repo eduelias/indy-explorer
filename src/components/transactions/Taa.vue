@@ -12,7 +12,7 @@
       TAA - {{ formatDate(item.txnMetadata.txnTime) }}
     </div>
     <q-card-section
-      class="q-pa-none q-ma-none bg-brown-2 cursor-pointer"
+      class="glossy q-pa-none q-ma-none bg-brown-2 cursor-pointer"
       @click="openDialog(item)"
     >
       <txn-metadata

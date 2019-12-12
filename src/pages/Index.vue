@@ -5,20 +5,22 @@
         <vue-json-pretty :data="txnData"></vue-json-pretty>
       </q-card>
     </q-dialog>
-    <div class="row">
-      <q-chip
-        size="sm"
-        v-for="(fprop, index) in Object.keys(filter)"
-        :key="index"
-        :selected.sync="filter[fprop]"
-        >{{ fprop }}</q-chip
-      >
-    </div>
     <br />
     <div class="row">
       <q-list class="column">
         <div class="h4 centered" style="width:400px">
           DOMAIN
+        </div>
+        <div class="row">
+          <q-chip
+            size="sm"
+            v-for="(fprop, index) in Object.keys(filter.DOMAIN)"
+            :key="index"
+            :selected.sync="filter.DOMAIN[fprop]"
+            :color="getFilterChipColor(fprop)"
+            class="glossy shadow-2"
+            >{{ fprop }}</q-chip
+          >
         </div>
         <div
           v-for="(item, index) in dedupe(getTransactions().DOMAIN)"
@@ -26,7 +28,7 @@
           class="q-ma-none"
         >
           <q-card
-            v-if="filter[findType(item.txn.type)]"
+            v-if="filter.DOMAIN[findType(item.txn.type)]"
             clickable
             class="DomainContainer q-ma-xs"
             style="width: 400px"
@@ -46,13 +48,24 @@
         <div class="h4 centered" style="width:400px">
           CONFIG
         </div>
+        <div class="row">
+          <q-chip
+            size="sm"
+            v-for="(fprop, index) in Object.keys(filter.CONFIG)"
+            :key="index"
+            :selected.sync="filter.CONFIG[fprop]"
+            :color="getFilterChipColor(fprop)"
+            class="glossy shadow-2"
+            >{{ fprop }}</q-chip
+          >
+        </div>
         <div
           v-for="(item, index) in dedupe(getTransactions().CONFIG)"
           :key="index"
           class="q-ma-none"
         >
           <q-card
-            v-if="filter[findType(item.txn.type)]"
+            v-if="filter.CONFIG[findType(item.txn.type)]"
             clickable
             class="ConfigContainer q-ma-xs"
             style="width: 400px"
@@ -73,13 +86,24 @@
         <div class="h4 centered" style="width:400px">
           POOL
         </div>
+        <div class="row">
+          <q-chip
+            size="sm"
+            v-for="(fprop, index) in Object.keys(filter.POOL)"
+            :key="index"
+            :selected.sync="filter.POOL[fprop]"
+            :color="getFilterChipColor(fprop)"
+            class="glossy shadow-2"
+            >{{ fprop }}</q-chip
+          >
+        </div>
         <div
           v-for="(item, index) in dedupe(getTransactions().POOL)"
           :key="index"
           class="q-ma-none"
         >
           <q-card
-            v-if="filter[findType(item.txn.type)]"
+            v-if="filter.POOL[findType(item.txn.type)]"
             :key="index"
             class="PoolContainer q-ma-xs"
             style="width: 400px"
@@ -137,13 +161,16 @@ export default {
       dialog: false,
       types: types,
       filter: {
-        NODE: true,
-        NYM: true,
-        CRED_DEF: true,
-        SCHEMA: true,
-        ATTRIB: true,
-        TXN_AUTHOR_AGREEMENT: true,
-        TXN_AUTHOR_AGREEMENT_AML: true,
+        DOMAIN: {
+          NYM: true,
+          CRED_DEF: true,
+          SCHEMA: true,
+          ATTRIB: true,
+        },
+        CONFIG: { TXN_AUTHOR_AGREEMENT: true, TXN_AUTHOR_AGREEMENT_AML: true },
+        POOL: {
+          NODE: true,
+        },
       },
       txnData: {},
     }
@@ -169,6 +196,26 @@ export default {
     },
     listHasItems: function(id) {
       return false
+    },
+    getFilterChipColor: function(type) {
+      switch (type) {
+        case 'CRED_DEF':
+          return 'green-2'
+        case 'ATTRIB':
+          return 'orange-2'
+        case 'TXN_AUTHOR_AGREEMENT':
+          return 'brown-2'
+        case 'TXN_AUTHOR_AGREEMENT_AML':
+          return 'indigo-2'
+        case 'NYM':
+          return 'teal-2'
+        case 'SCHEMA':
+          return 'yellow-2'
+        case 'NODE':
+          return 'light-grey'
+        default:
+          return 'grey'
+      }
     },
   },
   created: function() {

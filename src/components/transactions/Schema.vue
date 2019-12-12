@@ -1,16 +1,19 @@
 <template>
   <div
     v-if="item"
-    class="q-pa-none q-pl-xs cursor-pointer"
+    class="q-pa-none cursor-pointer"
     style="border-left:3px yellow solid"
   >
     <div
       style="font-size: 0.8em; line-height: 1.2em"
-      class="text-yellow-10 text-caption q-pa-none q-ma-none text-weight-bolder"
+      class="text-yellow-10 text-caption q-pa-none q-ma-none q-pl-xs text-weight-bolder"
     >
       SCHEMA - {{ formatDate(item.txnMetadata.txnTime) }}
     </div>
-    <q-card-section class="q-pa-none bg-yellow-1" @click="openDialog(item)">
+    <q-card-section
+      class="glossy q-pa-none bg-yellow-2"
+      @click="openDialog(item)"
+    >
       <txn-metadata
         :item="item.txnMetadata"
         :txnmetadata="item.txn.metadata"

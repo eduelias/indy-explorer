@@ -11,7 +11,7 @@
       CRED_DEF - {{ formatDate(item.txnMetadata.txnTime) }}
     </div>
     <q-card-section
-      class="q-pa-none bg-light-green-1"
+      class="glossy q-pa-none bg-light-green-1"
       @click="openDialog(item)"
     >
       <txn-metadata

@@ -12,7 +12,7 @@
       NODE
     </div>
     <q-card-section
-      class="q-pa-none q-ma-none bg-grey-4 cursor-pointer"
+      class="glossy q-pa-none q-ma-none bg-grey-4 cursor-pointer"
       @click="openDialog(item)"
     >
       <txn-metadata
