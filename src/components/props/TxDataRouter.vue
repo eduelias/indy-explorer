@@ -2,6 +2,11 @@
   <div class="bg-grey-4">
     <q-separator />
     <nym v-if="item.type == '1'" :item="item"></nym>
+    <vue-json-pretty
+      class="bg-white"
+      v-else-if="item.type == '100'"
+      :data="JSON.parse(item.data.raw)"
+    ></vue-json-pretty>
     <cred-def v-else-if="item.type == '102'" :item="item"></cred-def>
     <schema v-else-if="item.type == '101'" :item="item"></schema>
     <aml v-else-if="item.type == '5'" :item="item"></aml>

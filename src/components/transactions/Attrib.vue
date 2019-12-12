@@ -1,25 +1,25 @@
 <template>
   <div
-    :id="`TAA${item.txn.data.version}`"
+    :id="`ATTRIB${item.txn.data.dest}`"
     v-if="item"
-    style="border-left:3px brown solid"
+    style="border-left:3px orange solid"
     class="q-pa-none q-ma-none q-pa-none"
   >
     <div
       style="font-size: 0.8em; line-height: 1.2em"
-      class="text-brown-3 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder"
+      class="text-orange-3 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder"
     >
-      TAA - {{ formatDate(item.txnMetadata.txnTime) }}
+      ATTRIB - {{ formatDate(item.txnMetadata.txnTime) }}
     </div>
     <q-card-section
-      class="q-pa-none q-ma-none bg-brown-2 cursor-pointer"
+      class="q-pa-none q-ma-none bg-orange-2 cursor-pointer"
       @click="openDialog(item)"
     >
       <txn-metadata
         :item="item.txnMetadata"
+        :type="type"
         :txnmetadata="item.txn.metadata"
-        color="brown"
-        type="TAA"
+        color="orange"
       ></txn-metadata>
     </q-card-section>
     <q-card-section class="q-ma-none q-pa-none bg-white">
@@ -34,16 +34,14 @@
       expand-icon-class="text-grey-9"
     >
       <template v-slot:header>
-        <q-item-section avatar class="text-weight-bold"
-          >({{ item.txn.data.version }})</q-item-section
-        >
+        <q-item-section avatar class="text-weight-bold">{{
+          item.txn.data.dest
+        }}</q-item-section>
         <q-item-section>
-          <a
-            :href="item.txn.data.amlContext"
-            target="_blank"
-            class="ellipsis"
-            >{{ item.txn.metadata.digest.slice(0, 32) }}</a
-          >
+          <attrib-raw
+            v-if="item.txn.data.raw"
+            :item="JSON.parse(item.txn.data.raw)"
+          ></attrib-raw>
         </q-item-section>
       </template>
       <txn-data :item="item.txn"></txn-data>
@@ -55,11 +53,19 @@
 import RequiredSignature from '../props/ReqSignature.vue'
 import TxnMetadata from '../props/TxnMetadata.vue'
 import TxnData from '../props/TxDataRouter.vue'
+import AttribRaw from '../props/AttribRawRouter.vue'
 import moment from 'moment'
 import { date } from 'quasar'
 
+const roles = {
+  '0': 'TRUSTEE',
+  '2': 'STEWARD',
+  '101': 'TRUST_ANCHOR',
+}
+
 export default {
   components: {
+    AttribRaw,
     RequiredSignature,
     TxnMetadata,
     TxnData,
@@ -80,6 +86,24 @@ export default {
     },
     formatLabel: function(data) {
       return `<b> Onboarding: </b> ${data}`
+    },
+    translateRole: function(role) {
+      switch (role) {
+        case '0':
+          return 'TRUSTEE'
+        case '2':
+          return 'STEWARD'
+        case '101':
+          return 'TRUST_ANCHOR'
+        case '201':
+          return 'NETWORK_MONITOR'
+        case '':
+          return 'ROLE_REMOVE'
+        case undefined:
+          return 'COMMON_USER'
+        default:
+          return role
+      }
     },
   },
 }

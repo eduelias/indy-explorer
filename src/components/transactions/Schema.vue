@@ -13,6 +13,7 @@
     <q-card-section class="q-pa-none bg-yellow-1" @click="openDialog(item)">
       <txn-metadata
         :item="item.txnMetadata"
+        :txnmetadata="item.txn.metadata"
         color="yellow"
         type="SCHEMA"
       ></txn-metadata>

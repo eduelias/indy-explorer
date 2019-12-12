@@ -16,6 +16,7 @@
     >
       <txn-metadata
         :item="item.txnMetadata"
+        :txnmetadata="item.txn.metadata"
         color="light-green"
         type="CRED_DEF"
       ></txn-metadata>

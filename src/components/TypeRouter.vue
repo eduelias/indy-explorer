@@ -36,6 +36,12 @@
       :type="type"
       v-on:openDialog="openDialog"
     ></node>
+    <attrib
+      v-else-if="type == 'ATTRIB'"
+      :item="item"
+      :type="type"
+      v-on:openDialog="openDialog"
+    ></attrib>
     <generic-transaction
       v-else
       :item="item"
@@ -52,6 +58,7 @@ import NymTransaction from './transactions/Nym.vue'
 import CredDefTransaction from './transactions/CredDef.vue'
 import AuthorAgreementAml from './transactions/Aml.vue'
 import TxnAuthorAgreement from './transactions/Taa.vue'
+import Attrib from './transactions/Attrib.vue'
 import Node from './transactions/Node.vue'
 
 export default {
@@ -63,6 +70,7 @@ export default {
     AuthorAgreementAml,
     TxnAuthorAgreement,
     Node,
+    Attrib,
   },
   props: {
     supportedTypes: Object,

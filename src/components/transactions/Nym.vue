@@ -18,6 +18,7 @@
       <txn-metadata
         :item="item.txnMetadata"
         :type="type"
+        :txnmetadata="item.txn.metadata"
         color="teal"
       ></txn-metadata>
     </q-card-section>

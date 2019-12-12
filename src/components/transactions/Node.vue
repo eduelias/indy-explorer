@@ -17,6 +17,7 @@
     >
       <txn-metadata
         :item="item.txnMetadata"
+        :txnmetadata="item.txn.metadata"
         type="NODE"
         color="grey"
       ></txn-metadata>

@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-ma-none q-mt-md flex flex-center column">
-    <q-dialog v-model="dialog" full-width>
-      <q-card class="q-pa-md">
+    <q-dialog v-model="dialog" full-width class="z-max">
+      <q-card class="q-pa-md z-max">
         <vue-json-pretty :data="txnData"></vue-json-pretty>
       </q-card>
     </q-dialog>
@@ -28,7 +28,7 @@
           <q-card
             v-if="filter[findType(item.txn.type)]"
             clickable
-            class="DomainContainer q-ma-sm"
+            class="DomainContainer q-ma-xs"
             style="width: 400px"
           >
             <type-router
@@ -54,7 +54,7 @@
           <q-card
             v-if="filter[findType(item.txn.type)]"
             clickable
-            class="ConfigContainer q-ma-sm"
+            class="ConfigContainer q-ma-xs"
             style="width: 400px"
           >
             <type-router
@@ -81,7 +81,7 @@
           <q-card
             v-if="filter[findType(item.txn.type)]"
             :key="index"
-            class="PoolContainer q-ma-md"
+            class="PoolContainer q-ma-xs"
             style="width: 400px"
           >
             <type-router

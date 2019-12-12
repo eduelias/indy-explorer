@@ -12,4 +12,5 @@ export function connect({ state, commit }) {
       commit('add', { ledger, data })
     })
   })
+  io.on('init_txs', data => commit('init', data))
 }
