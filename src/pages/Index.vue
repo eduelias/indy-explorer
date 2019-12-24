@@ -15,20 +15,42 @@
     <br />
     <div class="row">
       <q-list class="column">
-        <div class="h4 centered" style="width:400px">
-          DOMAIN
-        </div>
-        <div class="row">
-          <q-chip
-            size="sm"
-            v-for="(fprop, index) in Object.keys(filter.DOMAIN)"
-            :key="index"
-            :selected.sync="filter.DOMAIN[fprop]"
-            :color="getFilterChipColor(fprop)"
-            class="glossy shadow-2"
-            >{{ fprop }}</q-chip
-          >
-        </div>
+        <q-page-scroller
+          class="z-top"
+          expand
+          position="top"
+          :scroll-offset="150"
+          :offset="[0, 0]"
+        >
+          <div class="row q-pa-md bg-grey-3">
+            <div class="column">
+              <tip-filter
+                :filter="filter"
+                ledger="DOMAIN"
+                :getFilterChipColor="getFilterChipColor"
+              ></tip-filter>
+            </div>
+            <div class="column">
+              <tip-filter
+                :filter="filter"
+                ledger="CONFIG"
+                :getFilterChipColor="getFilterChipColor"
+              ></tip-filter>
+            </div>
+            <div class="column">
+              <tip-filter
+                :filter="filter"
+                ledger="POOL"
+                :getFilterChipColor="getFilterChipColor"
+              ></tip-filter>
+            </div>
+          </div>
+        </q-page-scroller>
+        <tip-filter
+          :filter="filter"
+          ledger="DOMAIN"
+          :getFilterChipColor="getFilterChipColor"
+        ></tip-filter>
         <div
           v-for="(item, index) in dedupe(getTransactions().DOMAIN)"
           :key="index"
@@ -52,20 +74,11 @@
         </div>
       </q-list>
       <q-list borderd separator class="column">
-        <div class="h4 centered" style="width:400px">
-          CONFIG
-        </div>
-        <div class="row">
-          <q-chip
-            size="sm"
-            v-for="(fprop, index) in Object.keys(filter.CONFIG)"
-            :key="index"
-            :selected.sync="filter.CONFIG[fprop]"
-            :color="getFilterChipColor(fprop)"
-            class="glossy shadow-2"
-            >{{ fprop }}</q-chip
-          >
-        </div>
+        <tip-filter
+          :filter="filter"
+          ledger="CONFIG"
+          :getFilterChipColor="getFilterChipColor"
+        ></tip-filter>
         <div
           v-for="(item, index) in dedupe(getTransactions().CONFIG)"
           :key="index"
@@ -90,20 +103,11 @@
         </div>
       </q-list>
       <q-list borderd separator class="column">
-        <div class="h4 centered" style="width:400px">
-          POOL
-        </div>
-        <div class="row">
-          <q-chip
-            size="sm"
-            v-for="(fprop, index) in Object.keys(filter.POOL)"
-            :key="index"
-            :selected.sync="filter.POOL[fprop]"
-            :color="getFilterChipColor(fprop)"
-            class="glossy shadow-2"
-            >{{ fprop }}</q-chip
-          >
-        </div>
+        <tip-filter
+          :filter="filter"
+          ledger="POOL"
+          :getFilterChipColor="getFilterChipColor"
+        ></tip-filter>
         <div
           v-for="(item, index) in dedupe(getTransactions().POOL)"
           :key="index"
@@ -135,6 +139,7 @@
 import VueJsonPretty from 'vue-json-pretty'
 import { mapState, mapGetters } from 'vuex'
 import TypeRouter from '../components/TypeRouter.vue'
+import TipFilter from '../components/Filters.vue'
 
 const types = {
   '0': 'NODE',
@@ -183,6 +188,7 @@ export default {
     }
   },
   components: {
+    TipFilter,
     VueJsonPretty,
     TypeRouter,
   },
