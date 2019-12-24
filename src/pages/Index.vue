@@ -1,5 +1,12 @@
 <template>
   <q-page class="q-ma-none q-mt-md flex flex-center column">
+    <q-page-scroller
+      position="bottom-right"
+      :scroll-offset="150"
+      :offset="[18, 18]"
+    >
+      <q-btn fab icon="keyboard_arrow_up" color="teal" />
+    </q-page-scroller>
     <q-dialog v-model="dialog" full-width class="z-max">
       <q-card class="q-pa-md z-max">
         <vue-json-pretty :data="txnData"></vue-json-pretty>
