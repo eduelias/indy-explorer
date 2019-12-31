@@ -24,5 +24,5 @@ export default {
     ledger: String,
     getFilterChipColor: Function,
   },
-}
+};
 </script>

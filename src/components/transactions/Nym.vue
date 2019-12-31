@@ -23,7 +23,9 @@
       ></txn-metadata>
     </q-card-section>
     <q-card-section class="q-ma-none q-pa-none bg-white">
-      <required-signature :item="item.reqSignature"></required-signature>
+      <required-signature
+        :item="item.reqSignature"
+      ></required-signature>
     </q-card-section>
 
     <q-expansion-item
@@ -48,17 +50,17 @@
 </template>
 
 <script>
-import RequiredSignature from '../props/ReqSignature.vue'
-import TxnMetadata from '../props/TxnMetadata.vue'
-import TxnData from '../props/TxDataRouter.vue'
-import moment from 'moment'
-import { date } from 'quasar'
+import RequiredSignature from '../props/ReqSignature.vue';
+import TxnMetadata from '../props/TxnMetadata.vue';
+import TxnData from '../props/TxDataRouter.vue';
+import moment from 'moment';
+import { date } from 'quasar';
 
 const roles = {
   '0': 'TRUSTEE',
   '2': 'STEWARD',
   '101': 'TRUST_ANCHOR',
-}
+};
 
 export default {
   components: {
@@ -72,35 +74,35 @@ export default {
   },
   methods: {
     openDialog: function(data) {
-      this.$emit('openDialog', data)
+      this.$emit('openDialog', data);
     },
     formatDate: function(inputDate) {
       return date.formatDate(
         new Date(inputDate * 1000),
         'MMMM Do YYYY, HH:mm:ss (Z)'
-      )
+      );
     },
     formatLabel: function(data) {
-      return `<b> Onboarding: </b> ${data}`
+      return `<b> Onboarding: </b> ${data}`;
     },
     translateRole: function(role) {
       switch (role) {
         case '0':
-          return 'TRUSTEE'
+          return 'TRUSTEE';
         case '2':
-          return 'STEWARD'
+          return 'STEWARD';
         case '101':
-          return 'TRUST_ANCHOR'
+          return 'TRUST_ANCHOR';
         case '201':
-          return 'NETWORK_MONITOR'
+          return 'NETWORK_MONITOR';
         case '':
-          return 'ROLE_REMOVE'
+          return 'ROLE_REMOVE';
         case undefined:
-          return 'COMMON_USER'
+          return 'COMMON_USER';
         default:
-          return role
+          return role;
       }
     },
   },
-}
+};
 </script>

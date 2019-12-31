@@ -12,7 +12,11 @@ module.exports = {
 
   // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
   // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
-  extends: ['plugin:vue/essential', '@vue/prettier'],
+  extends: [
+    'plugin:vue/essential',
+    '@vue/prettier',
+    'eslint-config-prettier',
+  ],
 
   // required to lint *.vue files
   plugins: ['vue'],
@@ -31,6 +35,7 @@ module.exports = {
     'prefer-promise-reject-errors': 'off',
 
     // allow debugger during development only
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger':
+      process.env.NODE_ENV === 'production' ? 'error' : 'off',
   },
-}
+};

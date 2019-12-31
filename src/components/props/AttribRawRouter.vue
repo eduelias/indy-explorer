@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import endpoint from './../attribs/Endpoint.vue'
+import endpoint from './../attribs/Endpoint.vue';
 export default {
   components: {
     endpoint,
@@ -15,5 +15,5 @@ export default {
   props: {
     item: Object,
   },
-}
+};
 </script>

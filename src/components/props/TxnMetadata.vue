@@ -25,7 +25,10 @@
     >
       {{ formatDate(item.txnTime) }}
     </div>
-    <div v-if="txnmetadata && txnmetadata.taaAcceptance" style="z-index: 10">
+    <div
+      v-if="txnmetadata && txnmetadata.taaAcceptance"
+      style="z-index: 10"
+    >
       <q-icon
         :name="defineIcon(txnmetadata.taaAcceptance.mechanism)"
         :class="`text-${color}-8 q-ml-sm`"
@@ -40,8 +43,8 @@
 </template>
 
 <script>
-import moment from 'moment'
-import { date } from 'quasar'
+import moment from 'moment';
+import { date } from 'quasar';
 
 export default {
   data() {
@@ -62,7 +65,7 @@ export default {
         click_agreement:
           'The agreement was displayed and then agreed to by typing or clicking acceptance.',
       },
-    }
+    };
   },
   props: {
     item: Object,
@@ -73,30 +76,33 @@ export default {
   methods: {
     formatDate: function(inputDate) {
       return moment(
-        date.formatDate(new Date(inputDate * 1000), 'YYYY-MM-DD HH:mm:ss'),
+        date.formatDate(
+          new Date(inputDate * 1000),
+          'YYYY-MM-DD HH:mm:ss'
+        ),
         'YYYY-MM-DD HH:mm:ss'
-      ).fromNow()
+      ).fromNow();
     },
     openDialog: function(data) {
-      this.$emit('openDialog', data)
+      this.$emit('openDialog', data);
     },
     defineIcon: function(mechanism) {
       switch (mechanism) {
         case 'for_session':
-          return 'mdi-google-chrome'
+          return 'mdi-google-chrome';
         case 'wallet_agreement':
-          return 'mdi-wallet'
+          return 'mdi-wallet';
         case 'on_file':
-          return 'mdi-file-outline'
+          return 'mdi-file-outline';
         case 'click_agreement':
-          return 'mdi-mouse'
+          return 'mdi-mouse';
         case 'product_eula':
         case 'at_submission':
         case 'service_agreement':
         default:
-          return 'mdi-file-lock'
+          return 'mdi-file-lock';
       }
     },
   },
-}
+};
 </script>

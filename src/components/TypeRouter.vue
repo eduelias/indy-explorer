@@ -52,14 +52,14 @@
 </template>
 
 <script>
-import SchemaTransaction from './transactions/Schema.vue'
-import GenericTransaction from './transactions/Generic.vue'
-import NymTransaction from './transactions/Nym.vue'
-import CredDefTransaction from './transactions/CredDef.vue'
-import AuthorAgreementAml from './transactions/Aml.vue'
-import TxnAuthorAgreement from './transactions/Taa.vue'
-import Attrib from './transactions/Attrib.vue'
-import Node from './transactions/Node.vue'
+import SchemaTransaction from './transactions/Schema.vue';
+import GenericTransaction from './transactions/Generic.vue';
+import NymTransaction from './transactions/Nym.vue';
+import CredDefTransaction from './transactions/CredDef.vue';
+import AuthorAgreementAml from './transactions/Aml.vue';
+import TxnAuthorAgreement from './transactions/Taa.vue';
+import Attrib from './transactions/Attrib.vue';
+import Node from './transactions/Node.vue';
 
 export default {
   components: {
@@ -80,8 +80,8 @@ export default {
   },
   methods: {
     openDialog: function(data) {
-      this.$emit('openDialog', data)
+      this.$emit('openDialog', data);
     },
   },
-}
+};
 </script>

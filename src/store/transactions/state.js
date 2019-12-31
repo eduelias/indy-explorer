@@ -5,4 +5,4 @@ export default {
     CONFIG: [],
   },
   highlighted: null,
-}
+};

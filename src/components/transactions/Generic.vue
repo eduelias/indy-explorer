@@ -7,8 +7,12 @@
             new Date('1970-01-01') | moment('YYYY-MM-DD HH:mm:ss')
         }}
       </div>
-      <div class="text-subtitle2">From: {{ item.txn.metadata.from }}</div>
-      <div class="text-subtitle3">TxId: {{ item.txnMetadata.txnId }}</div>
+      <div class="text-subtitle2">
+        From: {{ item.txn.metadata.from }}
+      </div>
+      <div class="text-subtitle3">
+        TxId: {{ item.txnMetadata.txnId }}
+      </div>
     </q-card-section>
     <q-separator dark />
 
@@ -30,8 +34,8 @@ export default {
   },
   methods: {
     openDialog: function(data) {
-      this.$emit('openDialog', data)
+      this.$emit('openDialog', data);
     },
   },
-}
+};
 </script>

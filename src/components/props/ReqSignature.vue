@@ -31,8 +31,8 @@
 </style>
 
 <script>
-import { scroll } from 'quasar'
-const { getScrollTarget, setScrollPosition } = scroll
+import { scroll } from 'quasar';
+const { getScrollTarget, setScrollPosition } = scroll;
 
 export default {
   props: {
@@ -40,14 +40,14 @@ export default {
   },
   methods: {
     goto: el => {
-      const ele = document.getElementById(`NYM${el}`) // You need to get your element here
-      const colorClass = 'bg-yellow-3'
-      ele.classList.add(colorClass)
-      ele.scrollIntoView({ block: 'end' })
+      const ele = document.getElementById(`NYM${el}`); // You need to get your element here
+      const colorClass = 'bg-yellow-3';
+      ele.classList.add(colorClass);
+      ele.scrollIntoView({ block: 'end' });
       setTimeout(() => {
-        ele.classList.remove(colorClass)
-      }, 2500)
+        ele.classList.remove(colorClass);
+      }, 2500);
     },
   },
-}
+};
 </script>

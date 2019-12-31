@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import Nym from '../dataprops/NymData.vue'
-import CredDef from '../dataprops/CredDefData.vue'
-import Schema from '../dataprops/SchemaData.vue'
-import Aml from '../dataprops/AmlData.vue'
-import Taa from '../dataprops/TaaData.vue'
-import VueJsonPretty from 'vue-json-pretty'
+import Nym from '../dataprops/NymData.vue';
+import CredDef from '../dataprops/CredDefData.vue';
+import Schema from '../dataprops/SchemaData.vue';
+import Aml from '../dataprops/AmlData.vue';
+import Taa from '../dataprops/TaaData.vue';
+import VueJsonPretty from 'vue-json-pretty';
 
 export default {
   components: {
@@ -38,8 +38,8 @@ export default {
   },
   methods: {
     openDialog: function(data) {
-      this.$emit('openDialog', data)
+      this.$emit('openDialog', data);
     },
   },
-}
+};
 </script>

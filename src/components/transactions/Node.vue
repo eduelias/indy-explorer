@@ -41,7 +41,9 @@
         <q-item-section avatar class="text-weight-bold">{{
           item.txn.data.data.alias
         }}</q-item-section>
-        <q-item-section>{{ formatLabel(item.txn.data.data) }}</q-item-section>
+        <q-item-section>{{
+          formatLabel(item.txn.data.data)
+        }}</q-item-section>
       </template>
       <txn-data :item="item.txn.data"></txn-data>
     </q-expansion-item>
@@ -49,16 +51,16 @@
 </template>
 
 <script>
-import TxnMetadata from '../props/TxnMetadata.vue'
-import TxnData from '../props/TxDataRouter.vue'
-import moment from 'moment'
-import { date } from 'quasar'
+import TxnMetadata from '../props/TxnMetadata.vue';
+import TxnData from '../props/TxDataRouter.vue';
+import moment from 'moment';
+import { date } from 'quasar';
 
 const roles = {
   '0': 'TRUSTEE',
   '2': 'STEWARD',
   '101': 'TRUST_ANCHOR',
-}
+};
 
 export default {
   components: {
@@ -71,17 +73,17 @@ export default {
   },
   methods: {
     openDialog: function(data) {
-      this.$emit('openDialog', data)
+      this.$emit('openDialog', data);
     },
     formatDate: function(inputDate) {
       return date.formatDate(
         new Date(inputDate * 1000),
         'MMMM Do YYYY, HH:mm:ss (Z)'
-      )
+      );
     },
     formatLabel: function(data) {
-      return `http://${data.node_ip}:${data.node_port}`
+      return `http://${data.node_ip}:${data.node_port}`;
     },
   },
-}
+};
 </script>

@@ -22,7 +22,9 @@
       ></txn-metadata>
     </q-card-section>
     <q-card-section class="q-ma-none q-pa-none bg-white">
-      <required-signature :item="item.reqSignature"></required-signature>
+      <required-signature
+        :item="item.reqSignature"
+      ></required-signature>
     </q-card-section>
     <q-expansion-item
       dense
@@ -37,11 +39,11 @@
 </template>
 
 <script>
-import RequiredSignature from '../props/ReqSignature.vue'
-import TxnMetadata from '../props/TxnMetadata.vue'
-import TxnData from '../props/TxDataRouter.vue'
-import moment from 'moment'
-import { date } from 'quasar'
+import RequiredSignature from '../props/ReqSignature.vue';
+import TxnMetadata from '../props/TxnMetadata.vue';
+import TxnData from '../props/TxDataRouter.vue';
+import moment from 'moment';
+import { date } from 'quasar';
 
 export default {
   components: {
@@ -55,14 +57,14 @@ export default {
   },
   methods: {
     openDialog: function(data) {
-      this.$emit('openDialog', data)
+      this.$emit('openDialog', data);
     },
     formatDate: function(inputDate) {
       return date.formatDate(
         new Date(inputDate * 1000),
         'MMMM Do YYYY, HH:mm:ss (Z)'
-      )
+      );
     },
   },
-}
+};
 </script>
