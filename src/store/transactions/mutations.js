@@ -4,7 +4,9 @@ export function add(state, { ledger, data }) {
 
 export function addpage(state, { ledger, data, done, resolve }) {
   state.txns[ledger].push(...data);
-
+  data
+    .filter(tx => tx.txn.type == '1')
+    .map(tx => (state.nymCache[tx.txn.data.verkey] = tx));
   if (!data.length) return done(true);
   done();
   resolve();

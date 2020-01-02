@@ -50,9 +50,6 @@
 </template>
 
 <script>
-import RequiredSignature from '../props/ReqSignature.vue';
-import TxnMetadata from '../props/TxnMetadata.vue';
-import TxnData from '../props/TxDataRouter.vue';
 import moment from 'moment';
 import { date } from 'quasar';
 
@@ -63,10 +60,11 @@ const roles = {
 };
 
 export default {
+  name: 'nym-transaction',
   components: {
-    RequiredSignature,
-    TxnMetadata,
-    TxnData,
+    RequiredSignature: () => import('../props/ReqSignature.vue'),
+    TxnMetadata: () => import('../props/TxnMetadata.vue'),
+    TxnData: () => import('../props/TxDataRouter.vue'),
   },
   props: {
     item: Object,

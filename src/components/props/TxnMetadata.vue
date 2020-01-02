@@ -3,7 +3,6 @@
     style="min-height:0px"
     class="q-ma-none q-py-none"
     v-if="item"
-    @click="openDialog(item)"
   >
     <div :class="`text-${color}-8 text-h5 q-pa-none row`">
       #{{ item.seqNo }}
@@ -33,7 +32,6 @@
         :name="defineIcon(txnmetadata.taaAcceptance.mechanism)"
         :class="`text-${color}-8 q-ml-sm`"
         style="margin-top: 10px; opacity:0.8"
-        @click="openDialog(txnmetadata.taaAcceptance)"
         ><q-tooltip>{{
           agreements[txnmetadata.taaAcceptance.mechanism]
         }}</q-tooltip></q-icon

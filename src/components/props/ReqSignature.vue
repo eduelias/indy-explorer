@@ -6,10 +6,15 @@
       size="sm"
       icon="gesture"
       clickable
-      @click="goto(val.from)"
       class="cursor-pointer"
     >
       {{ val.from.slice(0, 3) }} ...
+      <q-popup-proxy @before-show="setComponent()"
+        ><component
+          :is="currentComp"
+          :fromAddress="val.from"
+        ></component
+      ></q-popup-proxy>
       <q-tooltip>{{ val.value }}</q-tooltip>
     </q-chip>
   </div>
@@ -32,9 +37,17 @@
 
 <script>
 import { scroll } from 'quasar';
+
 const { getScrollTarget, setScrollPosition } = scroll;
 
 export default {
+  name: 'required-signature',
+  data() {
+    return {
+      nymTransaction: () => import('./../PopNym.vue'),
+      currentComp: null,
+    };
+  },
   props: {
     item: Object,
   },
@@ -47,6 +60,9 @@ export default {
       setTimeout(() => {
         ele.classList.remove(colorClass);
       }, 2500);
+    },
+    setComponent: function() {
+      this.currentComp = this.nymTransaction;
     },
   },
 };

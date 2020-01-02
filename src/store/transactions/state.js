@@ -4,5 +4,6 @@ export default {
     POOL: [],
     CONFIG: [],
   },
+  nymCache: {},
   highlighted: null,
 };

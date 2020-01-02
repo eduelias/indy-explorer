@@ -24,3 +24,17 @@ export async function getPage({ state, commit }, { page, done }) {
     io.emit('get_DOMAIN', page);
   });
 }
+
+export async function loadNymByVerkey({ state }) {
+  return state.txns.DOMAIN.find(tx => tx.txn.data.verkey);
+}
+
+export async function getNymByVerkey(
+  { state, commit, dispatch },
+  verkey
+) {
+  return (
+    state.nymCache[verkey] ||
+    (await dispatch('loadNymByVerkey', verkey))
+  );
+}
