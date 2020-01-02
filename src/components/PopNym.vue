@@ -28,13 +28,16 @@ export default {
         ) || from
       );
     },
+    setNym: function(nym) {
+      this.item = nym;
+    },
   },
   computed: {
     computedItem: function() {
       return this.item;
     },
   },
-  mounted() {
+  async mounted() {
     const hereItem = this.$store.state.transactions.txns.DOMAIN.find(
       tx =>
         tx.txn &&
@@ -45,7 +48,12 @@ export default {
             this.fromAddress.slice(0, 6))
     );
 
-    if (hereItem) this.item = hereItem;
+    if (hereItem) return (this.item = hereItem);
+
+    this.$store.dispatch('transactions/getNymByVerkey', {
+      from: this.fromAddress,
+      setter: this.setNym,
+    });
   },
 };
 </script>

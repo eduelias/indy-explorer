@@ -1,6 +1,6 @@
 import socketio from 'socket.io-client';
 
-const io = socketio('http://localhost:4040');
+const io = socketio('http://localhost:4040', {});
 
 export function connect({ state, commit }) {
   commit('clearTxns');
@@ -25,16 +25,10 @@ export async function getPage({ state, commit }, { page, done }) {
   });
 }
 
-export async function loadNymByVerkey({ state }) {
-  return state.txns.DOMAIN.find(tx => tx.txn.data.verkey);
-}
-
-export async function getNymByVerkey(
-  { state, commit, dispatch },
-  verkey
-) {
-  return (
-    state.nymCache[verkey] ||
-    (await dispatch('loadNymByVerkey', verkey))
-  );
+export async function getNymByVerkey({ state }, { from, setter }) {
+  io.once(`nym_${from}`, data => {
+    state.nymCache[data.txn.data.dest] = data;
+    setter(data);
+  });
+  io.emit('load_nym', from);
 }
