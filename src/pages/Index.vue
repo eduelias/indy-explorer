@@ -53,29 +53,19 @@
         ></tip-filter>
         <q-infinite-scroll @load="onload" :offset="2000">
           <div
-            v-for="(item, index) in dedupe(getTransactions().DOMAIN)"
+            v-for="(item, index) in getItems(getDomainIds())"
             :key="index"
             class="q-ma-none"
           >
             <q-card
-              v-if="
-                filter.DOMAIN[
-                  findType(
-                    findItem(getTransactions().DOMAIN, item).txn.type
-                  )
-                ]
-              "
+              v-if="filter.DOMAIN[findType(item.txn.type)]"
               clickable
               class="DomainContainer q-ma-xs"
               style="width: 400px"
             >
               <type-router
-                :item="findItem(getTransactions().DOMAIN, item)"
-                :type="
-                  findType(
-                    findItem(getTransactions().DOMAIN, item).txn.type
-                  )
-                "
+                :item="item"
+                :type="findType(item.txn.type)"
                 v-on:openDialog="openDialog"
               ></type-router>
             </q-card>
@@ -95,29 +85,19 @@
           :getFilterChipColor="getFilterChipColor"
         ></tip-filter>
         <div
-          v-for="(item, index) in dedupe(getTransactions().CONFIG)"
+          v-for="(item, index) in txns.CONFIG"
           :key="index"
           class="q-ma-none"
         >
           <q-card
-            v-if="
-              filter.CONFIG[
-                findType(
-                  findItem(getTransactions().CONFIG, item).txn.type
-                )
-              ]
-            "
+            v-if="filter.CONFIG[findType(item.txn.type)]"
             clickable
             class="ConfigContainer q-ma-xs"
             style="width: 400px"
           >
             <type-router
-              :item="findItem(getTransactions().CONFIG, item)"
-              :type="
-                findType(
-                  findItem(getTransactions().CONFIG, item).txn.type
-                )
-              "
+              :item="item"
+              :type="findType(item.txn.type)"
               v-on:openDialog="openDialog"
               :filter="filter"
             ></type-router>
@@ -132,29 +112,19 @@
           :getFilterChipColor="getFilterChipColor"
         ></tip-filter>
         <div
-          v-for="(item, index) in dedupe(getTransactions().POOL)"
+          v-for="(item, index) in txns.POOL"
           :key="index"
           class="q-ma-none"
         >
           <q-card
-            v-if="
-              filter.POOL[
-                findType(
-                  findItem(getTransactions().POOL, item).txn.type
-                )
-              ]
-            "
+            v-if="filter.POOL[findType(item.txn.type)]"
             :key="index"
             class="PoolContainer q-ma-xs"
             style="width: 400px"
           >
             <type-router
-              :item="findItem(getTransactions().POOL, item)"
-              :type="
-                findType(
-                  findItem(getTransactions().POOL, item).txn.type
-                )
-              "
+              :item="item"
+              :type="findType(item.txn.type)"
               v-on:openDialog="openDialog"
               :filter="filter"
             ></type-router>
@@ -173,21 +143,24 @@ import TypeRouter from '../components/TypeRouter.vue';
 import TipFilter from '../components/Filters.vue';
 
 const types = {
-  '0': 'NODE',
-  '1': 'NYM',
-  '4': 'TXN_AUTHOR_AGREEMENT',
-  '5': 'TXN_AUTHOR_AGREEMENT_AML',
-  '100': 'ATTRIB',
-  '101': 'SCHEMA',
-  '102': 'CRED_DEF',
-  // '109': 'POOL_UPGRADE',
-  // '110': 'NODE_UPGRADE',
-  // '111': 'POOL_CONFIG',
-  // '3': 'GET_TXN',
-  // '104': 'GET_ATTR',
-  // '105': 'GET_NYM',
-  // '107': 'GET_SCHEMA',
-  // '108': 'GET_CRED_DEF',
+  DOMAIN: {
+    '1': 'NYM',
+    '100': 'ATTRIB',
+    '101': 'SCHEMA',
+    '102': 'CRED_DEF',
+    '113': 'REVOC_REG_DEF',
+    '114': 'REVOC_REG_ENTRY',
+  },
+  POOL: {
+    '0': 'NODE',
+    // '109': 'POOL_UPGRADE',
+    // '110': 'NODE_UPGRADE',
+    // '111': 'POOL_CONFIG',
+  },
+  CONFIG: {
+    '4': 'TXN_AUTHOR_AGREEMENT',
+    '5': 'TXN_AUTHOR_AGREEMENT_AML',
+  },
 };
 
 const generateFilters = function() {
@@ -209,6 +182,8 @@ export default {
           CRED_DEF: true,
           SCHEMA: true,
           ATTRIB: true,
+          REVOC_REG_DEF: true,
+          REVOC_REG_ENTRY: true,
         },
         CONFIG: {
           TXN_AUTHOR_AGREEMENT: true,
@@ -227,28 +202,31 @@ export default {
     TypeRouter,
   },
   computed: {
-    ...mapState('transactions', ['txns']),
+    ...mapState('transactions', ['txns', 'loadedTxns']),
   },
   methods: {
-    ...mapGetters('transactions', ['getTransactions']),
+    ...mapGetters('transactions', [
+      'getTransactions',
+      'getDomainIds',
+    ]),
     onload: async function(index, done) {
       await this.$store.dispatch('transactions/getPage', {
         page: index,
+        filter: this.filter,
         done,
       });
     },
-    dedupe: txns => {
-      return Array.from(
-        new Set(txns.map(tx => tx.txnMetadata.seqNo))
-      ).sort((a, b) => b - a);
-    },
-    findItem: (txns, seqNo) => {
-      return Array.from(txns).find(
-        tx => tx.txnMetadata.seqNo == seqNo
+    getItems: function(seqNos) {
+      const toRt = [];
+      seqNos.forEach(no =>
+        toRt.push(this.$store.state.transactions.txns.DOMAIN[no])
       );
+      return toRt;
     },
     findType: type => {
-      return types[type];
+      return { ...types.DOMAIN, ...types.POOL, ...types.CONFIG }[
+        type
+      ];
     },
     openDialog: function(item) {
       this.txnData = item;
@@ -273,14 +251,14 @@ export default {
           return 'yellow-2';
         case 'NODE':
           return 'light-grey';
+        case 'REVOC_REG_DEF':
+          return 'purple-1';
+        case 'REVOC_REG_ENTRY':
+          return 'deep-purple-1';
         default:
           return 'grey';
       }
     },
-  },
-  created: function() {
-    const $vm = this;
-    Object.values(types).map(x => ($vm.filter[x] = true));
   },
   mounted: function() {
     this.$store.dispatch('transactions/connect');

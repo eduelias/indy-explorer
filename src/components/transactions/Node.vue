@@ -25,6 +25,8 @@
     <q-card-section class="q-ma-none q-pa-sm bg-white">
       <q-chip
         size="sm"
+        outline
+        square
         v-for="(service, index) in item.txn.data.data.services"
         :key="index"
         >{{ service }}</q-chip

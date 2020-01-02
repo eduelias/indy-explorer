@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="max-width: 400px">
     <div class="h4 centered" style="width:400px">
       {{ ledger }}
     </div>

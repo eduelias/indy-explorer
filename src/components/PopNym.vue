@@ -20,11 +20,7 @@ export default {
       console.log(from);
       return (
         this.$store.state.transactions.txns.DOMAIN.find(
-          tx =>
-            tx.txn &&
-            tx.txn.data &&
-            tx.txn.data.dest &&
-            tx.txn.data.dest.indexOf(from) > 0
+          tx => tx?.txn?.data?.dest?.indexOf(from) > 0
         ) || from
       );
     },
@@ -40,11 +36,9 @@ export default {
   async mounted() {
     const hereItem = this.$store.state.transactions.txns.DOMAIN.find(
       tx =>
-        tx.txn &&
-        tx.txn.data &&
-        tx.txn.data.dest &&
-        (tx.txn.data.dest.indexOf(this.fromAddress) > 0 ||
-          tx.txn.data.dest.slice(0, 6) ===
+        tx?.txn?.type === '1' &&
+        (tx?.txn?.data?.dest?.indexOf(this.fromAddress) > 0 ||
+          tx?.txn?.data?.dest?.slice(0, 6) ===
             this.fromAddress.slice(0, 6))
     );
 

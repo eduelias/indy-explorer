@@ -5,16 +5,22 @@
       :key="index"
       size="sm"
       icon="gesture"
-      clickable
-      class="cursor-pointer"
     >
       {{ val.from.slice(0, 3) }} ...
-      <q-popup-proxy @before-show="setComponent()"
-        ><component
-          :is="currentComp"
-          :fromAddress="val.from"
-        ></component
-      ></q-popup-proxy>
+      <q-icon
+        size="sm"
+        name="mdi-chevron-right"
+        class="cursor-pointer"
+      >
+        <q-popup-proxy
+          @before-show="setComponent()"
+          anchor="top right"
+          ><component
+            :is="currentComp"
+            :fromAddress="val.from"
+          ></component
+        ></q-popup-proxy>
+      </q-icon>
       <q-tooltip>{{ val.value }}</q-tooltip>
     </q-chip>
   </div>

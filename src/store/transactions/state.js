@@ -4,6 +4,11 @@ export default {
     POOL: [],
     CONFIG: [],
   },
+  loadedTxns: {
+    DOMAIN: [],
+    POOL: [],
+    CONFIG: [],
+  },
   nymCache: {},
   highlighted: null,
 };

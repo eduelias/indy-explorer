@@ -42,6 +42,18 @@
       :type="type"
       v-on:openDialog="openDialog"
     ></attrib>
+    <revoc-reg-def
+      v-else-if="type == 'REVOC_REG_DEF'"
+      :item="item"
+      :type="type"
+      v-on:openDialog="openDialog"
+    ></revoc-reg-def>
+    <revoc-reg-entry
+      v-else-if="type == 'REVOC_REG_ENTRY'"
+      :item="item"
+      :type="type"
+      v-on:openDialog="openDialog"
+    ></revoc-reg-entry>
     <generic-transaction
       v-else
       :item="item"
@@ -52,25 +64,18 @@
 </template>
 
 <script>
-import SchemaTransaction from './transactions/Schema.vue';
-import GenericTransaction from './transactions/Generic.vue';
-import NymTransaction from './transactions/Nym.vue';
-import CredDefTransaction from './transactions/CredDef.vue';
-import AuthorAgreementAml from './transactions/Aml.vue';
-import TxnAuthorAgreement from './transactions/Taa.vue';
-import Attrib from './transactions/Attrib.vue';
-import Node from './transactions/Node.vue';
-
 export default {
   components: {
-    SchemaTransaction,
-    NymTransaction,
-    CredDefTransaction,
-    GenericTransaction,
-    AuthorAgreementAml,
-    TxnAuthorAgreement,
-    Node,
-    Attrib,
+    RevocRegDef: () => import('./transactions/RevocRegDef.vue'),
+    RevocRegEntry: () => import('./transactions/RevocRegEntry.vue'),
+    SchemaTransaction: () => import('./transactions/Schema.vue'),
+    GenericTransaction: () => import('./transactions/Generic.vue'),
+    NymTransaction: () => import('./transactions/Nym.vue'),
+    CredDefTransaction: () => import('./transactions/CredDef.vue'),
+    AuthorAgreementAml: () => import('./transactions/Aml.vue'),
+    TxnAuthorAgreement: () => import('./transactions/Taa.vue'),
+    Attrib: () => import('./transactions/Attrib.vue'),
+    Node: () => import('./transactions/Node.vue'),
   },
   props: {
     supportedTypes: Object,
