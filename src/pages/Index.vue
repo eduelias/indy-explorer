@@ -97,7 +97,11 @@
             class="q-ma-none"
           >
             <q-card
-              v-if="filter.CONFIG[findType(item.txn.type)]"
+              v-if="
+                item &&
+                  item.txn &&
+                  filter.CONFIG[findType(item.txn.type)]
+              "
               clickable
               class="ConfigContainer q-ma-xs"
               style="width: 400px"
@@ -129,9 +133,10 @@
           :key="index"
           class="q-ma-none"
         >
-          {{ item }}
           <q-card
-            v-if="filter.POOL[findType(item.txn.type)]"
+            v-if="
+              item && item.txn && filter.POOL[findType(item.txn.type)]
+            "
             :key="index"
             class="PoolContainer q-ma-xs"
             style="width: 400px"
@@ -167,13 +172,15 @@ const types = {
   },
   POOL: {
     '0': 'NODE',
-    '109': 'POOL_UPGRADE',
-    '110': 'NODE_UPGRADE',
-    '111': 'POOL_CONFIG',
   },
   CONFIG: {
     '4': 'TXN_AUTHOR_AGREEMENT',
     '5': 'TXN_AUTHOR_AGREEMENT_AML',
+    '8': 'TRANSACTION_AUTHOR_AGREEMENT_DISABLE',
+    '109': 'POOL_UPGRADE',
+    '110': 'NODE_UPGRADE',
+    '111': 'POOL_CONFIG',
+    '120': 'AUTH_RULES',
   },
 };
 
@@ -205,6 +212,7 @@ export default {
           POOL_CONFIG: true,
           TXN_AUTHOR_AGREEMENT: true,
           TXN_AUTHOR_AGREEMENT_AML: true,
+          AUTH_RULES: true,
         },
         POOL: {
           NODE: true,
@@ -282,6 +290,14 @@ export default {
           return 'purple-1';
         case 'REVOC_REG_ENTRY':
           return 'deep-purple-1';
+        case 'POOL_UPGRADE':
+          return 'purple-1';
+        case 'NODE_UPGRADE':
+          return 'teal-2';
+        case 'POOL_CONFIG':
+          return 'deep-purple-1';
+        case 'AUTH_RULES':
+          return 'orange-2';
         default:
           return 'grey';
       }

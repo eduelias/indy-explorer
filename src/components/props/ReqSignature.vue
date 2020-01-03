@@ -5,9 +5,11 @@
       :key="index"
       size="sm"
       icon="gesture"
+      :square="!popup"
     >
       {{ val.from.slice(0, 3) }} ...
       <q-icon
+        v-if="popup"
         size="sm"
         name="mdi-chevron-right"
         class="cursor-pointer"
@@ -56,6 +58,10 @@ export default {
   },
   props: {
     item: Object,
+    popup: {
+      type: Boolean,
+      default: true,
+    },
   },
   methods: {
     goto: el => {

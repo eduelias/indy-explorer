@@ -1,30 +1,33 @@
 <template>
   <div
-    :id="`NODEUP${item.txn.data.dest}`"
+    :id="`POOLUP${item.txn.data.dest}`"
     v-if="item"
-    style="border-left:3px teal solid"
+    :style="`border-left:3px violet solid`"
     class="q-pa-none q-ma-none q-pa-none"
   >
     <div
       style="font-size: 0.8em; line-height: 1.2em"
-      class="text-teal-3 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder"
+      :class="
+        `text-${color}-3 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder`
+      "
     >
-      NODE_UPGRADE - {{ formatDate(item.txnMetadata.txnTime) }}
+      {{ type }} - {{ formatDate(item.txnMetadata.txnTime) }}
     </div>
     <q-card-section
-      class="glossy q-pa-none q-ma-none bg-teal-2 cursor-pointer"
+      :class="
+        `glossy q-pa-none q-ma-none bg-${color}-2 cursor-pointer`
+      "
       @click="openDialog(item)"
     >
       <txn-metadata
         :item="item.txnMetadata"
         :type="type"
         :txnmetadata="item.txn.metadata"
-        color="teal"
+        :color="color"
       ></txn-metadata>
     </q-card-section>
     <q-card-section class="q-ma-none q-pa-none bg-white">
       <required-signature
-        :popup="false"
         :item="item.reqSignature"
       ></required-signature>
     </q-card-section>
@@ -32,16 +35,15 @@
     <q-expansion-item
       dense
       expand-icon-toggle
-      :label="formatLabel(item.txn.data.dest)"
       class="text-grey-9 text-caption"
       expand-icon-class="text-grey-9"
     >
       <template v-slot:header>
         <q-item-section avatar class="text-weight-bold">{{
-          item.txn.data.data.version
+          item.txn.data.name
         }}</q-item-section>
         <q-item-section>
-          {{ item.txn.data.data.action }}
+          {{ item.txn.data.action }}
         </q-item-section>
       </template>
       <txn-data :item="item.txn.data"></txn-data>
@@ -60,7 +62,7 @@ const roles = {
 };
 
 export default {
-  name: 'node-upgrade-transaction',
+  name: 'RevocRegDef',
   components: {
     RequiredSignature: () => import('../props/ReqSignature.vue'),
     TxnMetadata: () => import('../props/TxnMetadata.vue'),
@@ -69,6 +71,10 @@ export default {
   props: {
     item: Object,
     type: String,
+    color: {
+      type: String,
+      default: 'purple',
+    },
   },
   methods: {
     openDialog: function(data) {
@@ -82,6 +88,24 @@ export default {
     },
     formatLabel: function(data) {
       return `<b> Onboarding: </b> ${data}`;
+    },
+    translateRole: function(role) {
+      switch (role) {
+        case '0':
+          return 'TRUSTEE';
+        case '2':
+          return 'STEWARD';
+        case '101':
+          return 'TRUST_ANCHOR';
+        case '201':
+          return 'NETWORK_MONITOR';
+        case '':
+          return 'ROLE_REMOVE';
+        case undefined:
+          return 'COMMON_USER';
+        default:
+          return role;
+      }
     },
   },
 };

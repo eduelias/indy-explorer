@@ -1,4 +1,7 @@
 export function add(state, { ledger, data }) {
+  if (ledger === 'POOL') {
+    console.log(data);
+  }
   data
     .filter(tx => tx)
     .map(tx => {
@@ -8,6 +11,9 @@ export function add(state, { ledger, data }) {
 }
 
 export function addpage(state, { ledger, data, done, resolve }) {
+  if (ledger === 'POOL') {
+    console.log(data);
+  }
   data
     .filter(tx => tx)
     .map(tx => {
@@ -25,7 +31,7 @@ export function addpage(state, { ledger, data, done, resolve }) {
 
 export function init(state, data) {
   Object.keys(state.txns)
-    .filter(l => l == 'CONFIG')
+    .filter(l => l == 'POOL')
     .map(ledger => {
       state.txns[ledger] = data[ledger].reverse();
     });
