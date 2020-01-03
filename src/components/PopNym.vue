@@ -20,7 +20,7 @@ export default {
       console.log(from);
       return (
         this.$store.state.transactions.txns.DOMAIN.find(
-          tx => tx?.txn?.data?.dest?.indexOf(from) > 0
+          tx => tx?.txn?.data?.dest?.indexOf(from.slice(0, 6)) > 0
         ) || from
       );
     },
@@ -40,6 +40,11 @@ export default {
         (tx?.txn?.data?.dest?.indexOf(this.fromAddress) > 0 ||
           tx?.txn?.data?.dest?.slice(0, 6) ===
             this.fromAddress.slice(0, 6))
+    );
+
+    console.log(
+      'aaa',
+      this.$store.state.transactions.txns.DOMAIN[412]
     );
 
     if (hereItem) return (this.item = hereItem);

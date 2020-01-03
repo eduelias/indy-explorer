@@ -21,7 +21,7 @@
           ></component
         ></q-popup-proxy>
       </q-icon>
-      <q-tooltip>{{ val.value }}</q-tooltip>
+      <!-- <q-tooltip>{{ val.value }}</q-tooltip> -->
     </q-chip>
   </div>
 </template>

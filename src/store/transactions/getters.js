@@ -25,7 +25,7 @@ export function getPoolIds(state) {
 }
 
 export function getConfigIds(state) {
-  return Array.from(new Set(state.loadedTxns.CONFIG)).sort(
-    (a, b) => b - a
-  );
+  return Array.from(
+    new Set(state.loadedTxns.CONFIG.filter(tx => tx))
+  ).sort((a, b) => b - a);
 }

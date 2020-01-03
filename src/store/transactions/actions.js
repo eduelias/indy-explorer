@@ -1,6 +1,8 @@
 import socketio from 'socket.io-client';
+import Axios from 'axios';
 
 const io = socketio('http://localhost:4040', {});
+const PAGESIZE = 10;
 
 export function connect({ state, commit }) {
   commit('clearTxns');
@@ -16,19 +18,28 @@ export function connect({ state, commit }) {
   io.on('init_txs', data => commit('init', data));
 }
 
-export async function getPage({ state, commit }, { page, done }) {
-  return new Promise((resolve, reject) => {
-    io.once(`page_loaded_${page}`, data => {
-      commit('addpage', { ledger: 'DOMAIN', data, done, resolve });
-    });
-    io.emit('get_DOMAIN', page);
+export async function getPage(
+  { state, commit },
+  { ledger, page, done }
+) {
+  const resp = await Axios.get(
+    `http://localhost:3333/tx/${ledger}/${page}/${PAGESIZE}`
+  );
+
+  if (resp.status !== 200) throw Error(resp.data);
+
+  if (!resp.data.length) done(true);
+
+  commit('addpage', {
+    ledger,
+    data: resp.data.map(tx => tx),
+    done,
   });
 }
 
 export async function getNymByVerkey({ state }, { from, setter }) {
-  io.once(`nym_${from}`, data => {
-    state.nymCache[data.txn.data.dest] = data;
-    setter(data);
-  });
-  io.emit('load_nym', from);
+  const resp = await Axios.get(`http://localhost:3333/nym/${from}`);
+  if (resp.status !== 200) throw Error(resp.data);
+  state.nymCache[from] = resp.data;
+  setter(resp.data);
 }

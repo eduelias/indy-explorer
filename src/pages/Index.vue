@@ -51,9 +51,12 @@
           ledger="DOMAIN"
           :getFilterChipColor="getFilterChipColor"
         ></tip-filter>
-        <q-infinite-scroll @load="onload" :offset="2000">
+        <q-infinite-scroll @load="onLoadDomain" :offset="2000">
           <div
-            v-for="(item, index) in getItems(getDomainIds())"
+            v-for="(item, index) in getItems(
+              'DOMAIN',
+              getDomainIds()
+            )"
             :key="index"
             class="q-ma-none"
           >
@@ -84,26 +87,36 @@
           ledger="CONFIG"
           :getFilterChipColor="getFilterChipColor"
         ></tip-filter>
-        <div
-          v-for="(item, index) in txns.CONFIG"
-          :key="index"
-          class="q-ma-none"
-        >
-          <q-card
-            v-if="filter.CONFIG[findType(item.txn.type)]"
-            clickable
-            class="ConfigContainer q-ma-xs"
-            style="width: 400px"
+        <q-infinite-scroll @load="onLoadConfig" :offset="2000">
+          <div
+            v-for="(item, index) in getItems(
+              'CONFIG',
+              getConfigIds()
+            )"
+            :key="index"
+            class="q-ma-none"
           >
-            <type-router
-              :item="item"
-              :type="findType(item.txn.type)"
-              v-on:openDialog="openDialog"
-              :filter="filter"
-            ></type-router>
-          </q-card>
-        </div>
-        <div v-if="listHasItems('ConfigContainer')">No items.</div>
+            <q-card
+              v-if="filter.CONFIG[findType(item.txn.type)]"
+              clickable
+              class="ConfigContainer q-ma-xs"
+              style="width: 400px"
+            >
+              <type-router
+                :item="item"
+                :type="findType(item.txn.type)"
+                v-on:openDialog="openDialog"
+                :filter="filter"
+              ></type-router>
+            </q-card>
+          </div>
+          <div v-if="listHasItems('ConfigContainer')">No items.</div>
+          <template v-slot:loading>
+            <div class="row justify-center q-my-md">
+              <q-spinner-dots color="primary" size="40px" />
+            </div>
+          </template>
+        </q-infinite-scroll>
       </q-list>
       <q-list borderd separator class="column">
         <tip-filter
@@ -116,6 +129,7 @@
           :key="index"
           class="q-ma-none"
         >
+          {{ item }}
           <q-card
             v-if="filter.POOL[findType(item.txn.type)]"
             :key="index"
@@ -153,9 +167,9 @@ const types = {
   },
   POOL: {
     '0': 'NODE',
-    // '109': 'POOL_UPGRADE',
-    // '110': 'NODE_UPGRADE',
-    // '111': 'POOL_CONFIG',
+    '109': 'POOL_UPGRADE',
+    '110': 'NODE_UPGRADE',
+    '111': 'POOL_CONFIG',
   },
   CONFIG: {
     '4': 'TXN_AUTHOR_AGREEMENT',
@@ -186,6 +200,9 @@ export default {
           REVOC_REG_ENTRY: true,
         },
         CONFIG: {
+          POOL_UPGRADE: true,
+          NODE_UPGRADE: true,
+          POOL_CONFIG: true,
           TXN_AUTHOR_AGREEMENT: true,
           TXN_AUTHOR_AGREEMENT_AML: true,
         },
@@ -208,18 +225,28 @@ export default {
     ...mapGetters('transactions', [
       'getTransactions',
       'getDomainIds',
+      'getConfigIds',
     ]),
-    onload: async function(index, done) {
+    onLoadConfig: async function(index, done) {
       await this.$store.dispatch('transactions/getPage', {
+        ledger: 'CONFIG',
         page: index,
         filter: this.filter,
         done,
       });
     },
-    getItems: function(seqNos) {
+    onLoadDomain: async function(index, done) {
+      await this.$store.dispatch('transactions/getPage', {
+        ledger: 'DOMAIN',
+        page: index,
+        filter: this.filter,
+        done,
+      });
+    },
+    getItems: function(ledger, seqNos) {
       const toRt = [];
-      seqNos.forEach(no =>
-        toRt.push(this.$store.state.transactions.txns.DOMAIN[no])
+      seqNos?.forEach(no =>
+        toRt.push(this.$store.state.transactions.txns[ledger][no])
       );
       return toRt;
     },

@@ -54,6 +54,12 @@
       :type="type"
       v-on:openDialog="openDialog"
     ></revoc-reg-entry>
+    <node-upgrade
+      v-else-if="type == 'NODE_UPGRADE'"
+      :item="item"
+      :type="type"
+      v-on:openDialog="openDialog"
+    ></node-upgrade>
     <generic-transaction
       v-else
       :item="item"
@@ -76,6 +82,7 @@ export default {
     TxnAuthorAgreement: () => import('./transactions/Taa.vue'),
     Attrib: () => import('./transactions/Attrib.vue'),
     Node: () => import('./transactions/Node.vue'),
+    NodeUpgrade: () => import('./transactions/NodeUpgrade.vue'),
   },
   props: {
     supportedTypes: Object,
