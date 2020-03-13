@@ -1,6 +1,12 @@
 <template>
   <div v-if="!computedItem">Loading ...</div>
-  <component dark :is="nym" v-else :item="computedItem"></component>
+  <component
+    dark
+    :is="nym"
+    v-else
+    :item="computedItem"
+    v-on:openDialog="openDialog"
+  ></component>
 </template>
 
 <script>
@@ -27,6 +33,9 @@ export default {
     setNym: function(nym) {
       this.item = nym;
     },
+    openDialog: function(item) {
+      this.$emit('openDialog', item);
+    },
   },
   computed: {
     computedItem: function() {
@@ -40,11 +49,6 @@ export default {
         (tx?.txn?.data?.dest?.indexOf(this.fromAddress) > 0 ||
           tx?.txn?.data?.dest?.slice(0, 6) ===
             this.fromAddress.slice(0, 6))
-    );
-
-    console.log(
-      'aaa',
-      this.$store.state.transactions.txns.DOMAIN[412]
     );
 
     if (hereItem) return (this.item = hereItem);

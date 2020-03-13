@@ -1,7 +1,4 @@
 export function add(state, { ledger, data }) {
-  if (ledger === 'POOL') {
-    console.log(data);
-  }
   data
     .filter(tx => tx)
     .map(tx => {
@@ -11,9 +8,6 @@ export function add(state, { ledger, data }) {
 }
 
 export function addpage(state, { ledger, data, done, resolve }) {
-  if (ledger === 'POOL') {
-    console.log(data);
-  }
   data
     .filter(tx => tx)
     .map(tx => {
@@ -25,8 +19,12 @@ export function addpage(state, { ledger, data, done, resolve }) {
     .filter(tx => tx)
     .filter(tx => tx.txn.type == '1')
     .map(tx => (state.nymCache[tx.txn.data.dest] = tx));
-  done();
+  if (done) done();
   if (resolve) resolve();
+}
+
+export function setPage(state, { ledger, page }) {
+  state.page[ledger] = page;
 }
 
 export function init(state, data) {

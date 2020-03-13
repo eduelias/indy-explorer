@@ -20,21 +20,24 @@ export function connect({ state, commit }) {
 
 export async function getPage(
   { state, commit },
-  { ledger, page, done }
+  { ledger, page: pageRaw, done, filter }
 ) {
+  const page = pageRaw || state.page[ledger];
   const resp = await Axios.get(
-    `http://localhost:3333/tx/${ledger}/${page}/${PAGESIZE}`
+    `http://localhost:3333/tx/${ledger}/${page}/${PAGESIZE}/${JSON.stringify(
+      filter[ledger]
+    )}`
   );
 
   if (resp.status !== 200) throw Error(resp.data);
 
-  if (!resp.data.length) done(true);
-
-  commit('addpage', {
+  if (!resp.data.length && done) done(true);
+  await commit('addpage', {
     ledger,
     data: resp.data.map(tx => tx),
     done,
   });
+  await commit('setPage', { ledger, page: page + 1 });
 }
 
 export async function getNymByVerkey({ state }, { from, setter }) {

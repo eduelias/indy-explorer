@@ -73,7 +73,9 @@
               ></type-router>
             </q-card>
           </div>
-          <div v-if="listHasItems('DomainContainer')">No items.</div>
+          <div v-if="listHasItems('DomainContainer')">
+            No items.
+          </div>
           <template v-slot:loading>
             <div class="row justify-center q-my-md">
               <q-spinner-dots color="primary" size="40px" />
@@ -114,7 +116,9 @@
               ></type-router>
             </q-card>
           </div>
-          <div v-if="listHasItems('ConfigContainer')">No items.</div>
+          <div v-if="listHasItems('ConfigContainer')">
+            No items.
+          </div>
           <template v-slot:loading>
             <div class="row justify-center q-my-md">
               <q-spinner-dots color="primary" size="40px" />
@@ -135,7 +139,9 @@
         >
           <q-card
             v-if="
-              item && item.txn && filter.POOL[findType(item.txn.type)]
+              item &&
+                item.txn &&
+                filter.POOL[findType(item.txn.type)]
             "
             :key="index"
             class="PoolContainer q-ma-xs"
@@ -254,7 +260,9 @@ export default {
     getItems: function(ledger, seqNos) {
       const toRt = [];
       seqNos?.forEach(no =>
-        toRt.push(this.$store.state.transactions.txns[ledger][no])
+        toRt.push(
+          this.$store.state.transactions.txns[ledger][no]
+        )
       );
       return toRt;
     },

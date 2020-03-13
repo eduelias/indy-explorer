@@ -20,6 +20,7 @@
           ><component
             :is="currentComp"
             :fromAddress="val.from"
+            v-on:openDialog="openDialog"
           ></component
         ></q-popup-proxy>
       </q-icon>
@@ -75,6 +76,9 @@ export default {
     },
     setComponent: function() {
       this.currentComp = this.nymTransaction;
+    },
+    openDialog: function(item) {
+      this.$emit('openDialog', item);
     },
   },
 };
