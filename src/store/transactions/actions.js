@@ -1,7 +1,9 @@
 import socketio from 'socket.io-client';
 import Axios from 'axios';
 
-const io = socketio('http://localhost:4040', {});
+const APIURL = 'http://localhost:3000';
+const WSURL = 'http://localhost:4040';
+const io = socketio(WSURL, {});
 const PAGESIZE = 10;
 
 export function connect({ state, commit }) {
@@ -18,10 +20,31 @@ export function connect({ state, commit }) {
   io.on('init_txs', data => commit('init', data));
 }
 
+export async function getSizes({ state, commit }) {
+  const network = 'sovbuilder';
+
+  const resp = await Axios.get(`${APIURL}/${network}/sizes`);
+
+  if (resp.status !== 200) throw Error(resp.data);
+  const r = {};
+  resp.data.map(item => (r[item.ledger] = item.size));
+  await commit('setSizes', {
+    network,
+    sizes: r,
+  });
+}
+
 export async function getPage({ state, commit }, { ledger, page: pageRaw, done, filter }) {
+  const network = 'sovbuilder';
   const page = pageRaw || state.page[ledger];
+
+  if (!state.sizes[network]) {
+    await getSizes({ state, commit });
+  }
+
   const resp = await Axios.get(
-    `http://localhost:3333/tx/${ledger}/${page}/${PAGESIZE}/${JSON.stringify(filter[ledger])}`
+    `${APIURL}/${network}/tx/${ledger}/${state.sizes[network][ledger] -
+      (page - 1) * PAGESIZE}/${PAGESIZE}/false`
   );
 
   if (resp.status !== 200) throw Error(resp.data);
@@ -36,7 +59,7 @@ export async function getPage({ state, commit }, { ledger, page: pageRaw, done, 
 }
 
 export async function getNymByVerkey({ state }, { from, setter }) {
-  const resp = await Axios.get(`http://localhost:3333/nym/${from}`);
+  const resp = await Axios.get(`${APIURL}/${network}/nym/${from}`);
   if (resp.status !== 200) throw Error(resp.data);
   state.nymCache[from] = resp.data;
   setter(resp.data);

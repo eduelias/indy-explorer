@@ -11,6 +11,7 @@ export default {
   },
   nymCache: {},
   highlighted: null,
+  sizes: {},
   page: {
     DOMAIN: 1,
     POOL: 1,
