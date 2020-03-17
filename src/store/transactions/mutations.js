@@ -9,7 +9,6 @@ export function add(state, { ledger, data }) {
 
 export function setSizes(state, { network, sizes }) {
   state.sizes[network] = sizes;
-  console.log(state.sizes);
 }
 
 export function addpage(state, { ledger, data, done, resolve }) {
