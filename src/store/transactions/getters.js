@@ -11,3 +11,21 @@ export function getTransactions(state) {
   //     return 1;
   // });
 }
+
+export function getDomainIds(state) {
+  return Array.from(new Set(state.loadedTxns.DOMAIN)).sort(
+    (a, b) => b - a
+  );
+}
+
+export function getPoolIds(state) {
+  return Array.from(new Set(state.loadedTxns.POOL)).sort(
+    (a, b) => b - a
+  );
+}
+
+export function getConfigIds(state) {
+  return Array.from(
+    new Set(state.loadedTxns.CONFIG.filter(tx => tx))
+  ).sort((a, b) => b - a);
+}

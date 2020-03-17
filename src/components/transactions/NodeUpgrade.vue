@@ -1,51 +1,48 @@
 <template>
   <div
-    :id="`NODE${item.rootHash}`"
+    :id="`NODEUP${item.txn.data.dest}`"
     v-if="item"
-    style="border-left:3px grey solid"
+    style="border-left:3px teal solid"
     class="q-pa-none q-ma-none q-pa-none"
   >
     <div
       style="font-size: 0.8em; line-height: 1.2em"
-      class="text-grey-6 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder"
+      class="text-teal-3 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder"
     >
-      NODE
+      NODE_UPGRADE - {{ formatDate(item.txnMetadata.txnTime) }}
     </div>
     <q-card-section
-      class="glossy q-pa-none q-ma-none bg-grey-4 cursor-pointer"
+      class="glossy q-pa-none q-ma-none bg-teal-2 cursor-pointer"
       @click="openDialog(item)"
     >
       <txn-metadata
         :item="item.txnMetadata"
+        :type="type"
         :txnmetadata="item.txn.metadata"
-        type="NODE"
-        color="grey"
+        color="teal"
       ></txn-metadata>
     </q-card-section>
-    <q-card-section class="q-ma-none q-pa-sm bg-white">
-      <q-chip
-        size="sm"
-        outline
-        square
-        v-for="(service, index) in item.txn.data.data.services"
-        :key="index"
-        >{{ service }}</q-chip
-      >
+    <q-card-section class="q-ma-none q-pa-none bg-white">
+      <required-signature
+        :popup="false"
+        :item="item.reqSignature"
+      ></required-signature>
     </q-card-section>
 
     <q-expansion-item
       dense
       expand-icon-toggle
+      :label="formatLabel(item.txn.data.dest)"
       class="text-grey-9 text-caption"
       expand-icon-class="text-grey-9"
     >
       <template v-slot:header>
         <q-item-section avatar class="text-weight-bold">{{
-          item.txn.data.data.alias
+          item.txn.data.data.version
         }}</q-item-section>
-        <q-item-section>{{
-          formatLabel(item.txn.data.data)
-        }}</q-item-section>
+        <q-item-section>
+          {{ item.txn.data.data.action }}
+        </q-item-section>
       </template>
       <txn-data :item="item.txn.data"></txn-data>
     </q-expansion-item>
@@ -53,8 +50,6 @@
 </template>
 
 <script>
-import TxnMetadata from '../props/TxnMetadata.vue';
-import TxnData from '../props/TxDataRouter.vue';
 import moment from 'moment';
 import { date } from 'quasar';
 
@@ -65,9 +60,11 @@ const roles = {
 };
 
 export default {
+  name: 'node-upgrade-transaction',
   components: {
-    TxnMetadata,
-    TxnData,
+    RequiredSignature: () => import('../props/ReqSignature.vue'),
+    TxnMetadata: () => import('../props/TxnMetadata.vue'),
+    TxnData: () => import('../props/TxDataRouter.vue'),
   },
   props: {
     item: Object,
@@ -84,7 +81,7 @@ export default {
       );
     },
     formatLabel: function(data) {
-      return `http://${data.node_ip}:${data.node_port}`;
+      return `<b> Onboarding: </b> ${data}`;
     },
   },
 };

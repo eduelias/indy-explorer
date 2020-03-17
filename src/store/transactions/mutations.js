@@ -1,21 +1,38 @@
 export function add(state, { ledger, data }) {
-  //state.txns[ledger].push(...data);
+  data
+    .filter(tx => tx)
+    .map(tx => {
+      state.loadedTxns[ledger].push(tx.txnMetadata.seqNo);
+      state.txns[ledger][tx.txnMetadata.seqNo] = tx;
+    });
 }
 
 export function addpage(state, { ledger, data, done, resolve }) {
-  state.txns[ledger].push(...data);
   data
+    .filter(tx => tx)
+    .map(tx => {
+      state.loadedTxns[ledger].push(tx.txnMetadata.seqNo);
+      state.txns[ledger][tx.txnMetadata.seqNo] = tx;
+    });
+  //state.txns[ledger].push(...data);
+  data
+    .filter(tx => tx)
     .filter(tx => tx.txn.type == '1')
-    .map(tx => (state.nymCache[tx.txn.data.verkey] = tx));
-  if (!data.length) return done(true);
-  done();
-  resolve();
+    .map(tx => (state.nymCache[tx.txn.data.dest] = tx));
+  if (done) done();
+  if (resolve) resolve();
+}
+
+export function setPage(state, { ledger, page }) {
+  state.page[ledger] = page;
 }
 
 export function init(state, data) {
-  Object.keys(state.txns).map(
-    ledger => (state.txns[ledger] = data[ledger].reverse())
-  );
+  Object.keys(state.txns)
+    .filter(l => l == 'POOL')
+    .map(ledger => {
+      state.txns[ledger] = data[ledger].reverse();
+    });
 }
 
 export function clearTxns(state) {

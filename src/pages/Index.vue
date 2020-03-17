@@ -51,36 +51,31 @@
           ledger="DOMAIN"
           :getFilterChipColor="getFilterChipColor"
         ></tip-filter>
-        <q-infinite-scroll @load="onload" :offset="2000">
+        <q-infinite-scroll @load="onLoadDomain" :offset="2000">
           <div
-            v-for="(item, index) in dedupe(getTransactions().DOMAIN)"
+            v-for="(item, index) in getItems(
+              'DOMAIN',
+              getDomainIds()
+            )"
             :key="index"
             class="q-ma-none"
           >
             <q-card
-              v-if="
-                filter.DOMAIN[
-                  findType(
-                    findItem(getTransactions().DOMAIN, item).txn.type
-                  )
-                ]
-              "
+              v-if="filter.DOMAIN[findType(item.txn.type)]"
               clickable
               class="DomainContainer q-ma-xs"
               style="width: 400px"
             >
               <type-router
-                :item="findItem(getTransactions().DOMAIN, item)"
-                :type="
-                  findType(
-                    findItem(getTransactions().DOMAIN, item).txn.type
-                  )
-                "
+                :item="item"
+                :type="findType(item.txn.type)"
                 v-on:openDialog="openDialog"
               ></type-router>
             </q-card>
           </div>
-          <div v-if="listHasItems('DomainContainer')">No items.</div>
+          <div v-if="listHasItems('DomainContainer')">
+            No items.
+          </div>
           <template v-slot:loading>
             <div class="row justify-center q-my-md">
               <q-spinner-dots color="primary" size="40px" />
@@ -94,36 +89,42 @@
           ledger="CONFIG"
           :getFilterChipColor="getFilterChipColor"
         ></tip-filter>
-        <div
-          v-for="(item, index) in dedupe(getTransactions().CONFIG)"
-          :key="index"
-          class="q-ma-none"
-        >
-          <q-card
-            v-if="
-              filter.CONFIG[
-                findType(
-                  findItem(getTransactions().CONFIG, item).txn.type
-                )
-              ]
-            "
-            clickable
-            class="ConfigContainer q-ma-xs"
-            style="width: 400px"
+        <q-infinite-scroll @load="onLoadConfig" :offset="2000">
+          <div
+            v-for="(item, index) in getItems(
+              'CONFIG',
+              getConfigIds()
+            )"
+            :key="index"
+            class="q-ma-none"
           >
-            <type-router
-              :item="findItem(getTransactions().CONFIG, item)"
-              :type="
-                findType(
-                  findItem(getTransactions().CONFIG, item).txn.type
-                )
+            <q-card
+              v-if="
+                item &&
+                  item.txn &&
+                  filter.CONFIG[findType(item.txn.type)]
               "
-              v-on:openDialog="openDialog"
-              :filter="filter"
-            ></type-router>
-          </q-card>
-        </div>
-        <div v-if="listHasItems('ConfigContainer')">No items.</div>
+              clickable
+              class="ConfigContainer q-ma-xs"
+              style="width: 400px"
+            >
+              <type-router
+                :item="item"
+                :type="findType(item.txn.type)"
+                v-on:openDialog="openDialog"
+                :filter="filter"
+              ></type-router>
+            </q-card>
+          </div>
+          <div v-if="listHasItems('ConfigContainer')">
+            No items.
+          </div>
+          <template v-slot:loading>
+            <div class="row justify-center q-my-md">
+              <q-spinner-dots color="primary" size="40px" />
+            </div>
+          </template>
+        </q-infinite-scroll>
       </q-list>
       <q-list borderd separator class="column">
         <tip-filter
@@ -132,29 +133,23 @@
           :getFilterChipColor="getFilterChipColor"
         ></tip-filter>
         <div
-          v-for="(item, index) in dedupe(getTransactions().POOL)"
+          v-for="(item, index) in txns.POOL"
           :key="index"
           class="q-ma-none"
         >
           <q-card
             v-if="
-              filter.POOL[
-                findType(
-                  findItem(getTransactions().POOL, item).txn.type
-                )
-              ]
+              item &&
+                item.txn &&
+                filter.POOL[findType(item.txn.type)]
             "
             :key="index"
             class="PoolContainer q-ma-xs"
             style="width: 400px"
           >
             <type-router
-              :item="findItem(getTransactions().POOL, item)"
-              :type="
-                findType(
-                  findItem(getTransactions().POOL, item).txn.type
-                )
-              "
+              :item="item"
+              :type="findType(item.txn.type)"
               v-on:openDialog="openDialog"
               :filter="filter"
             ></type-router>
@@ -173,21 +168,26 @@ import TypeRouter from '../components/TypeRouter.vue';
 import TipFilter from '../components/Filters.vue';
 
 const types = {
-  '0': 'NODE',
-  '1': 'NYM',
-  '4': 'TXN_AUTHOR_AGREEMENT',
-  '5': 'TXN_AUTHOR_AGREEMENT_AML',
-  '100': 'ATTRIB',
-  '101': 'SCHEMA',
-  '102': 'CRED_DEF',
-  // '109': 'POOL_UPGRADE',
-  // '110': 'NODE_UPGRADE',
-  // '111': 'POOL_CONFIG',
-  // '3': 'GET_TXN',
-  // '104': 'GET_ATTR',
-  // '105': 'GET_NYM',
-  // '107': 'GET_SCHEMA',
-  // '108': 'GET_CRED_DEF',
+  DOMAIN: {
+    '1': 'NYM',
+    '100': 'ATTRIB',
+    '101': 'SCHEMA',
+    '102': 'CRED_DEF',
+    '113': 'REVOC_REG_DEF',
+    '114': 'REVOC_REG_ENTRY',
+  },
+  POOL: {
+    '0': 'NODE',
+  },
+  CONFIG: {
+    '4': 'TXN_AUTHOR_AGREEMENT',
+    '5': 'TXN_AUTHOR_AGREEMENT_AML',
+    '8': 'TRANSACTION_AUTHOR_AGREEMENT_DISABLE',
+    '109': 'POOL_UPGRADE',
+    '110': 'NODE_UPGRADE',
+    '111': 'POOL_CONFIG',
+    '120': 'AUTH_RULES',
+  },
 };
 
 const generateFilters = function() {
@@ -209,10 +209,16 @@ export default {
           CRED_DEF: true,
           SCHEMA: true,
           ATTRIB: true,
+          REVOC_REG_DEF: true,
+          REVOC_REG_ENTRY: true,
         },
         CONFIG: {
+          POOL_UPGRADE: true,
+          NODE_UPGRADE: true,
+          POOL_CONFIG: true,
           TXN_AUTHOR_AGREEMENT: true,
           TXN_AUTHOR_AGREEMENT_AML: true,
+          AUTH_RULES: true,
         },
         POOL: {
           NODE: true,
@@ -227,28 +233,43 @@ export default {
     TypeRouter,
   },
   computed: {
-    ...mapState('transactions', ['txns']),
+    ...mapState('transactions', ['txns', 'loadedTxns']),
   },
   methods: {
-    ...mapGetters('transactions', ['getTransactions']),
-    onload: async function(index, done) {
+    ...mapGetters('transactions', [
+      'getTransactions',
+      'getDomainIds',
+      'getConfigIds',
+    ]),
+    onLoadConfig: async function(index, done) {
       await this.$store.dispatch('transactions/getPage', {
+        ledger: 'CONFIG',
         page: index,
+        filter: this.filter,
         done,
       });
     },
-    dedupe: txns => {
-      return Array.from(
-        new Set(txns.map(tx => tx.txnMetadata.seqNo))
-      ).sort((a, b) => b - a);
+    onLoadDomain: async function(index, done) {
+      await this.$store.dispatch('transactions/getPage', {
+        ledger: 'DOMAIN',
+        page: index,
+        filter: this.filter,
+        done,
+      });
     },
-    findItem: (txns, seqNo) => {
-      return Array.from(txns).find(
-        tx => tx.txnMetadata.seqNo == seqNo
+    getItems: function(ledger, seqNos) {
+      const toRt = [];
+      seqNos?.forEach(no =>
+        toRt.push(
+          this.$store.state.transactions.txns[ledger][no]
+        )
       );
+      return toRt;
     },
     findType: type => {
-      return types[type];
+      return { ...types.DOMAIN, ...types.POOL, ...types.CONFIG }[
+        type
+      ];
     },
     openDialog: function(item) {
       this.txnData = item;
@@ -273,14 +294,22 @@ export default {
           return 'yellow-2';
         case 'NODE':
           return 'light-grey';
+        case 'REVOC_REG_DEF':
+          return 'purple-1';
+        case 'REVOC_REG_ENTRY':
+          return 'deep-purple-1';
+        case 'POOL_UPGRADE':
+          return 'purple-1';
+        case 'NODE_UPGRADE':
+          return 'teal-2';
+        case 'POOL_CONFIG':
+          return 'deep-purple-1';
+        case 'AUTH_RULES':
+          return 'orange-2';
         default:
           return 'grey';
       }
     },
-  },
-  created: function() {
-    const $vm = this;
-    Object.values(types).map(x => ($vm.filter[x] = true));
   },
   mounted: function() {
     this.$store.dispatch('transactions/connect');

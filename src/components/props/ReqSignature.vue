@@ -5,17 +5,26 @@
       :key="index"
       size="sm"
       icon="gesture"
-      clickable
-      class="cursor-pointer"
+      :square="!popup"
     >
       {{ val.from.slice(0, 3) }} ...
-      <q-popup-proxy @before-show="setComponent()"
-        ><component
-          :is="currentComp"
-          :fromAddress="val.from"
-        ></component
-      ></q-popup-proxy>
-      <q-tooltip>{{ val.value }}</q-tooltip>
+      <q-icon
+        v-if="popup"
+        size="sm"
+        name="mdi-chevron-right"
+        class="cursor-pointer"
+      >
+        <q-popup-proxy
+          @before-show="setComponent()"
+          anchor="top right"
+          ><component
+            :is="currentComp"
+            :fromAddress="val.from"
+            v-on:openDialog="openDialog"
+          ></component
+        ></q-popup-proxy>
+      </q-icon>
+      <!-- <q-tooltip>{{ val.value }}</q-tooltip> -->
     </q-chip>
   </div>
 </template>
@@ -50,6 +59,10 @@ export default {
   },
   props: {
     item: Object,
+    popup: {
+      type: Boolean,
+      default: true,
+    },
   },
   methods: {
     goto: el => {
@@ -63,6 +76,9 @@ export default {
     },
     setComponent: function() {
       this.currentComp = this.nymTransaction;
+    },
+    openDialog: function(item) {
+      this.$emit('openDialog', item);
     },
   },
 };

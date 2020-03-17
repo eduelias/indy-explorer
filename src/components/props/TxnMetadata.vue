@@ -11,7 +11,7 @@
       <div
         v-if="type"
         :class="`text-h3 text-white absolute-center ellipsis`"
-        style="opacity:0.7; z-index:0"
+        style="opacity:0.7; z-index:0; font-size:1em"
       >
         {{ type }}
       </div>
