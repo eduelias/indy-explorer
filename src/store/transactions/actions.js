@@ -59,8 +59,22 @@ export async function getPage({ state, commit }, { ledger, page: pageRaw, done, 
 }
 
 export async function getNymByVerkey({ state }, { from, setter }) {
-  const resp = await Axios.get(`${APIURL}/${network}/nym/${from}`);
+  const network = 'sovbuilder';
+  const tx = {
+    operation: {
+      type: '105',
+      dest: from,
+    },
+    identifier: 'L5AD5g65TDQr1PPHHRoiGf',
+    reqId: Date.now(),
+    protocolVersion: 2,
+  };
+  const nym = await Axios.post(`${APIURL}/${network}/tx`, tx);
+  if (nym.status !== 200) throw Error(nym.data);
+
+  const resp = await Axios.get(`${APIURL}/${network}/tx/domain/${nym.data.seqNo}/1`);
   if (resp.status !== 200) throw Error(resp.data);
-  state.nymCache[from] = resp.data;
-  setter(resp.data);
+
+  state.nymCache[from] = resp.data[0];
+  setter(resp.data[0]);
 }

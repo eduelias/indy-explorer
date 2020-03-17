@@ -10,7 +10,7 @@
     </q-dialog>
     <br />
     <div class="row">
-      <q-list class="column">
+      <q-list borderd separator class="column">
         <q-page-scroller class="z-top" expand position="top" :scroll-offset="150" :offset="[0, 0]">
           <div class="row q-pa-md bg-grey-3">
             <div class="column">
@@ -112,22 +112,35 @@
           ledger="POOL"
           :getFilterChipColor="getFilterChipColor"
         ></tip-filter>
-        <div v-for="(item, index) in txns.POOL" :key="index" class="q-ma-none">
-          <q-card
-            v-if="item && item.txn && filter.POOL[findType(item.txn.type)]"
+        <q-infinite-scroll @load="onLoadPool" :offset="2000">
+          <div
+            v-for="(item, index) in getItems('POOL', getPoolIds())"
             :key="index"
-            class="PoolContainer q-ma-xs"
-            style="width: 400px"
+            class="q-ma-none"
           >
-            <type-router
-              :item="item"
-              :type="findType(item.txn.type)"
-              v-on:openDialog="openDialog"
-              :filter="filter"
-            ></type-router>
-          </q-card>
-        </div>
-        <div v-if="listHasItems('PoolContainer')">No items.</div>
+            <q-card
+              v-if="item && item.txn && filter.POOL[findType(item.txn.type)]"
+              clickable
+              class="PoolContainer q-ma-xs"
+              style="width: 400px"
+            >
+              <type-router
+                :item="item"
+                :type="findType(item.txn.type)"
+                v-on:openDialog="openDialog"
+                :filter="filter"
+              ></type-router>
+            </q-card>
+          </div>
+          <div v-if="listHasItems('PoolContainer')">
+            No items.
+          </div>
+          <template v-slot:loading>
+            <div class="row justify-center q-my-md">
+              <q-spinner-dots color="primary" size="40px" />
+            </div>
+          </template>
+        </q-infinite-scroll>
       </q-list>
     </div>
   </q-page>
@@ -208,7 +221,12 @@ export default {
     ...mapState('transactions', ['txns', 'loadedTxns']),
   },
   methods: {
-    ...mapGetters('transactions', ['getTransactions', 'getDomainIds', 'getConfigIds']),
+    ...mapGetters('transactions', [
+      'getTransactions',
+      'getDomainIds',
+      'getConfigIds',
+      'getPoolIds',
+    ]),
     onLoadConfig: async function(index, done) {
       await this.$store.dispatch('transactions/getPage', {
         ledger: 'CONFIG',
@@ -220,6 +238,14 @@ export default {
     onLoadDomain: async function(index, done) {
       await this.$store.dispatch('transactions/getPage', {
         ledger: 'DOMAIN',
+        page: index,
+        filter: this.filter,
+        done,
+      });
+    },
+    onLoadPool: async function(index, done) {
+      await this.$store.dispatch('transactions/getPage', {
+        ledger: 'POOL',
         page: index,
         filter: this.filter,
         done,
