@@ -1,19 +1,12 @@
 <template>
-  <div
-    v-if="item"
-    class="q-pa-none cursor-pointer"
-    style="border-left:3px yellow solid"
-  >
+  <div v-if="item" class="q-pa-none cursor-pointer" style="border-left:3px yellow solid">
     <div
       style="font-size: 0.8em; line-height: 1.2em"
       class="text-yellow-10 text-caption q-pa-none q-ma-none q-pl-xs text-weight-bolder"
     >
       SCHEMA - {{ formatDate(item.txnMetadata.txnTime) }}
     </div>
-    <q-card-section
-      class="glossy q-pa-none bg-yellow-2"
-      @click="openDialog(item)"
-    >
+    <q-card-section class="glossy q-pa-none bg-yellow-2" @click="openDialog(item)">
       <txn-metadata
         :item="item.txnMetadata"
         :txnmetadata="item.txn.metadata"
@@ -22,17 +15,13 @@
       ></txn-metadata>
     </q-card-section>
     <q-card-section class="q-ma-none q-pa-none bg-white">
-      <required-signature
-        :item="item.reqSignature"
-      ></required-signature>
+      <required-signature :item="item.reqSignature"></required-signature>
     </q-card-section>
     <q-expansion-item
       v-if="item.txn"
       dense
       expand-icon-toggle
-      :label="
-        `${item.txn.data.data.name} (${item.txn.data.data.version})`
-      "
+      :label="`${item.txn.data.data.name} (${item.txn.data.data.version})`"
       class="text-yellow-10 text-caption"
       expand-icon-class="text-yellow-10"
     >
@@ -63,10 +52,7 @@ export default {
       this.$emit('openDialog', data);
     },
     formatDate: function(inputDate) {
-      return date.formatDate(
-        new Date(inputDate * 1000),
-        'MMMM Do YYYY, HH:mm:ss (Z)'
-      );
+      return date.formatDate(new Date(inputDate * 1000), 'MMMM Do YYYY, HH:mm:ss (Z)');
     },
   },
 };

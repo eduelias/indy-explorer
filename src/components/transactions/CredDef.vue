@@ -1,19 +1,12 @@
 <template>
-  <div
-    v-if="item"
-    style="border-left:3px green solid"
-    class="q-pa-none cursor-pointer"
-  >
+  <div v-if="item" style="border-left:3px green solid" class="q-pa-none cursor-pointer">
     <div
       style="font-size: 0.8em; line-height: 1.2em"
       class="text-light-green-3 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder"
     >
       CRED_DEF - {{ formatDate(item.txnMetadata.txnTime) }}
     </div>
-    <q-card-section
-      class="glossy q-pa-none bg-light-green-1"
-      @click="openDialog(item)"
-    >
+    <q-card-section class="glossy q-pa-none bg-light-green-1" @click="openDialog(item)">
       <txn-metadata
         :item="item.txnMetadata"
         :txnmetadata="item.txn.metadata"
@@ -22,9 +15,7 @@
       ></txn-metadata>
     </q-card-section>
     <q-card-section class="q-ma-none q-pa-none bg-white">
-      <required-signature
-        :item="item.reqSignature"
-      ></required-signature>
+      <required-signature :item="item.reqSignature"></required-signature>
     </q-card-section>
     <q-expansion-item
       dense
@@ -60,10 +51,7 @@ export default {
       this.$emit('openDialog', data);
     },
     formatDate: function(inputDate) {
-      return date.formatDate(
-        new Date(inputDate * 1000),
-        'MMMM Do YYYY, HH:mm:ss (Z)'
-      );
+      return date.formatDate(new Date(inputDate * 1000), 'MMMM Do YYYY, HH:mm:ss (Z)');
     },
   },
 };

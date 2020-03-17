@@ -8,15 +8,8 @@
       :square="!popup"
     >
       {{ val.from.slice(0, 3) }} ...
-      <q-icon
-        v-if="popup"
-        size="sm"
-        name="mdi-chevron-right"
-        class="cursor-pointer"
-      >
-        <q-popup-proxy
-          @before-show="setComponent()"
-          anchor="top right"
+      <q-icon v-if="popup" size="sm" name="mdi-chevron-right" class="cursor-pointer">
+        <q-popup-proxy @before-show="setComponent()" anchor="top right"
           ><component
             :is="currentComp"
             :fromAddress="val.from"

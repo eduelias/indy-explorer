@@ -18,15 +18,10 @@ export function connect({ state, commit }) {
   io.on('init_txs', data => commit('init', data));
 }
 
-export async function getPage(
-  { state, commit },
-  { ledger, page: pageRaw, done, filter }
-) {
+export async function getPage({ state, commit }, { ledger, page: pageRaw, done, filter }) {
   const page = pageRaw || state.page[ledger];
   const resp = await Axios.get(
-    `http://localhost:3333/tx/${ledger}/${page}/${PAGESIZE}/${JSON.stringify(
-      filter[ledger]
-    )}`
+    `http://localhost:3333/tx/${ledger}/${page}/${PAGESIZE}/${JSON.stringify(filter[ledger])}`
   );
 
   if (resp.status !== 200) throw Error(resp.data);

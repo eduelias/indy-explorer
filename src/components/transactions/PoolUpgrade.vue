@@ -7,16 +7,12 @@
   >
     <div
       style="font-size: 0.8em; line-height: 1.2em"
-      :class="
-        `text-${color}-3 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder`
-      "
+      :class="`text-${color}-3 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder`"
     >
       {{ type }} - {{ formatDate(item.txnMetadata.txnTime) }}
     </div>
     <q-card-section
-      :class="
-        `glossy q-pa-none q-ma-none bg-${color}-2 cursor-pointer`
-      "
+      :class="`glossy q-pa-none q-ma-none bg-${color}-2 cursor-pointer`"
       @click="openDialog(item)"
     >
       <txn-metadata
@@ -27,9 +23,7 @@
       ></txn-metadata>
     </q-card-section>
     <q-card-section class="q-ma-none q-pa-none bg-white">
-      <required-signature
-        :item="item.reqSignature"
-      ></required-signature>
+      <required-signature :item="item.reqSignature"></required-signature>
     </q-card-section>
 
     <q-expansion-item
@@ -39,9 +33,7 @@
       expand-icon-class="text-grey-9"
     >
       <template v-slot:header>
-        <q-item-section avatar class="text-weight-bold">{{
-          item.txn.data.name
-        }}</q-item-section>
+        <q-item-section avatar class="text-weight-bold">{{ item.txn.data.name }}</q-item-section>
         <q-item-section>
           {{ item.txn.data.action }}
         </q-item-section>
@@ -81,10 +73,7 @@ export default {
       this.$emit('openDialog', data);
     },
     formatDate: function(inputDate) {
-      return date.formatDate(
-        new Date(inputDate * 1000),
-        'MMMM Do YYYY, HH:mm:ss (Z)'
-      );
+      return date.formatDate(new Date(inputDate * 1000), 'MMMM Do YYYY, HH:mm:ss (Z)');
     },
     formatLabel: function(data) {
       return `<b> Onboarding: </b> ${data}`;

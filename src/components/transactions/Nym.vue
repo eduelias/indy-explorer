@@ -23,9 +23,7 @@
       ></txn-metadata>
     </q-card-section>
     <q-card-section class="q-ma-none q-pa-none bg-white">
-      <required-signature
-        :item="item.reqSignature"
-      ></required-signature>
+      <required-signature :item="item.reqSignature"></required-signature>
     </q-card-section>
 
     <q-expansion-item
@@ -77,10 +75,7 @@ export default {
       this.$emit('openDialog', data);
     },
     formatDate: function(inputDate) {
-      return date.formatDate(
-        new Date(inputDate * 1000),
-        'MMMM Do YYYY, HH:mm:ss (Z)'
-      );
+      return date.formatDate(new Date(inputDate * 1000), 'MMMM Do YYYY, HH:mm:ss (Z)');
     },
     formatLabel: function(data) {
       return `<b> Onboarding: </b> ${data}`;

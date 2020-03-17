@@ -1,12 +1,6 @@
 <template>
   <div v-if="!computedItem">Loading ...</div>
-  <component
-    dark
-    :is="nym"
-    v-else
-    :item="computedItem"
-    v-on:openDialog="openDialog"
-  ></component>
+  <component dark :is="nym" v-else :item="computedItem" v-on:openDialog="openDialog"></component>
 </template>
 
 <script>
@@ -47,8 +41,7 @@ export default {
       tx =>
         tx?.txn?.type === '1' &&
         (tx?.txn?.data?.dest?.indexOf(this.fromAddress) > 0 ||
-          tx?.txn?.data?.dest?.slice(0, 6) ===
-            this.fromAddress.slice(0, 6))
+          tx?.txn?.data?.dest?.slice(0, 6) === this.fromAddress.slice(0, 6))
     );
 
     if (hereItem) return (this.item = hereItem);

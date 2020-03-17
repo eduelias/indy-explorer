@@ -1,10 +1,6 @@
 <template>
   <q-page class="q-ma-none q-mt-md flex flex-center column">
-    <q-page-scroller
-      position="bottom-right"
-      :scroll-offset="150"
-      :offset="[18, 18]"
-    >
+    <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
       <q-btn fab icon="keyboard_arrow_up" color="teal" />
     </q-page-scroller>
     <q-dialog v-model="dialog" full-width class="z-max">
@@ -15,13 +11,7 @@
     <br />
     <div class="row">
       <q-list class="column">
-        <q-page-scroller
-          class="z-top"
-          expand
-          position="top"
-          :scroll-offset="150"
-          :offset="[0, 0]"
-        >
+        <q-page-scroller class="z-top" expand position="top" :scroll-offset="150" :offset="[0, 0]">
           <div class="row q-pa-md bg-grey-3">
             <div class="column">
               <tip-filter
@@ -53,10 +43,7 @@
         ></tip-filter>
         <q-infinite-scroll @load="onLoadDomain" :offset="2000">
           <div
-            v-for="(item, index) in getItems(
-              'DOMAIN',
-              getDomainIds()
-            )"
+            v-for="(item, index) in getItems('DOMAIN', getDomainIds())"
             :key="index"
             class="q-ma-none"
           >
@@ -91,19 +78,12 @@
         ></tip-filter>
         <q-infinite-scroll @load="onLoadConfig" :offset="2000">
           <div
-            v-for="(item, index) in getItems(
-              'CONFIG',
-              getConfigIds()
-            )"
+            v-for="(item, index) in getItems('CONFIG', getConfigIds())"
             :key="index"
             class="q-ma-none"
           >
             <q-card
-              v-if="
-                item &&
-                  item.txn &&
-                  filter.CONFIG[findType(item.txn.type)]
-              "
+              v-if="item && item.txn && filter.CONFIG[findType(item.txn.type)]"
               clickable
               class="ConfigContainer q-ma-xs"
               style="width: 400px"
@@ -132,17 +112,9 @@
           ledger="POOL"
           :getFilterChipColor="getFilterChipColor"
         ></tip-filter>
-        <div
-          v-for="(item, index) in txns.POOL"
-          :key="index"
-          class="q-ma-none"
-        >
+        <div v-for="(item, index) in txns.POOL" :key="index" class="q-ma-none">
           <q-card
-            v-if="
-              item &&
-                item.txn &&
-                filter.POOL[findType(item.txn.type)]
-            "
+            v-if="item && item.txn && filter.POOL[findType(item.txn.type)]"
             :key="index"
             class="PoolContainer q-ma-xs"
             style="width: 400px"
@@ -236,11 +208,7 @@ export default {
     ...mapState('transactions', ['txns', 'loadedTxns']),
   },
   methods: {
-    ...mapGetters('transactions', [
-      'getTransactions',
-      'getDomainIds',
-      'getConfigIds',
-    ]),
+    ...mapGetters('transactions', ['getTransactions', 'getDomainIds', 'getConfigIds']),
     onLoadConfig: async function(index, done) {
       await this.$store.dispatch('transactions/getPage', {
         ledger: 'CONFIG',
@@ -259,17 +227,11 @@ export default {
     },
     getItems: function(ledger, seqNos) {
       const toRt = [];
-      seqNos?.forEach(no =>
-        toRt.push(
-          this.$store.state.transactions.txns[ledger][no]
-        )
-      );
+      seqNos?.forEach(no => toRt.push(this.$store.state.transactions.txns[ledger][no]));
       return toRt;
     },
     findType: type => {
-      return { ...types.DOMAIN, ...types.POOL, ...types.CONFIG }[
-        type
-      ];
+      return { ...types.DOMAIN, ...types.POOL, ...types.CONFIG }[type];
     },
     openDialog: function(item) {
       this.txnData = item;
