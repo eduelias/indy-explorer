@@ -1,9 +1,9 @@
 export default {
-  txns: {
-    DOMAIN: [],
-    POOL: [],
-    CONFIG: [],
-  },
-  nymCache: {},
-  highlighted: null,
+    txns: {
+        DOMAIN: [],
+        POOL: [],
+        CONFIG: [],
+    },
+    nymCache: {},
+    highlighted: null,
 };

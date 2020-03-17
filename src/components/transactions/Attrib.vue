@@ -1,54 +1,44 @@
 <template>
-  <div
-    :id="`ATTRIB${item.txn.data.dest}`"
-    v-if="item"
-    style="border-left:3px orange solid"
-    class="q-pa-none q-ma-none q-pa-none"
-  >
     <div
-      style="font-size: 0.8em; line-height: 1.2em"
-      class="text-orange-3 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder"
+        :id="`ATTRIB${item.txn.data.dest}`"
+        v-if="item"
+        style="border-left:3px orange solid"
+        class="q-pa-none q-ma-none q-pa-none"
     >
-      ATTRIB - {{ formatDate(item.txnMetadata.txnTime) }}
-    </div>
-    <q-card-section
-      class="glossy q-pa-none q-ma-none bg-orange-2 cursor-pointer"
-      @click="openDialog(item)"
-    >
-      <txn-metadata
-        :item="item.txnMetadata"
-        :type="type"
-        :txnmetadata="item.txn.metadata"
-        color="orange"
-      ></txn-metadata>
-    </q-card-section>
-    <q-card-section class="q-ma-none q-pa-none bg-white">
-      <required-signature
-        :item="item.reqSignature"
-      ></required-signature>
-    </q-card-section>
+        <div
+            style="font-size: 0.8em; line-height: 1.2em"
+            class="text-orange-3 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder"
+        >
+            ATTRIB - {{ formatDate(item.txnMetadata.txnTime) }}
+        </div>
+        <q-card-section class="glossy q-pa-none q-ma-none bg-orange-2 cursor-pointer" @click="openDialog(item)">
+            <txn-metadata
+                :item="item.txnMetadata"
+                :type="type"
+                :txnmetadata="item.txn.metadata"
+                color="orange"
+            ></txn-metadata>
+        </q-card-section>
+        <q-card-section class="q-ma-none q-pa-none bg-white">
+            <required-signature :item="item.reqSignature"></required-signature>
+        </q-card-section>
 
-    <q-expansion-item
-      dense
-      expand-icon-toggle
-      :label="formatLabel(item.txn.data.dest)"
-      class="text-grey-9 text-caption"
-      expand-icon-class="text-grey-9"
-    >
-      <template v-slot:header>
-        <q-item-section avatar class="text-weight-bold">{{
-          item.txn.data.dest
-        }}</q-item-section>
-        <q-item-section>
-          <attrib-raw
-            v-if="item.txn.data.raw"
-            :item="JSON.parse(item.txn.data.raw)"
-          ></attrib-raw>
-        </q-item-section>
-      </template>
-      <txn-data :item="item.txn"></txn-data>
-    </q-expansion-item>
-  </div>
+        <q-expansion-item
+            dense
+            expand-icon-toggle
+            :label="formatLabel(item.txn.data.dest)"
+            class="text-grey-9 text-caption"
+            expand-icon-class="text-grey-9"
+        >
+            <template v-slot:header>
+                <q-item-section avatar class="text-weight-bold">{{ item.txn.data.dest }}</q-item-section>
+                <q-item-section>
+                    <attrib-raw v-if="item.txn.data.raw" :item="JSON.parse(item.txn.data.raw)"></attrib-raw>
+                </q-item-section>
+            </template>
+            <txn-data :item="item.txn"></txn-data>
+        </q-expansion-item>
+    </div>
 </template>
 
 <script>
@@ -60,53 +50,50 @@ import moment from 'moment';
 import { date } from 'quasar';
 
 const roles = {
-  '0': 'TRUSTEE',
-  '2': 'STEWARD',
-  '101': 'TRUST_ANCHOR',
+    '0': 'TRUSTEE',
+    '2': 'STEWARD',
+    '101': 'TRUST_ANCHOR',
 };
 
 export default {
-  components: {
-    AttribRaw,
-    RequiredSignature,
-    TxnMetadata,
-    TxnData,
-  },
-  props: {
-    item: Object,
-    type: String,
-  },
-  methods: {
-    openDialog: function(data) {
-      this.$emit('openDialog', data);
+    components: {
+        AttribRaw,
+        RequiredSignature,
+        TxnMetadata,
+        TxnData,
     },
-    formatDate: function(inputDate) {
-      return date.formatDate(
-        new Date(inputDate * 1000),
-        'MMMM Do YYYY, HH:mm:ss (Z)'
-      );
+    props: {
+        item: Object,
+        type: String,
     },
-    formatLabel: function(data) {
-      return `<b> Onboarding: </b> ${data}`;
+    methods: {
+        openDialog: function(data) {
+            this.$emit('openDialog', data);
+        },
+        formatDate: function(inputDate) {
+            return date.formatDate(new Date(inputDate * 1000), 'MMMM Do YYYY, HH:mm:ss (Z)');
+        },
+        formatLabel: function(data) {
+            return `<b> Onboarding: </b> ${data}`;
+        },
+        translateRole: function(role) {
+            switch (role) {
+                case '0':
+                    return 'TRUSTEE';
+                case '2':
+                    return 'STEWARD';
+                case '101':
+                    return 'TRUST_ANCHOR';
+                case '201':
+                    return 'NETWORK_MONITOR';
+                case '':
+                    return 'ROLE_REMOVE';
+                case undefined:
+                    return 'COMMON_USER';
+                default:
+                    return role;
+            }
+        },
     },
-    translateRole: function(role) {
-      switch (role) {
-        case '0':
-          return 'TRUSTEE';
-        case '2':
-          return 'STEWARD';
-        case '101':
-          return 'TRUST_ANCHOR';
-        case '201':
-          return 'NETWORK_MONITOR';
-        case '':
-          return 'ROLE_REMOVE';
-        case undefined:
-          return 'COMMON_USER';
-        default:
-          return role;
-      }
-    },
-  },
 };
 </script>

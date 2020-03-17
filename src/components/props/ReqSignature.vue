@@ -1,37 +1,34 @@
 <template>
-  <div style="min-height:0px; width: 400px;">
-    <q-chip
-      v-for="(val, index) in item.values"
-      :key="index"
-      size="sm"
-      icon="gesture"
-      clickable
-      class="cursor-pointer"
-    >
-      {{ val.from.slice(0, 3) }} ...
-      <q-popup-proxy @before-show="setComponent()"
-        ><component
-          :is="currentComp"
-          :fromAddress="val.from"
-        ></component
-      ></q-popup-proxy>
-      <q-tooltip>{{ val.value }}</q-tooltip>
-    </q-chip>
-  </div>
+    <div style="min-height:0px; width: 400px;">
+        <q-chip
+            v-for="(val, index) in item.values"
+            :key="index"
+            size="sm"
+            icon="gesture"
+            clickable
+            class="cursor-pointer"
+        >
+            {{ val.from.slice(0, 3) }} ...
+            <q-popup-proxy @before-show="setComponent()"
+                ><component :is="currentComp" :fromAddress="val.from"></component
+            ></q-popup-proxy>
+            <q-tooltip>{{ val.value }}</q-tooltip>
+        </q-chip>
+    </div>
 </template>
 
 <style scoped>
 @keyframes highlight {
-  0% {
-    background-color: yellow;
-  }
-  100% {
-    background-color: transparent;
-  }
+    0% {
+        background-color: yellow;
+    }
+    100% {
+        background-color: transparent;
+    }
 }
 
 .highlight-enter-active {
-  animation: highlight 2s;
+    animation: highlight 2s;
 }
 </style>
 
@@ -41,29 +38,29 @@ import { scroll } from 'quasar';
 const { getScrollTarget, setScrollPosition } = scroll;
 
 export default {
-  name: 'required-signature',
-  data() {
-    return {
-      nymTransaction: () => import('./../PopNym.vue'),
-      currentComp: null,
-    };
-  },
-  props: {
-    item: Object,
-  },
-  methods: {
-    goto: el => {
-      const ele = document.getElementById(`NYM${el}`); // You need to get your element here
-      const colorClass = 'bg-yellow-3';
-      ele.classList.add(colorClass);
-      ele.scrollIntoView({ block: 'end' });
-      setTimeout(() => {
-        ele.classList.remove(colorClass);
-      }, 2500);
+    name: 'required-signature',
+    data() {
+        return {
+            nymTransaction: () => import('./../PopNym.vue'),
+            currentComp: null,
+        };
     },
-    setComponent: function() {
-      this.currentComp = this.nymTransaction;
+    props: {
+        item: Object,
     },
-  },
+    methods: {
+        goto: el => {
+            const ele = document.getElementById(`NYM${el}`); // You need to get your element here
+            const colorClass = 'bg-yellow-3';
+            ele.classList.add(colorClass);
+            ele.scrollIntoView({ block: 'end' });
+            setTimeout(() => {
+                ele.classList.remove(colorClass);
+            }, 2500);
+        },
+        setComponent: function() {
+            this.currentComp = this.nymTransaction;
+        },
+    },
 };
 </script>
