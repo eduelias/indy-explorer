@@ -2,7 +2,7 @@ export default {
   network: 'sovbuilder',
   pagesize: 10,
   apiurl: 'http://rest.api.tykn.tech',
-  wsurl: 'http://localhost:4040',
+  wsurl: 'rest.api.tykn.tech',
   txns: {
     DOMAIN: [],
     POOL: [],

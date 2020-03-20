@@ -27,12 +27,8 @@
                 :getFilterChipColor="getFilterChipColor"
               ></tip-filter>
             </div>
-            <div class="column">
-              <tip-filter
-                :filter="filter"
-                ledger="POOL"
-                :getFilterChipColor="getFilterChipColor"
-              ></tip-filter>
+            <div class="column" style="width:400px">
+              POOL
             </div>
           </div>
         </q-page-scroller>
@@ -48,7 +44,7 @@
             class="q-ma-none"
           >
             <q-card
-              v-if="filter.DOMAIN[findType(item.txn.type)]"
+              v-if="item && item.txn && shouldFilter(filter.DOMAIN, findType(item.txn.type))"
               clickable
               class="DomainContainer q-ma-xs"
               style="width: 400px"
@@ -83,7 +79,7 @@
             class="q-ma-none"
           >
             <q-card
-              v-if="item && item.txn && filter.CONFIG[findType(item.txn.type)]"
+              v-if="item && item.txn && shouldFilter(filter.CONFIG, findType(item.txn.type))"
               clickable
               class="ConfigContainer q-ma-xs"
               style="width: 400px"
@@ -107,11 +103,7 @@
         </q-infinite-scroll>
       </q-list>
       <q-list borderd separator class="column">
-        <tip-filter
-          :filter="filter"
-          ledger="POOL"
-          :getFilterChipColor="getFilterChipColor"
-        ></tip-filter>
+        POOL
         <q-infinite-scroll @load="onLoadPool" :offset="2000">
           <div
             v-for="(item, index) in getItems('POOL', getPoolIds())"
@@ -119,7 +111,7 @@
             class="q-ma-none"
           >
             <q-card
-              v-if="item && item.txn && filter.POOL[findType(item.txn.type)]"
+              v-if="item && item.txn && shouldFilter(filter.POOL, findType(item.txn.type))"
               clickable
               class="PoolContainer q-ma-xs"
               style="width: 400px"
@@ -190,23 +182,23 @@ export default {
       types: types,
       filter: {
         DOMAIN: {
-          NYM: true,
-          CRED_DEF: true,
-          SCHEMA: true,
-          ATTRIB: true,
-          REVOC_REG_DEF: true,
-          REVOC_REG_ENTRY: true,
+          NYM: false,
+          CRED_DEF: false,
+          SCHEMA: false,
+          ATTRIB: false,
+          REVOC_REG_DEF: false,
+          REVOC_REG_ENTRY: false,
         },
         CONFIG: {
-          POOL_UPGRADE: true,
-          NODE_UPGRADE: true,
-          POOL_CONFIG: true,
-          TXN_AUTHOR_AGREEMENT: true,
-          TXN_AUTHOR_AGREEMENT_AML: true,
-          AUTH_RULES: true,
+          POOL_UPGRADE: false,
+          NODE_UPGRADE: false,
+          POOL_CONFIG: false,
+          TXN_AUTHOR_AGREEMENT: false,
+          TXN_AUTHOR_AGREEMENT_AML: false,
+          AUTH_RULES: false,
         },
         POOL: {
-          NODE: true,
+          NODE: false,
         },
       },
       txnData: {},
@@ -227,6 +219,12 @@ export default {
       'getConfigIds',
       'getPoolIds',
     ]),
+    shouldFilter: function(filter, type) {
+      if (Object.values(filter).filter(x => x === true).length > 0) {
+        return filter[type];
+      }
+      return true;
+    },
     onLoadConfig: async function(index, done) {
       await this.$store.dispatch('transactions/getPage', {
         ledger: 'CONFIG',

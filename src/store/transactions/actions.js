@@ -2,18 +2,21 @@ import socketio from 'socket.io-client';
 import Axios from 'axios';
 
 export function connect({ state, commit }) {
-  // const io = socketio(state.wsurl, {});
-  // commit('clearTxns');
-  // io.on('connect', () => {
-  //   // eslint-disable-next-line no-console
-  //   console.log('connected');
-  // });
-  // Object.keys(state.txns).map(ledger => {
-  //   io.on(`newtx_${ledger}`, data => {
-  //     commit('add', { ledger, data });
-  //   });
-  // });
-  // io.on('init_txs', data => commit('init', data));
+  const io = socketio(state.wsurl, {
+    transports: ['websocket'],
+    query: `network=${state.network}`,
+  });
+  commit('clearTxns');
+  io.on('connect', socket => {
+    // eslint-disable-next-line no-console
+    console.log('connected');
+  });
+  Object.keys(state.txns).map(ledger => {
+    io.on(`newtx_${ledger}`, data => {
+      commit('add', { ledger, data });
+    });
+  });
+  io.on('init_txs', data => commit('init', data));
 }
 
 export async function getSizes({ state, commit }) {
@@ -22,11 +25,10 @@ export async function getSizes({ state, commit }) {
   const resp = await Axios.get(`${state.apiurl}/${network}/sizes`);
 
   if (resp.status !== 200) throw Error(resp.data);
-  const r = {};
-  resp.data.map(item => (r[item.ledger] = item.size));
+
   await commit('setSizes', {
     network,
-    sizes: r,
+    sizes: resp.data,
   });
 }
 
@@ -39,9 +41,13 @@ export async function getPage({ state, commit }, { ledger, page: pageRaw, done, 
     await getSizes({ state, commit });
   }
 
+  const target = state.sizes[network][ledger] - (page - 1) * state.pagesize;
+  if (target < 0) {
+    return done(true);
+  }
+
   const resp = await Axios.get(
-    `${state.apiurl}/${network}/tx/${ledger}/${state.sizes[network][ledger] -
-      (page - 1) * state.pagesize}/${state.pagesize}/false`
+    `${state.apiurl}/${network}/tx/${ledger}/${target}/${state.pagesize}/false`
   );
 
   if (resp.status !== 200) throw Error(resp.data);
@@ -49,7 +55,7 @@ export async function getPage({ state, commit }, { ledger, page: pageRaw, done, 
   if (!resp.data.length && done) done(true);
   await commit('addpage', {
     ledger,
-    data: resp.data.map(tx => tx),
+    data: resp.data,
     done,
   });
   await commit('setPage', { ledger, page: page + 1 });

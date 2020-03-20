@@ -17,7 +17,6 @@ export default {
   },
   methods: {
     getNym: function(from) {
-      console.log(from);
       return (
         this.$store.state.transactions.txns.DOMAIN.find(
           tx => tx?.txn?.data?.dest?.indexOf(from.slice(0, 6)) > 0
