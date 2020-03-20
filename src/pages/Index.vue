@@ -1,10 +1,6 @@
 <template>
   <q-page class="q-ma-none q-mt-md flex flex-center column">
-    <q-page-scroller
-      position="bottom-right"
-      :scroll-offset="150"
-      :offset="[18, 18]"
-    >
+    <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
       <q-btn fab icon="keyboard_arrow_up" color="teal" />
     </q-page-scroller>
     <q-dialog v-model="dialog" full-width class="z-max">
@@ -14,14 +10,8 @@
     </q-dialog>
     <br />
     <div class="row">
-      <q-list class="column">
-        <q-page-scroller
-          class="z-top"
-          expand
-          position="top"
-          :scroll-offset="150"
-          :offset="[0, 0]"
-        >
+      <q-list borderd separator class="column">
+        <q-page-scroller class="z-top" expand position="top" :scroll-offset="150" :offset="[0, 0]">
           <div class="row q-pa-md bg-grey-3">
             <div class="column">
               <tip-filter
@@ -37,12 +27,8 @@
                 :getFilterChipColor="getFilterChipColor"
               ></tip-filter>
             </div>
-            <div class="column">
-              <tip-filter
-                :filter="filter"
-                ledger="POOL"
-                :getFilterChipColor="getFilterChipColor"
-              ></tip-filter>
+            <div class="column" style="width:400px">
+              POOL
             </div>
           </div>
         </q-page-scroller>
@@ -53,15 +39,12 @@
         ></tip-filter>
         <q-infinite-scroll @load="onLoadDomain" :offset="2000">
           <div
-            v-for="(item, index) in getItems(
-              'DOMAIN',
-              getDomainIds()
-            )"
+            v-for="(item, index) in getItems('DOMAIN', getDomainIds())"
             :key="index"
             class="q-ma-none"
           >
             <q-card
-              v-if="filter.DOMAIN[findType(item.txn.type)]"
+              v-if="item && item.txn && shouldFilter(filter.DOMAIN, findType(item.txn.type))"
               clickable
               class="DomainContainer q-ma-xs"
               style="width: 400px"
@@ -91,19 +74,12 @@
         ></tip-filter>
         <q-infinite-scroll @load="onLoadConfig" :offset="2000">
           <div
-            v-for="(item, index) in getItems(
-              'CONFIG',
-              getConfigIds()
-            )"
+            v-for="(item, index) in getItems('CONFIG', getConfigIds())"
             :key="index"
             class="q-ma-none"
           >
             <q-card
-              v-if="
-                item &&
-                  item.txn &&
-                  filter.CONFIG[findType(item.txn.type)]
-              "
+              v-if="item && item.txn && shouldFilter(filter.CONFIG, findType(item.txn.type))"
               clickable
               class="ConfigContainer q-ma-xs"
               style="width: 400px"
@@ -127,35 +103,36 @@
         </q-infinite-scroll>
       </q-list>
       <q-list borderd separator class="column">
-        <tip-filter
-          :filter="filter"
-          ledger="POOL"
-          :getFilterChipColor="getFilterChipColor"
-        ></tip-filter>
-        <div
-          v-for="(item, index) in txns.POOL"
-          :key="index"
-          class="q-ma-none"
-        >
-          <q-card
-            v-if="
-              item &&
-                item.txn &&
-                filter.POOL[findType(item.txn.type)]
-            "
+        POOL
+        <q-infinite-scroll @load="onLoadPool" :offset="2000">
+          <div
+            v-for="(item, index) in getItems('POOL', getPoolIds())"
             :key="index"
-            class="PoolContainer q-ma-xs"
-            style="width: 400px"
+            class="q-ma-none"
           >
-            <type-router
-              :item="item"
-              :type="findType(item.txn.type)"
-              v-on:openDialog="openDialog"
-              :filter="filter"
-            ></type-router>
-          </q-card>
-        </div>
-        <div v-if="listHasItems('PoolContainer')">No items.</div>
+            <q-card
+              v-if="item && item.txn && shouldFilter(filter.POOL, findType(item.txn.type))"
+              clickable
+              class="PoolContainer q-ma-xs"
+              style="width: 400px"
+            >
+              <type-router
+                :item="item"
+                :type="findType(item.txn.type)"
+                v-on:openDialog="openDialog"
+                :filter="filter"
+              ></type-router>
+            </q-card>
+          </div>
+          <div v-if="listHasItems('PoolContainer')">
+            No items.
+          </div>
+          <template v-slot:loading>
+            <div class="row justify-center q-my-md">
+              <q-spinner-dots color="primary" size="40px" />
+            </div>
+          </template>
+        </q-infinite-scroll>
       </q-list>
     </div>
   </q-page>
@@ -205,23 +182,23 @@ export default {
       types: types,
       filter: {
         DOMAIN: {
-          NYM: true,
-          CRED_DEF: true,
-          SCHEMA: true,
-          ATTRIB: true,
-          REVOC_REG_DEF: true,
-          REVOC_REG_ENTRY: true,
+          NYM: false,
+          CRED_DEF: false,
+          SCHEMA: false,
+          ATTRIB: false,
+          REVOC_REG_DEF: false,
+          REVOC_REG_ENTRY: false,
         },
         CONFIG: {
-          POOL_UPGRADE: true,
-          NODE_UPGRADE: true,
-          POOL_CONFIG: true,
-          TXN_AUTHOR_AGREEMENT: true,
-          TXN_AUTHOR_AGREEMENT_AML: true,
-          AUTH_RULES: true,
+          POOL_UPGRADE: false,
+          NODE_UPGRADE: false,
+          POOL_CONFIG: false,
+          TXN_AUTHOR_AGREEMENT: false,
+          TXN_AUTHOR_AGREEMENT_AML: false,
+          AUTH_RULES: false,
         },
         POOL: {
-          NODE: true,
+          NODE: false,
         },
       },
       txnData: {},
@@ -240,7 +217,14 @@ export default {
       'getTransactions',
       'getDomainIds',
       'getConfigIds',
+      'getPoolIds',
     ]),
+    shouldFilter: function(filter, type) {
+      if (Object.values(filter).filter(x => x === true).length > 0) {
+        return filter[type];
+      }
+      return true;
+    },
     onLoadConfig: async function(index, done) {
       await this.$store.dispatch('transactions/getPage', {
         ledger: 'CONFIG',
@@ -257,19 +241,21 @@ export default {
         done,
       });
     },
+    onLoadPool: async function(index, done) {
+      await this.$store.dispatch('transactions/getPage', {
+        ledger: 'POOL',
+        page: index,
+        filter: this.filter,
+        done,
+      });
+    },
     getItems: function(ledger, seqNos) {
       const toRt = [];
-      seqNos?.forEach(no =>
-        toRt.push(
-          this.$store.state.transactions.txns[ledger][no]
-        )
-      );
+      seqNos?.forEach(no => toRt.push(this.$store.state.transactions.txns[ledger][no]));
       return toRt;
     },
     findType: type => {
-      return { ...types.DOMAIN, ...types.POOL, ...types.CONFIG }[
-        type
-      ];
+      return { ...types.DOMAIN, ...types.POOL, ...types.CONFIG }[type];
     },
     openDialog: function(item) {
       this.txnData = item;

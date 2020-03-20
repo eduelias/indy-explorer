@@ -43,10 +43,7 @@ export default {
     },
     formatDate: function(inputDate) {
       if (inputDate < 1575000000) return inputDate;
-      return date.formatDate(
-        new Date(inputDate),
-        'MMMM Do YYYY, HH:mm:ss (Z)'
-      );
+      return date.formatDate(new Date(inputDate), 'MMMM Do YYYY, HH:mm:ss (Z)');
     },
   },
 };

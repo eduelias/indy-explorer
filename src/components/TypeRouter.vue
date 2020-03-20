@@ -25,8 +25,7 @@ export default {
     Nym: () => import('./transactions/Nym.vue'),
     CredDef: () => import('./transactions/CredDef.vue'),
     TxnAuthorAgreementAml: () => import('./transactions/Aml.vue'),
-    TxnAuthorAgreementAmlDisable: () =>
-      import('./transactions/Aml.vue'),
+    TxnAuthorAgreementAmlDisable: () => import('./transactions/Aml.vue'),
     TxnAuthorAgreement: () => import('./transactions/Taa.vue'),
     Attrib: () => import('./transactions/Attrib.vue'),
     Node: () => import('./transactions/Node.vue'),
