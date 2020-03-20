@@ -25,6 +25,8 @@
     <q-card-section class="q-ma-none q-pa-sm bg-white">
       <q-chip
         size="sm"
+        outline
+        square
         v-for="(service, index) in item.txn.data.data.services"
         :key="index"
         >{{ service }}</q-chip
@@ -41,9 +43,7 @@
         <q-item-section avatar class="text-weight-bold">{{
           item.txn.data.data.alias
         }}</q-item-section>
-        <q-item-section>{{
-          formatLabel(item.txn.data.data)
-        }}</q-item-section>
+        <q-item-section>{{ formatLabel(item.txn.data.data) }}</q-item-section>
       </template>
       <txn-data :item="item.txn.data"></txn-data>
     </q-expansion-item>
@@ -76,10 +76,7 @@ export default {
       this.$emit('openDialog', data);
     },
     formatDate: function(inputDate) {
-      return date.formatDate(
-        new Date(inputDate * 1000),
-        'MMMM Do YYYY, HH:mm:ss (Z)'
-      );
+      return date.formatDate(new Date(inputDate * 1000), 'MMMM Do YYYY, HH:mm:ss (Z)');
     },
     formatLabel: function(data) {
       return `http://${data.node_ip}:${data.node_port}`;

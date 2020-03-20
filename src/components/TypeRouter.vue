@@ -1,76 +1,38 @@
 <template>
   <div :id="item.rootHash">
-    <nym-transaction
-      v-if="type == 'NYM'"
+    <component
+      :is="findName(type)"
       :item="item"
       :type="type"
       v-on:openDialog="openDialog"
-    ></nym-transaction>
-    <author-agreement-aml
-      v-else-if="type == 'TXN_AUTHOR_AGREEMENT_AML'"
-      :item="item"
-      :type="type"
-      v-on:openDialog="openDialog"
-    ></author-agreement-aml>
-    <txn-author-agreement
-      v-else-if="type == 'TXN_AUTHOR_AGREEMENT'"
-      :item="item"
-      :type="type"
-      v-on:openDialog="openDialog"
-    ></txn-author-agreement>
-    <schema-transaction
-      v-else-if="type == 'SCHEMA'"
-      :item="item"
-      :type="type"
-      v-on:openDialog="openDialog"
-    ></schema-transaction>
-    <cred-def-transaction
-      v-else-if="type == 'CRED_DEF'"
-      :item="item"
-      :type="type"
-      v-on:openDialog="openDialog"
-    ></cred-def-transaction>
-    <node
-      v-else-if="type == 'NODE'"
-      :item="item"
-      :type="type"
-      v-on:openDialog="openDialog"
-    ></node>
-    <attrib
-      v-else-if="type == 'ATTRIB'"
-      :item="item"
-      :type="type"
-      v-on:openDialog="openDialog"
-    ></attrib>
-    <generic-transaction
-      v-else
-      :item="item"
-      :type="type"
-      v-on:openDialog="openDialog"
-    ></generic-transaction>
+    ></component>
   </div>
 </template>
 
 <script>
-import SchemaTransaction from './transactions/Schema.vue';
-import GenericTransaction from './transactions/Generic.vue';
-import NymTransaction from './transactions/Nym.vue';
-import CredDefTransaction from './transactions/CredDef.vue';
-import AuthorAgreementAml from './transactions/Aml.vue';
-import TxnAuthorAgreement from './transactions/Taa.vue';
-import Attrib from './transactions/Attrib.vue';
-import Node from './transactions/Node.vue';
+const toCamel = s => {
+  return s.replace(/(_\w)/g, function(m) {
+    return m[1].toUpperCase();
+  });
+};
 
 export default {
   components: {
-    SchemaTransaction,
-    NymTransaction,
-    CredDefTransaction,
-    GenericTransaction,
-    AuthorAgreementAml,
-    TxnAuthorAgreement,
-    Node,
-    Attrib,
+    RevocRegDef: () => import('./transactions/RevocRegDef.vue'),
+    RevocRegEntry: () => import('./transactions/RevocRegEntry.vue'),
+    Schema: () => import('./transactions/Schema.vue'),
+    Generic: () => import('./transactions/Generic.vue'),
+    Nym: () => import('./transactions/Nym.vue'),
+    CredDef: () => import('./transactions/CredDef.vue'),
+    TxnAuthorAgreementAml: () => import('./transactions/Aml.vue'),
+    TxnAuthorAgreementAmlDisable: () => import('./transactions/Aml.vue'),
+    TxnAuthorAgreement: () => import('./transactions/Taa.vue'),
+    Attrib: () => import('./transactions/Attrib.vue'),
+    Node: () => import('./transactions/Node.vue'),
+    NodeUpgrade: () => import('./transactions/NodeUpgrade.vue'),
+    PoolUpgrade: () => import('./transactions/PoolUpgrade.vue'),
+    AuthRules: () => import('./transactions/AuthRules.vue'),
+    PoolConfig: () => import('./transactions/PoolConfig.vue'),
   },
   props: {
     supportedTypes: Object,
@@ -81,6 +43,16 @@ export default {
   methods: {
     openDialog: function(data) {
       this.$emit('openDialog', data);
+    },
+    findName: function(name) {
+      const available = this.$options.components;
+      const component = Object.keys(available).find(
+        x => x.toLowerCase() == toCamel(name).toLowerCase()
+      );
+
+      if (!component) name = 'Generic';
+
+      return name.replace(/_/gi, '-').toLowerCase();
     },
   },
 };

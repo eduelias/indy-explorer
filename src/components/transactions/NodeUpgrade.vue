@@ -1,6 +1,6 @@
 <template>
   <div
-    :id="`NYM${item.txn.data.dest}`"
+    :id="`NODEUP${item.txn.data.dest}`"
     v-if="item"
     style="border-left:3px teal solid"
     class="q-pa-none q-ma-none q-pa-none"
@@ -9,7 +9,7 @@
       style="font-size: 0.8em; line-height: 1.2em"
       class="text-teal-3 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder"
     >
-      NYM - {{ formatDate(item.txnMetadata.txnTime) }}
+      NODE_UPGRADE - {{ formatDate(item.txnMetadata.txnTime) }}
     </div>
     <q-card-section
       class="glossy q-pa-none q-ma-none bg-teal-2 cursor-pointer"
@@ -23,7 +23,7 @@
       ></txn-metadata>
     </q-card-section>
     <q-card-section class="q-ma-none q-pa-none bg-white">
-      <required-signature :item="item.reqSignature"></required-signature>
+      <required-signature :popup="false" :item="item.reqSignature"></required-signature>
     </q-card-section>
 
     <q-expansion-item
@@ -35,16 +35,13 @@
     >
       <template v-slot:header>
         <q-item-section avatar class="text-weight-bold">{{
-          item.txn.data.alias && item.txn.data.alias.trim()
-            ? item.txn.data.alias
-            : item.txn.data.dest
+          item.txn.data.data.version
         }}</q-item-section>
         <q-item-section>
-          as
-          {{ translateRole(item.txn.data.role) }}
+          {{ item.txn.data.data.action }}
         </q-item-section>
       </template>
-      <txn-data :item="item.txn"></txn-data>
+      <txn-data :item="item.txn.data"></txn-data>
     </q-expansion-item>
   </div>
 </template>
@@ -60,7 +57,7 @@ const roles = {
 };
 
 export default {
-  name: 'nym-transaction',
+  name: 'node-upgrade-transaction',
   components: {
     RequiredSignature: () => import('../props/ReqSignature.vue'),
     TxnMetadata: () => import('../props/TxnMetadata.vue'),
@@ -79,24 +76,6 @@ export default {
     },
     formatLabel: function(data) {
       return `<b> Onboarding: </b> ${data}`;
-    },
-    translateRole: function(role) {
-      switch (role) {
-        case '0':
-          return 'TRUSTEE';
-        case '2':
-          return 'STEWARD';
-        case '101':
-          return 'TRUST_ANCHOR';
-        case '201':
-          return 'NETWORK_MONITOR';
-        case '':
-          return 'ROLE_REMOVE';
-        case undefined:
-          return 'COMMON_USER';
-        default:
-          return role;
-      }
     },
   },
 };

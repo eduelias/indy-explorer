@@ -1,9 +1,5 @@
 <template>
-  <q-item
-    style="min-height:0px"
-    class="q-ma-none q-py-none"
-    v-if="item"
-  >
+  <q-item style="min-height:0px" class="q-ma-none q-py-none" v-if="item">
     <div :class="`text-${color}-8 text-h5 q-pa-none row`">
       #{{ item.seqNo }}
       <q-tooltip v-if="item.txnId">{{ item.txnId }}</q-tooltip>
@@ -11,30 +7,21 @@
       <div
         v-if="type"
         :class="`text-h3 text-white absolute-center ellipsis`"
-        style="opacity:0.7; z-index:0"
+        style="opacity:0.7; z-index:0; font-size:1em"
       >
         {{ type }}
       </div>
     </div>
     <q-space></q-space>
-    <div
-      v-if="item.txnTime"
-      :class="`text-overline text-${color}-8`"
-      style="z-index:1"
-    >
+    <div v-if="item.txnTime" :class="`text-overline text-${color}-8`" style="z-index:1">
       {{ formatDate(item.txnTime) }}
     </div>
-    <div
-      v-if="txnmetadata && txnmetadata.taaAcceptance"
-      style="z-index: 10"
-    >
+    <div v-if="txnmetadata && txnmetadata.taaAcceptance" style="z-index: 10">
       <q-icon
         :name="defineIcon(txnmetadata.taaAcceptance.mechanism)"
         :class="`text-${color}-8 q-ml-sm`"
         style="margin-top: 10px; opacity:0.8"
-        ><q-tooltip>{{
-          agreements[txnmetadata.taaAcceptance.mechanism]
-        }}</q-tooltip></q-icon
+        ><q-tooltip>{{ agreements[txnmetadata.taaAcceptance.mechanism] }}</q-tooltip></q-icon
       >
     </div>
   </q-item>
@@ -74,10 +61,7 @@ export default {
   methods: {
     formatDate: function(inputDate) {
       return moment(
-        date.formatDate(
-          new Date(inputDate * 1000),
-          'YYYY-MM-DD HH:mm:ss'
-        ),
+        date.formatDate(new Date(inputDate * 1000), 'YYYY-MM-DD HH:mm:ss'),
         'YYYY-MM-DD HH:mm:ss'
       ).fromNow();
     },

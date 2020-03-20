@@ -1,25 +1,25 @@
 <template>
   <div
-    :id="`NYM${item.txn.data.dest}`"
+    :id="`POOLUP${item.txn.data.dest}`"
     v-if="item"
-    style="border-left:3px teal solid"
+    :style="`border-left:3px ${color} solid`"
     class="q-pa-none q-ma-none q-pa-none"
   >
     <div
       style="font-size: 0.8em; line-height: 1.2em"
-      class="text-teal-3 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder"
+      :class="`text-${color}-3 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder`"
     >
-      NYM - {{ formatDate(item.txnMetadata.txnTime) }}
+      {{ type }} - {{ formatDate(item.txnMetadata.txnTime) }}
     </div>
     <q-card-section
-      class="glossy q-pa-none q-ma-none bg-teal-2 cursor-pointer"
+      :class="`glossy q-pa-none q-ma-none bg-${color}-2 cursor-pointer`"
       @click="openDialog(item)"
     >
       <txn-metadata
         :item="item.txnMetadata"
         :type="type"
         :txnmetadata="item.txn.metadata"
-        color="teal"
+        :color="color"
       ></txn-metadata>
     </q-card-section>
     <q-card-section class="q-ma-none q-pa-none bg-white">
@@ -35,16 +35,13 @@
     >
       <template v-slot:header>
         <q-item-section avatar class="text-weight-bold">{{
-          item.txn.data.alias && item.txn.data.alias.trim()
-            ? item.txn.data.alias
-            : item.txn.data.dest
+          item.txn.data.auth_action
         }}</q-item-section>
         <q-item-section>
-          as
-          {{ translateRole(item.txn.data.role) }}
+          {{ item.txn.data.field }}
         </q-item-section>
       </template>
-      <txn-data :item="item.txn"></txn-data>
+      <txn-data :item="item.txn.data"></txn-data>
     </q-expansion-item>
   </div>
 </template>
@@ -60,7 +57,7 @@ const roles = {
 };
 
 export default {
-  name: 'nym-transaction',
+  name: 'RevocRegDef',
   components: {
     RequiredSignature: () => import('../props/ReqSignature.vue'),
     TxnMetadata: () => import('../props/TxnMetadata.vue'),
@@ -69,6 +66,10 @@ export default {
   props: {
     item: Object,
     type: String,
+    color: {
+      type: String,
+      default: 'orange',
+    },
   },
   methods: {
     openDialog: function(data) {

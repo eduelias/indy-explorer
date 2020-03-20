@@ -70,12 +70,16 @@ module.exports = function(ctx) {
           options: {
             formatter: require('eslint').CLIEngine.getFormatter('stylish'),
           },
-        })
+        });
       },
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
+      before(app) {
+        const cors = require('cors');
+        app.use(cors());
+      },
       // https: true,
       // port: 8080,
       open: true, // opens browser window automatically
@@ -163,5 +167,5 @@ module.exports = function(ctx) {
         // appId: 'tykn-explorer'
       },
     },
-  }
-}
+  };
+};
