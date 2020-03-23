@@ -1,8 +1,8 @@
 {
     "name": "tykn-explorer",
     "version": "0.0.1",
-    "description": "Tykn Sovrin live explorer",
-    "productName": "Tykn Indy Explorer",
+    "description": "Tykn Hyperledger Indy Live Explorer",
+    "productName": "Tykn Ledger Explorer",
     "cordovaId": "org.cordova.quasar.app",
     "capacitorId": "",
     "author": "Eduardo Elias Saleh <du7@msn.com>",

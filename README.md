@@ -1,4 +1,4 @@
-# Tykn Indy Explorer (tykn-explorer)
+# Tykn Hyperledger Indy Explorer (tykn-explorer)
 
 Tykn Sovrin live explorer
 

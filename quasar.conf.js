@@ -98,9 +98,9 @@ module.exports = function(ctx) {
       // workboxPluginMode: 'InjectManifest',
       // workboxOptions: {}, // only for NON InjectManifest
       manifest: {
-        // name: 'Tykn Indy Explorer',
-        // short_name: 'Tykn Indy Explorer',
-        // description: 'Tykn Sovrin live explorer',
+        name: 'Tykn Hyperledger Indy Explorer',
+        short_name: 'THILE',
+        description: 'Tykn Hiperledger Indy/Sovrin live explorer',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
