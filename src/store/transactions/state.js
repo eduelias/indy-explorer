@@ -15,7 +15,13 @@ export default {
   },
   nymCache: {},
   highlighted: null,
-  sizes: {},
+  sizes: {
+    sovbuilder: {
+      DOMAIN: 0,
+      POOL: 0,
+      CONFIG: 0,
+    },
+  },
   page: {
     DOMAIN: 1,
     POOL: 1,

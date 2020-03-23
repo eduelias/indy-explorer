@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white text-black q-pa-sm wrap">
     <div>{{ formatDate(item.metadata.reqId) }}</div>
-    {{ item.data.text }}
+    <q-markdown>{{ item.data.text }}</q-markdown>
   </div>
 </template>
 

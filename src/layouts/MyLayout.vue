@@ -1,10 +1,18 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="z-max">
+    <q-header class="z-max rubik">
       <q-toolbar class="tykn_bar">
-        <q-toolbar-title class="q-ma-lg rubik"
-          ><span class="tykn_title">tykn</span> Ledger Explorer</q-toolbar-title
-        >
+        <q-toolbar-title class="q-ma-lg rubik row">
+          <div class="column">
+            <img src="statics/icons/32x32.png" />
+          </div>
+          <div class="column q-ml-lg tykn_title">
+            tykn
+          </div>
+          <div class="column q-ml-sm q-mt-xs">
+            Ledger Explorer
+          </div>
+        </q-toolbar-title>
         <!-- <div>Framework v{{ $q.version }}</div> -->
       </q-toolbar>
       <q-toolbar
@@ -14,15 +22,15 @@
       >
         <q-space />
         <q-separator vertical="" />
-        <q-toggle
+        <!-- <q-toggle
           size="xs"
           left-label
           class="q-mx-md text-grey-5"
           label="Dark mode"
           color="green"
-        />
+        /> -->
         <q-separator vertical="" />
-        <q-select
+        <!-- <q-select
           class="q-pa-none q-ma-none"
           outlined
           v-model="sovmain"
@@ -31,7 +39,7 @@
           :options="['sovmain', 'sovtest', 'sovbuilder']"
           dense=""
           options-dense=""
-        />
+        /> -->
       </q-toolbar>
     </q-header>
     <q-page-container>
@@ -65,9 +73,6 @@ export default {
   background: #44368e;
 }
 
-.rubik {
-  font-family: Rubik;
-}
 .tykn_title {
   font-family: RubikBlack;
   font-size: 24px;

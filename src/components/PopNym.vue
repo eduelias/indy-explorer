@@ -1,6 +1,13 @@
 <template>
   <div v-if="!computedItem">Loading ...</div>
-  <component dark :is="nym" v-else :item="computedItem" v-on:openDialog="openDialog"></component>
+  <component
+    dark
+    :is="nym"
+    v-else
+    :item="computedItem"
+    type="NYM"
+    v-on:openDialog="openDialog"
+  ></component>
 </template>
 
 <script>

@@ -5,25 +5,25 @@
     style="border-left:3px blue solid"
     class="q-pa-none q-ma-none q-pa-none"
   >
-    <div
-      style="font-size: 0.8em; line-height: 1.2em"
-      class="text-indigo-3 text-caption q-pa-none q-px-xs q-ma-none text-weight-bolder"
-    >
-      AML - {{ formatDate(item.txnMetadata.txnTime) }}
+    <div :class="`row text-${color}-3 q-ma-sm tx_header`">
+      {{ type }} - {{ formatDate(item.txnMetadata.txnTime) }}<q-space />
+      <div class="float-right text-h5 tx_number">#{{ item.txnMetadata.seqNo }}</div>
     </div>
-    <q-card-section
-      class="glossy q-pa-none q-ma-none bg-indigo-2 cursor-pointer"
-      @click="openDialog(item)"
-    >
-      <txn-metadata
-        :item="item.txnMetadata"
-        :txnmetadata="item.txn.metadata"
-        color="indigo"
-        type="AML"
-      ></txn-metadata>
-    </q-card-section>
-    <q-card-section class="q-ma-none q-pa-none bg-white">
-      <required-signature :item="item.reqSignature"></required-signature>
+    <q-card-section class="row q-ma-none q-pa-none q-mx-xs bg-white">
+      <div class="row">
+        <div class="column" style="width: 70%">
+          <required-signature :item="item.reqSignature"></required-signature>
+        </div>
+        <q-space />
+        <div class="column" style="width: 30%; align-content: flex-end;">
+          <txn-metadata
+            :item="item.txnMetadata"
+            :txnmetadata="item.txn.metadata"
+            :color="color"
+            :type="type"
+          ></txn-metadata>
+        </div>
+      </div>
     </q-card-section>
 
     <q-expansion-item
@@ -70,6 +70,10 @@ export default {
   props: {
     item: Object,
     type: String,
+    color: {
+      type: String,
+      default: 'indigo',
+    },
   },
   methods: {
     openDialog: function(data) {

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white text-black q-pa-sm wrap">
+  <div class="bg-white text-caption text-black q-pa-sm wrap">
     <div>{{ formatDate(item.metadata.reqId) }}</div>
     <q-chip
       dense
@@ -8,8 +8,8 @@
       :key="index"
       color="light-green-4"
       class="glossy ellipsis"
-      >{{ attr }}</q-chip
-    >
+      >{{ attr }}
+    </q-chip>
   </div>
 </template>
 

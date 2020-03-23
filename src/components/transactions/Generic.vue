@@ -22,6 +22,10 @@ export default {
   props: {
     item: Object,
     type: String,
+    color: {
+      type: String,
+      default: 'orange',
+    },
   },
   methods: {
     openDialog: function(data) {
