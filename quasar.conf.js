@@ -8,7 +8,7 @@ module.exports = function(ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
-    boot: ['i18n', 'axios'],
+    boot: ['fonts', 'i18n', 'axios'],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ['app.sass'],
@@ -21,8 +21,7 @@ module.exports = function(ctx) {
       // 'eva-icons',
       // 'themify',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
-
-      'roboto-font', // optional, you are not bound to it
+      // 'roboto-font', // optional, you are not bound to it
       'material-icons', // optional, you are not bound to it
     ],
 
@@ -99,9 +98,9 @@ module.exports = function(ctx) {
       // workboxPluginMode: 'InjectManifest',
       // workboxOptions: {}, // only for NON InjectManifest
       manifest: {
-        // name: 'Tykn Indy Explorer',
-        // short_name: 'Tykn Indy Explorer',
-        // description: 'Tykn Sovrin live explorer',
+        name: 'Indy Inspector',
+        short_name: 'IndyInspector',
+        description: 'Hyperledger Indy Inspector',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
@@ -164,7 +163,7 @@ module.exports = function(ctx) {
 
       builder: {
         // https://www.electron.build/configuration/configuration
-        // appId: 'tykn-explorer'
+        // appId: 'indy-inspector'
       },
     },
   };

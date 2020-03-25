@@ -3,7 +3,7 @@
     <q-chip
       v-for="(val, index) in item.values"
       :key="index"
-      size="sm"
+      size="xs"
       icon="gesture"
       :square="!popup"
     >

@@ -2,21 +2,21 @@ import socketio from 'socket.io-client';
 import Axios from 'axios';
 
 export function connect({ state, commit }) {
-  const io = socketio(state.wsurl, {
-    transports: ['websocket'],
-    query: `network=${state.network}`,
-  });
-  commit('clearTxns');
-  io.on('connect', socket => {
-    // eslint-disable-next-line no-console
-    console.log('connected');
-  });
-  Object.keys(state.txns).map(ledger => {
-    io.on(`newtx_${ledger}`, data => {
-      commit('add', { ledger, data });
-    });
-  });
-  io.on('init_txs', data => commit('init', data));
+  // const io = socketio(state.wsurl, {
+  //   transports: ['websocket'],
+  //   query: `network=${state.network}`,
+  // });
+  // commit('clearTxns');
+  // io.on('connect', socket => {
+  //   // eslint-disable-next-line no-console
+  //   console.log('connected');
+  // });
+  // Object.keys(state.txns).map(ledger => {
+  //   io.on(`newtx_${ledger}`, data => {
+  //     commit('add', { ledger, data });
+  //   });
+  // });
+  // io.on('init_txs', data => commit('init', data));
 }
 
 export async function getSizes({ state, commit }) {
@@ -37,7 +37,7 @@ export async function getPage({ state, commit }, { ledger, page: pageRaw, done, 
 
   const page = pageRaw || state.page[ledger];
 
-  if (!state.sizes[network]) {
+  if (!state.sizes[network][ledger]) {
     await getSizes({ state, commit });
   }
 

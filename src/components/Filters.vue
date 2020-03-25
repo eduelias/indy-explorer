@@ -3,14 +3,14 @@
     <div class="h4 centered" style="width:400px">
       {{ ledger }}
     </div>
-    <div class="row">
+    <div class="row" style="height:96px;">
       <q-chip
         size="sm"
         v-for="(fprop, index) in Object.keys(filter[ledger])"
         :key="index"
         :selected.sync="filter[ledger][fprop]"
         :color="getFilterChipColor(fprop)"
-        class="glossy shadow-2"
+        outline
         @click="onClick(ledger, filter)"
         >{{ fprop }}</q-chip
       >
