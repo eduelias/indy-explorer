@@ -1,18 +1,75 @@
 <template>
   <q-page class="q-ma-none q-mt-md flex flex-center column">
     <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
-      <q-btn fab icon="keyboard_arrow_up" color="teal" />
+      <q-btn fab icon="keyboard_arrow_up" color="deep-purple-10" />
     </q-page-scroller>
     <q-dialog v-model="dialog" full-width class="z-max">
       <q-card class="q-pa-md z-max">
         <vue-json-pretty :data="txnData"></vue-json-pretty>
       </q-card>
     </q-dialog>
+    <div class="row full-width rubik summary_bar">
+      <q-space />
+      <q-card flat class="transparent">
+        <q-card-section>
+          <div class="text-h6 summary_number">
+            {{
+              parseInt(sizes[network].DOMAIN) +
+                parseInt(sizes[network].CONFIG) +
+                parseInt(sizes[network].POOL)
+            }}
+          </div>
+          <div class="text-subtitle2 summary_label">Total txs</div>
+        </q-card-section>
+      </q-card>
+      <q-separator spaced vertical />
+      <q-card flat class="transparent">
+        <q-card-section>
+          <div class="text-h6 summary_number">{{ sizes[network].DOMAIN }}</div>
+          <div class="text-subtitle2 summary_label">Domain txs</div>
+        </q-card-section>
+      </q-card>
+      <q-separator spaced vertical />
+      <q-card flat class="transparent">
+        <q-card-section>
+          <div class="text-h6 summary_number">{{ sizes[network].CONFIG }}</div>
+          <div class="text-subtitle2 summary_label">Config txs</div>
+        </q-card-section>
+      </q-card>
+      <q-separator spaced vertical />
+      <q-card flat class="transparent">
+        <q-card-section>
+          <div class="text-h6 summary_number">{{ sizes[network].POOL }}</div>
+          <div class="text-subtitle2 summary_label">Pool txs</div>
+        </q-card-section>
+      </q-card>
+      <q-separator spaced vertical />
+      <q-card flat class="transparent">
+        <q-card-section>
+          <div class="text-h6 summary_number">{{ getDomainIds().length }}</div>
+          <div class="text-subtitle2 summary_label">Loaded domain txs</div>
+        </q-card-section>
+      </q-card>
+      <q-separator spaced vertical />
+      <q-card flat class="transparent">
+        <q-card-section>
+          <div class="text-h6 summary_number">
+            {{
+              parseInt(getDomainIds().length) +
+                parseInt(getConfigIds().length) +
+                parseInt(getPoolIds().length)
+            }}
+          </div>
+          <div class="text-subtitle2 summary_label">Loaded txs</div>
+        </q-card-section>
+      </q-card>
+      <q-space />
+    </div>
     <br />
     <div class="row">
       <q-list borderd separator class="column">
         <q-page-scroller class="z-top" expand position="top" :scroll-offset="150" :offset="[0, 0]">
-          <div class="row q-pa-md bg-grey-3">
+          <div class="row q-pa-md bg-white">
             <div class="column">
               <tip-filter
                 :filter="filter"
@@ -27,7 +84,7 @@
                 :getFilterChipColor="getFilterChipColor"
               ></tip-filter>
             </div>
-            <div class="column" style="width:400px">
+            <div class="column" style="width:400px;">
               POOL
             </div>
           </div>
@@ -47,7 +104,7 @@
               v-if="item && item.txn && shouldFilter(filter.DOMAIN, findType(item.txn.type))"
               clickable
               class="DomainContainer q-ma-xs"
-              style="width: 400px"
+              style="width: 400px;"
             >
               <type-router
                 :item="item"
@@ -211,6 +268,12 @@ export default {
   },
   computed: {
     ...mapState('transactions', ['txns', 'loadedTxns']),
+    sizes: function() {
+      return this.$store.state.transactions.sizes;
+    },
+    network: function() {
+      return this.$store.state.transactions.network;
+    },
   },
   methods: {
     ...mapGetters('transactions', [
@@ -218,6 +281,7 @@ export default {
       'getDomainIds',
       'getConfigIds',
       'getPoolIds',
+      'getSizes',
     ]),
     shouldFilter: function(filter, type) {
       if (Object.values(filter).filter(x => x === true).length > 0) {
@@ -303,3 +367,40 @@ export default {
   name: 'PageIndex',
 };
 </script>
+
+<style scoped>
+.summary_number {
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 24px;
+  /* or 100% */
+
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.01em;
+
+  color: #000000;
+}
+
+.summary_label {
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  /* identical to box height */
+
+  letter-spacing: 0.01em;
+
+  color: #a6acbe;
+}
+
+.summary_bar {
+  background: #f8f8f8;
+  border: 0.5px solid #dcdbe1;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+</style>

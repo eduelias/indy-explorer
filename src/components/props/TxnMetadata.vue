@@ -1,26 +1,17 @@
 <template>
-  <q-item style="min-height:0px" class="q-ma-none q-py-none" v-if="item">
-    <div :class="`text-${color}-8 text-h5 q-pa-none row`">
-      #{{ item.seqNo }}
-      <q-tooltip v-if="item.txnId">{{ item.txnId }}</q-tooltip>
-      <q-space />
-      <div
-        v-if="type"
-        :class="`text-h3 text-white absolute-center ellipsis`"
-        style="opacity:0.7; z-index:0; font-size:1em"
-      >
-        {{ type }}
-      </div>
-    </div>
-    <q-space></q-space>
-    <div v-if="item.txnTime" :class="`text-overline text-${color}-8`" style="z-index:1">
+  <q-item style="min-height:0px; text-align: right;" class="q-ma-none q-py-none" v-if="item">
+    <div
+      v-if="item.txnTime"
+      :class="`text-overline text-${color}-8 tx_timestamp`"
+      style="z-index:1; text-align: right"
+    >
       {{ formatDate(item.txnTime) }}
     </div>
     <div v-if="txnmetadata && txnmetadata.taaAcceptance" style="z-index: 10">
       <q-icon
         :name="defineIcon(txnmetadata.taaAcceptance.mechanism)"
-        :class="`text-${color}-8 q-ml-sm`"
-        style="margin-top: 10px; opacity:0.8"
+        :class="`text-${color}-8 q-ma-none tx_timestamp`"
+        style="margin-top: 6px; opacity:0.8"
         ><q-tooltip>{{ agreements[txnmetadata.taaAcceptance.mechanism] }}</q-tooltip></q-icon
       >
     </div>

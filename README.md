@@ -1,6 +1,6 @@
-# Tykn Indy Explorer (tykn-explorer)
+# Indy Inspector (indy-inspector)
 
-Tykn Sovrin live explorer
+Indy Inspector
 
 ## Install the dependencies
 
@@ -27,5 +27,3 @@ quasar build
 ```
 
 ### Customize the configuration
-
-See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).

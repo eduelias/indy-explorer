@@ -1,8 +1,8 @@
 {
-    "name": "tykn-explorer",
-    "version": "0.0.1",
-    "description": "Tykn Sovrin live explorer",
-    "productName": "Tykn Indy Explorer",
+    "name": "indy-inspector",
+    "version": "0.1.0",
+    "description": "Indy Inspector",
+    "productName": "Indy Inspector",
     "cordovaId": "org.cordova.quasar.app",
     "capacitorId": "",
     "author": "Eduardo Elias Saleh <du7@msn.com>",
@@ -25,6 +25,7 @@
     "devDependencies": {
         "@babel/plugin-proposal-optional-chaining": "^7.8.3",
         "@quasar/app": "^1.6.0",
+        "@quasar/quasar-app-extension-qmarkdown": "^1.0.24",
         "@vue/eslint-config-prettier": "^6.0.0",
         "babel-eslint": "^10.1.0",
         "eslint": "^6.8.0",
