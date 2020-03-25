@@ -10,7 +10,7 @@
             tykn
           </div>
           <div class="column q-ml-sm q-mt-xs">
-            Ledger Explorer
+            Indy Inspector
           </div>
         </q-toolbar-title>
         <!-- <div>Framework v{{ $q.version }}</div> -->

@@ -1,0 +1,8 @@
+org_id = "396435930941"
+project_id = "development-269911"
+project_name = "development"
+environment = "dev"
+subdomain = "dev-"
+bucket = "development-269911-tfstate"
+prefix = "env/dev/inspector"
+project-prefix = "env/dev"

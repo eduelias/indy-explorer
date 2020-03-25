@@ -98,9 +98,9 @@ module.exports = function(ctx) {
       // workboxPluginMode: 'InjectManifest',
       // workboxOptions: {}, // only for NON InjectManifest
       manifest: {
-        name: 'Tykn Hyperledger Indy Explorer',
-        short_name: 'THILE',
-        description: 'Tykn Hiperledger Indy/Sovrin live explorer',
+        name: 'Indy Inspector',
+        short_name: 'IndyInspector',
+        description: 'Hyperledger Indy Inspector',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
@@ -163,7 +163,7 @@ module.exports = function(ctx) {
 
       builder: {
         // https://www.electron.build/configuration/configuration
-        // appId: 'tykn-explorer'
+        // appId: 'indy-inspector'
       },
     },
   };
