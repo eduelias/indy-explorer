@@ -32,6 +32,9 @@ module.exports = {
 
   // add your custom rules here
   rules: {
+    "prettier/prettier": ["error", {
+      "endOfLine":"auto"
+    }],
     'prefer-promise-reject-errors': 'off',
 
     // allow debugger during development only

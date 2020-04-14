@@ -1,25 +1,44 @@
-import socketio from 'socket.io-client';
 import Axios from 'axios';
 
-export function connect({ state, commit }) {
-  // const io = socketio(state.wsurl, {
-  //   transports: ['websocket'],
-  //   query: `network=${state.network}`,
-  // });
-  // commit('clearTxns');
-  // io.on('connect', socket => {
-  //   // eslint-disable-next-line no-console
-  //   console.log('connected');
-  // });
-  // Object.keys(state.txns).map(ledger => {
-  //   io.on(`newtx_${ledger}`, data => {
-  //     commit('add', { ledger, data });
-  //   });
-  // });
-  // io.on('init_txs', data => commit('init', data));
+export function connect() {}
+
+export async function networkChange(vueObject, { network }) {
+  window.location = `/${network}`;
 }
 
-export async function getSizes({ state, commit }) {
+export async function setNetwork({ commit }, network) {
+  await commit('setNetwork', network);
+}
+
+export async function getNextTx({ state, commit }, { ledger }) {
+  const network = state.network;
+  const blockNumber = state.sizes[network][ledger.toUpperCase()];
+  const newTx = parseInt(blockNumber) + 1;
+
+  let resp;
+  try {
+    resp = await Axios.get(`${state.apiurl}/${network}/tx/${ledger}/${newTx}/1/false`);
+  } catch (e) {
+    clearInterval(state.intervals[ledger]);
+  }
+
+  if (resp.status === 200 && resp.data && resp.data.length) {
+    const newSizes = { ...state.sizes[network] };
+    newSizes[ledger] += 1;
+    await commit('setSizes', { network, sizes: newSizes });
+    await commit('add', { ledger, data: resp.data });
+  }
+}
+
+export async function startUpdater({ commit, dispatch }) {
+  await commit('setUpdaterAsStarted');
+  const domainInterval = setInterval(async () => {
+    await dispatch('getNextTx', { ledger: 'DOMAIN' });
+  }, 30000);
+  await commit('setDomainInterval', { interval: domainInterval });
+}
+
+export async function getSizes({ state, dispatch, commit }) {
   const network = state.network;
 
   const resp = await Axios.get(`${state.apiurl}/${network}/sizes`);
@@ -30,15 +49,21 @@ export async function getSizes({ state, commit }) {
     network,
     sizes: resp.data,
   });
+  if (!state.isUpdaterLive) {
+    await dispatch('startUpdater');
+  }
 }
 
-export async function getPage({ state, commit }, { ledger, page: pageRaw, done, filter }) {
+export async function getPage(
+  { state, commit, dispatch },
+  { ledger, page: pageRaw, done, filter }
+) {
   const network = state.network;
 
   const page = pageRaw || state.page[ledger];
 
   if (!state.sizes[network][ledger]) {
-    await getSizes({ state, commit });
+    await dispatch('getSizes');
   }
 
   const target = state.sizes[network][ledger] - (page - 1) * state.pagesize;

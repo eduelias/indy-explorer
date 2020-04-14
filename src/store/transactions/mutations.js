@@ -19,6 +19,18 @@ export function setSizes(state, { network, sizes }) {
   state.sizes[network] = sizes;
 }
 
+export function setNetwork(state, network) {
+  state.network = network;
+}
+
+export function setUpdaterAsStarted(state) {
+  state.isUpdaterLive = true;
+}
+
+export function setDomainInterval(state, { interval }) {
+  state.intervals.domain = interval;
+}
+
 export function addpage(state, { ledger, data, done, resolve }) {
   data
     .filter(tx => tx)

@@ -364,6 +364,9 @@ export default {
   mounted: function() {
     this.$store.dispatch('transactions/connect');
   },
+  created: function() {
+    this.$store.dispatch('transactions/setNetwork', this.$route.params.network || 'sovbuilder');
+  },
   name: 'PageIndex',
 };
 </script>

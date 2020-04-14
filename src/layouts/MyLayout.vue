@@ -30,16 +30,20 @@
           color="green"
         /> -->
         <q-separator vertical="" />
-        <!-- <q-select
+        <q-select
           class="q-pa-none q-ma-none"
-          outlined
-          v-model="sovmain"
-          style="width:200px; min-height: 22px !important; height: 22px !important;"
+          bg-color="transparent"
+          :standout="false"
+          hide-bottom-space
+          v-model="network"
+          style="width:200px; background-color:transparent; max-height: 22px !important; height: 22px !important;"
           filled
-          :options="['sovmain', 'sovtest', 'sovbuilder']"
-          dense=""
-          options-dense=""
-        /> -->
+          :options="['sovmain', 'sovstaging', 'sovbuilder']"
+          dense
+          options-dense
+          @input="navigate"
+        >
+        </q-select>
       </q-toolbar>
     </q-header>
     <q-page-container>
@@ -59,7 +63,17 @@ export default {
   data() {
     return {
       leftDrawerOpen: false,
+      network: 'sovbuilder',
     };
+  },
+  created() {
+    this.$data.network = this.$route.params.network || 'sovbuilder';
+  },
+  methods: {
+    navigate() {
+      const r = this.$router.resolve({ path: `/${this.$data.network}` }).href;
+      window.location = r;
+    },
   },
 };
 </script>

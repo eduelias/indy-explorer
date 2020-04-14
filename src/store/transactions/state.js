@@ -3,6 +3,10 @@ export default {
   pagesize: 10,
   apiurl: 'http://rest.api.tykn.tech',
   wsurl: 'rest.api.tykn.tech',
+  isUpdateLive: false,
+  intervals: {
+    domain: false,
+  },
   txns: {
     DOMAIN: [],
     POOL: [],
@@ -17,6 +21,16 @@ export default {
   highlighted: null,
   sizes: {
     sovbuilder: {
+      DOMAIN: 0,
+      POOL: 0,
+      CONFIG: 0,
+    },
+    sovstaging: {
+      DOMAIN: 0,
+      POOL: 0,
+      CONFIG: 0,
+    },
+    sovmain: {
       DOMAIN: 0,
       POOL: 0,
       CONFIG: 0,
