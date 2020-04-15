@@ -2,18 +2,14 @@ import Axios from 'axios';
 
 export function connect() {}
 
-export async function networkChange(vueObject, { network }) {
-  window.location = `/${network}`;
-}
-
-export async function setNetwork({ commit }, network) {
+export async function networkChange({ commit }, network) {
   await commit('setNetwork', network);
 }
 
 export async function getNextTx({ state, commit }, { ledger }) {
   const network = state.network;
-  const blockNumber = state.sizes[network][ledger.toUpperCase()];
-  const newTx = parseInt(blockNumber) + 1;
+  const lastBlockNumber = state.nets[network][ledger].size;
+  const newTx = parseInt(lastBlockNumber) + 1;
 
   let resp;
   try {
@@ -23,10 +19,8 @@ export async function getNextTx({ state, commit }, { ledger }) {
   }
 
   if (resp.status === 200 && resp.data && resp.data.length) {
-    const newSizes = { ...state.sizes[network] };
-    newSizes[ledger] += 1;
-    await commit('setSizes', { network, sizes: newSizes });
-    await commit('add', { ledger, data: resp.data });
+    await commit('setSizes', { network, ledger, size: newTx });
+    await commit('add', { network, ledger, data: resp.data });
   }
 }
 
@@ -38,57 +32,53 @@ export async function startUpdater({ commit, dispatch }) {
   await commit('setDomainInterval', { interval: domainInterval });
 }
 
-export async function getSizes({ state, dispatch, commit }) {
-  const network = state.network;
-
+export async function getSizes({ state, dispatch, commit }, { network }) {
   const resp = await Axios.get(`${state.apiurl}/${network}/sizes`);
 
   if (resp.status !== 200) throw Error(resp.data);
 
-  await commit('setSizes', {
-    network,
-    sizes: resp.data,
-  });
+  Object.keys(resp.data).map(
+    async ledger => await commit('setSizes', { network, ledger, size: resp.data[ledger] })
+  );
   if (!state.isUpdaterLive) {
     await dispatch('startUpdater');
   }
 }
 
-export async function getPage(
-  { state, commit, dispatch },
-  { ledger, page: pageRaw, done, filter }
-) {
-  const network = state.network;
+export async function getPage({ state, commit, dispatch }, { network, ledger, done, filter }) {
+  const page = state.nets[network][ledger].page;
 
-  const page = pageRaw || state.page[ledger];
-
-  if (!state.sizes[network][ledger]) {
-    await dispatch('getSizes');
+  if (!state.nets[network][ledger].size) {
+    await dispatch('getSizes', { network });
   }
 
-  const target = state.sizes[network][ledger] - (page - 1) * state.pagesize;
+  const target = state.nets[network][ledger].size - (page - 1) * state.pagesize;
   if (target < 0) {
     return done(true);
   }
 
-  const resp = await Axios.get(
-    `${state.apiurl}/${network}/tx/${ledger}/${target}/${state.pagesize}/false`
-  );
+  let resp;
+  try {
+    resp = await Axios.get(
+      `${state.apiurl}/${network}/tx/${ledger}/${target}/${state.pagesize}/false`
+    );
+  } catch (e) {
+    console.error(e);
+  }
 
   if (resp.status !== 200) throw Error(resp.data);
 
   if (!resp.data.length && done) done(true);
   await commit('addpage', {
+    network,
     ledger,
     data: resp.data,
     done,
   });
-  await commit('setPage', { ledger, page: page + 1 });
+  await commit('setPage', { network, ledger, page: page + 1 });
 }
 
-export async function getNymByVerkey({ state }, { from, setter }) {
-  const network = state.network;
-
+export async function getNymByVerkey({ state }, { network, from, setter }) {
   const tx = {
     operation: {
       type: '105',

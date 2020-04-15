@@ -14,9 +14,9 @@
         <q-card-section>
           <div class="text-h6 summary_number">
             {{
-              parseInt(sizes[network].DOMAIN) +
-                parseInt(sizes[network].CONFIG) +
-                parseInt(sizes[network].POOL)
+              parseInt(nets[network].DOMAIN.size) +
+                parseInt(nets[network].CONFIG.size) +
+                parseInt(nets[network].POOL.size)
             }}
           </div>
           <div class="text-subtitle2 summary_label">Total txs</div>
@@ -25,21 +25,21 @@
       <q-separator spaced vertical />
       <q-card flat class="transparent">
         <q-card-section>
-          <div class="text-h6 summary_number">{{ sizes[network].DOMAIN }}</div>
+          <div class="text-h6 summary_number">{{ nets[network].DOMAIN.size }}</div>
           <div class="text-subtitle2 summary_label">Domain txs</div>
         </q-card-section>
       </q-card>
       <q-separator spaced vertical />
       <q-card flat class="transparent">
         <q-card-section>
-          <div class="text-h6 summary_number">{{ sizes[network].CONFIG }}</div>
+          <div class="text-h6 summary_number">{{ nets[network].CONFIG.size }}</div>
           <div class="text-subtitle2 summary_label">Config txs</div>
         </q-card-section>
       </q-card>
       <q-separator spaced vertical />
       <q-card flat class="transparent">
         <q-card-section>
-          <div class="text-h6 summary_number">{{ sizes[network].POOL }}</div>
+          <div class="text-h6 summary_number">{{ nets[network].POOL.size }}</div>
           <div class="text-subtitle2 summary_label">Pool txs</div>
         </q-card-section>
       </q-card>
@@ -73,6 +73,7 @@
             <div class="column">
               <tip-filter
                 :filter="filter"
+                :network="network"
                 ledger="DOMAIN"
                 :getFilterChipColor="getFilterChipColor"
               ></tip-filter>
@@ -80,6 +81,7 @@
             <div class="column">
               <tip-filter
                 :filter="filter"
+                :network="network"
                 ledger="CONFIG"
                 :getFilterChipColor="getFilterChipColor"
               ></tip-filter>
@@ -91,12 +93,13 @@
         </q-page-scroller>
         <tip-filter
           :filter="filter"
+          :network="network"
           ledger="DOMAIN"
           :getFilterChipColor="getFilterChipColor"
         ></tip-filter>
         <q-infinite-scroll @load="onLoadDomain" :offset="2000">
           <div
-            v-for="(item, index) in getItems('DOMAIN', getDomainIds())"
+            v-for="(item, index) in getItems(network, 'DOMAIN', getDomainIds())"
             :key="index"
             class="q-ma-none"
           >
@@ -127,11 +130,12 @@
         <tip-filter
           :filter="filter"
           ledger="CONFIG"
+          :network="network"
           :getFilterChipColor="getFilterChipColor"
         ></tip-filter>
         <q-infinite-scroll @load="onLoadConfig" :offset="2000">
           <div
-            v-for="(item, index) in getItems('CONFIG', getConfigIds())"
+            v-for="(item, index) in getItems(network, 'CONFIG', getConfigIds())"
             :key="index"
             class="q-ma-none"
           >
@@ -163,7 +167,7 @@
         POOL
         <q-infinite-scroll @load="onLoadPool" :offset="2000">
           <div
-            v-for="(item, index) in getItems('POOL', getPoolIds())"
+            v-for="(item, index) in getItems(network, 'POOL', getPoolIds())"
             :key="index"
             class="q-ma-none"
           >
@@ -267,13 +271,7 @@ export default {
     TypeRouter,
   },
   computed: {
-    ...mapState('transactions', ['txns', 'loadedTxns']),
-    sizes: function() {
-      return this.$store.state.transactions.sizes;
-    },
-    network: function() {
-      return this.$store.state.transactions.network;
-    },
+    ...mapState('transactions', ['nets', 'network']),
   },
   methods: {
     ...mapGetters('transactions', [
@@ -281,7 +279,6 @@ export default {
       'getDomainIds',
       'getConfigIds',
       'getPoolIds',
-      'getSizes',
     ]),
     shouldFilter: function(filter, type) {
       if (Object.values(filter).filter(x => x === true).length > 0) {
@@ -290,7 +287,9 @@ export default {
       return true;
     },
     onLoadConfig: async function(index, done) {
+      const network = this.$store.state.transactions.network;
       await this.$store.dispatch('transactions/getPage', {
+        network,
         ledger: 'CONFIG',
         page: index,
         filter: this.filter,
@@ -298,7 +297,9 @@ export default {
       });
     },
     onLoadDomain: async function(index, done) {
+      const network = this.$store.state.transactions.network;
       await this.$store.dispatch('transactions/getPage', {
+        network,
         ledger: 'DOMAIN',
         page: index,
         filter: this.filter,
@@ -306,16 +307,20 @@ export default {
       });
     },
     onLoadPool: async function(index, done) {
+      const network = this.$store.state.transactions.network;
       await this.$store.dispatch('transactions/getPage', {
+        network,
         ledger: 'POOL',
         page: index,
         filter: this.filter,
         done,
       });
     },
-    getItems: function(ledger, seqNos) {
+    getItems: function(network, ledger, seqNos) {
       const toRt = [];
-      seqNos?.forEach(no => toRt.push(this.$store.state.transactions.txns[ledger][no]));
+      seqNos?.forEach(no =>
+        toRt.push(this.$store.state.transactions.nets[network][ledger].txns[no])
+      );
       return toRt;
     },
     findType: type => {
@@ -363,9 +368,6 @@ export default {
   },
   mounted: function() {
     this.$store.dispatch('transactions/connect');
-  },
-  created: function() {
-    this.$store.dispatch('transactions/setNetwork', this.$route.params.network || 'sovbuilder');
   },
   name: 'PageIndex',
 };

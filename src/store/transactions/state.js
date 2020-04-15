@@ -5,40 +5,72 @@ export default {
   wsurl: 'rest.api.tykn.tech',
   isUpdateLive: false,
   intervals: {
-    domain: false,
+    DOMAIN: undefined,
   },
-  txns: {
-    DOMAIN: [],
-    POOL: [],
-    CONFIG: [],
-  },
-  loadedTxns: {
-    DOMAIN: [],
-    POOL: [],
-    CONFIG: [],
-  },
-  nymCache: {},
-  highlighted: null,
-  sizes: {
+  nets: {
     sovbuilder: {
-      DOMAIN: 0,
-      POOL: 0,
-      CONFIG: 0,
-    },
-    sovstaging: {
-      DOMAIN: 0,
-      POOL: 0,
-      CONFIG: 0,
+      nymCache: {},
+      DOMAIN: {
+        page: 1,
+        size: 0,
+        txns: [],
+        loadedTxns: [],
+      },
+      POOL: {
+        page: 1,
+        size: 0,
+        txns: [],
+        loadedTxns: [],
+      },
+      CONFIG: {
+        page: 1,
+        size: 0,
+        txns: [],
+        loadedTxns: [],
+      },
     },
     sovmain: {
-      DOMAIN: 0,
-      POOL: 0,
-      CONFIG: 0,
+      nymCache: {},
+      DOMAIN: {
+        page: 1,
+        size: 0,
+        txns: [],
+        loadedTxns: [],
+      },
+      POOL: {
+        page: 1,
+        size: 0,
+        txns: [],
+        loadedTxns: [],
+      },
+      CONFIG: {
+        page: 1,
+        size: 0,
+        txns: [],
+        loadedTxns: [],
+      },
+    },
+    sovstaging: {
+      nymCache: {},
+      DOMAIN: {
+        page: 1,
+        size: 0,
+        txns: [],
+        loadedTxns: [],
+      },
+      POOL: {
+        page: 1,
+        size: 0,
+        txns: [],
+        loadedTxns: [],
+      },
+      CONFIG: {
+        page: 1,
+        size: 0,
+        txns: [],
+        loadedTxns: [],
+      },
     },
   },
-  page: {
-    DOMAIN: 1,
-    POOL: 1,
-    CONFIG: 1,
-  },
+  highlighted: null,
 };

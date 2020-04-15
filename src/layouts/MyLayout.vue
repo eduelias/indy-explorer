@@ -66,13 +66,9 @@ export default {
       network: 'sovbuilder',
     };
   },
-  created() {
-    this.$data.network = this.$route.params.network || 'sovbuilder';
-  },
   methods: {
     navigate() {
-      const r = this.$router.resolve({ path: `/${this.$data.network}` }).href;
-      window.location = r;
+      this.$store.dispatch('transactions/networkChange', this.$data.network);
     },
   },
 };

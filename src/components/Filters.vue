@@ -11,7 +11,7 @@
         :selected.sync="filter[ledger][fprop]"
         :color="getFilterChipColor(fprop)"
         outline
-        @click="onClick(ledger, filter)"
+        @click="onClick({ ledger, filter, network })"
         >{{ fprop }}</q-chip
       >
     </div>
@@ -24,12 +24,14 @@ export default {
     filter: Object,
     ledger: String,
     getFilterChipColor: Function,
+    network: String,
   },
   methods: {
-    onClick: async function(ledger, filter) {
+    onClick: async function({ network, ledger, filter }) {
       await this.$store.dispatch('transactions/getPage', {
-        ledger: ledger,
-        filter: filter,
+        ledger,
+        filter,
+        network,
       });
     },
   },
