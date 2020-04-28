@@ -67,7 +67,7 @@
     </div>
     <br />
     <div class="row">
-      <q-list borderd separator class="column">
+      <q-list borderd separator class="column" style="border-bottom: 1px #F5F5F5 solid;">
         <q-page-scroller class="z-top" expand position="top" :scroll-offset="150" :offset="[0, 0]">
           <div class="row q-pa-md bg-white">
             <div class="column">
@@ -86,8 +86,13 @@
                 :getFilterChipColor="getFilterChipColor"
               ></tip-filter>
             </div>
-            <div class="column" style="width:400px;">
-              POOL
+            <div class="column">
+              <tip-filter
+                :filter="filter"
+                ledger="POOL"
+                :network="network"
+                :getFilterChipColor="getFilterChipColor"
+              ></tip-filter>
             </div>
           </div>
         </q-page-scroller>
@@ -164,8 +169,13 @@
         </q-infinite-scroll>
       </q-list>
       <q-list borderd separator class="column">
-        POOL
-        <q-infinite-scroll @load="onLoadPool" :offset="2000">
+        <tip-filter
+          :filter="filter"
+          ledger="POOL"
+          :network="network"
+          :getFilterChipColor="getFilterChipColor"
+        ></tip-filter>
+        <q-infinite-scroll @load="onLoadPool" :offset="3000">
           <div
             v-for="(item, index) in getItems(network, 'POOL', getPoolIds())"
             :key="index"
