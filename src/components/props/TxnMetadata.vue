@@ -2,16 +2,16 @@
   <q-item style="min-height:0px; text-align: right;" class="q-ma-none q-py-none" v-if="item">
     <div
       v-if="item.txnTime"
-      :class="`text-overline text-${color}-8 tx_timestamp`"
-      style="z-index:1; text-align: right"
+      :class="`text-overline tx_timestamp`"
+      :style="`color:${color}; z-index:1; text-align: right`"
     >
       {{ formatDate(item.txnTime) }}
     </div>
     <div v-if="txnmetadata && txnmetadata.taaAcceptance" style="z-index: 10">
       <q-icon
         :name="defineIcon(txnmetadata.taaAcceptance.mechanism)"
-        :class="`text-${color}-8 q-ma-none tx_timestamp`"
-        style="margin-top: 6px; opacity:0.8"
+        :class="`q-ma-none tx_timestamp`"
+        :style="`color:${color}; margin-top: 6px; opacity:0.8`"
         ><q-tooltip>{{ agreements[txnmetadata.taaAcceptance.mechanism] }}</q-tooltip></q-icon
       >
     </div>

@@ -4,12 +4,15 @@
       :is="findName(type)"
       :item="item"
       :type="type"
+      :color="colors[type.toLowerCase()]"
       v-on:openDialog="openDialog"
     ></component>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 const toCamel = s => {
   return s.replace(/(_\w)/g, function(m) {
     return m[1].toUpperCase();
@@ -36,9 +39,13 @@ export default {
   },
   props: {
     supportedTypes: Object,
+    color: String,
     item: Object,
     type: String,
     filter: Object,
+  },
+  computed: {
+    ...mapState('transactions', ['colors']),
   },
   methods: {
     openDialog: function(data) {

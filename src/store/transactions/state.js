@@ -7,6 +7,21 @@ export default {
   intervals: {
     DOMAIN: undefined,
   },
+  colors: {
+    cred_def: '#44368E',
+    attrib: '#F65521',
+    txn_author_agreement: '#7924CE',
+    txn_author_agreement_aml: '#E56E00',
+    nym: '#209F8E',
+    schema: '#F6C330',
+    node: '#A6ACBE',
+    revoc_reg_def: '#000000',
+    revoc_reg_entry: '#A6ACBE',
+    pool_upgrade: '#007AFF',
+    node_upgrade: '#219032',
+    pool_config: '#14247A',
+    auth_rules: '#9F2020',
+  },
   nets: {
     sovbuilder: {
       nymCache: {},

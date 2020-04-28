@@ -2,10 +2,10 @@
   <div
     :id="`TAA${item.txn.data.version}`"
     v-if="item"
-    style="border-left:3px brown solid"
+    :style="`border-left:3px ${color} solid`"
     class="q-pa-none q-ma-none q-pa-none"
   >
-    <div :class="`row text-${color}-3 q-ma-sm tx_header`">
+    <div :style="`color: ${color}`" :class="`row q-ma-sm tx_header`">
       {{ type }} - {{ formatDate(item.txnMetadata.txnTime) }}<q-space />
       <div class="float-right text-h5 tx_number">#{{ item.txnMetadata.seqNo }}</div>
     </div>

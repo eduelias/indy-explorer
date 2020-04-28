@@ -1,6 +1,6 @@
 <template>
-  <div v-if="item" class="q-pa-none cursor-pointer" style="border-left:2px yellow solid">
-    <div :class="`row text-${color}-3 q-ma-sm tx_header`">
+  <div v-if="item" class="q-pa-none cursor-pointer" :style="`border-left:3px ${color} solid`">
+    <div :style="`color: ${color}`" :class="`row q-ma-sm tx_header`">
       {{ type }} - {{ formatDate(item.txnMetadata.txnTime) }}<q-space />
       <div class="float-right text-h5 tx_number">#{{ item.txnMetadata.seqNo }}</div>
     </div>
@@ -14,7 +14,7 @@
           <txn-metadata
             :item="item.txnMetadata"
             :txnmetadata="item.txn.metadata"
-            color="yellow"
+            :color="color"
             type="SCHEMA"
           ></txn-metadata>
         </div>
@@ -25,8 +25,7 @@
       dense
       expand-icon-toggle
       :label="`${item.txn.data.data.name} (${item.txn.data.data.version})`"
-      class="text-yellow-10 text-caption tx_expander"
-      expand-icon-class="text-yellow-10"
+      class="text-caption tx_expander"
     >
       <txn-data :item="item.txn"></txn-data>
     </q-expansion-item>

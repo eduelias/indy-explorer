@@ -271,7 +271,7 @@ export default {
     TypeRouter,
   },
   computed: {
-    ...mapState('transactions', ['nets', 'network']),
+    ...mapState('transactions', ['nets', 'network', 'colors']),
   },
   methods: {
     ...mapGetters('transactions', [
@@ -334,36 +334,7 @@ export default {
       return false;
     },
     getFilterChipColor: function(type) {
-      switch (type) {
-        case 'CRED_DEF':
-          return 'green-2';
-        case 'ATTRIB':
-          return 'orange-2';
-        case 'TXN_AUTHOR_AGREEMENT':
-          return 'brown-2';
-        case 'TXN_AUTHOR_AGREEMENT_AML':
-          return 'indigo-2';
-        case 'NYM':
-          return 'teal-2';
-        case 'SCHEMA':
-          return 'yellow-2';
-        case 'NODE':
-          return 'light-grey';
-        case 'REVOC_REG_DEF':
-          return 'purple-1';
-        case 'REVOC_REG_ENTRY':
-          return 'deep-purple-1';
-        case 'POOL_UPGRADE':
-          return 'purple-1';
-        case 'NODE_UPGRADE':
-          return 'teal-2';
-        case 'POOL_CONFIG':
-          return 'deep-purple-1';
-        case 'AUTH_RULES':
-          return 'orange-2';
-        default:
-          return 'grey';
-      }
+      return `color_${type.toLowerCase()}`;
     },
   },
   mounted: function() {

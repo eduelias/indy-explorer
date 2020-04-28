@@ -1,6 +1,6 @@
 <template>
-  <div v-if="item" style="border-left:2px green solid" class="q-pa-none cursor-pointer">
-    <div :class="`row text-${color}-3 q-ma-sm tx_header`">
+  <div v-if="item" :style="`border-left:3px ${color} solid`" class="q-pa-none cursor-pointer">
+    <div :style="`color: ${color}`" :class="`row q-ma-sm tx_header`">
       {{ type }} - {{ formatDate(item.txnMetadata.txnTime) }}<q-space />
       <div class="float-right text-h5 tx_number">#{{ item.txnMetadata.seqNo }}</div>
     </div>
