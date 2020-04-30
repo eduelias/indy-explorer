@@ -67,16 +67,16 @@ jobs:
           node-version: '10.x'
       - run: npm ci
       - run: npm test
-      - name: Initialize Google Cloud SDK
-        uses: zxyle/publish-gae-action@master
+      - name: Authenticate on GCS
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
+          version: '270.0.0'
           service_account_email: ${{ secrets.PROD_GCP_SA_EMAIL }}
           service_account_key: ${{ secrets.PROD_GCP_SA_KEY }}
           project_id: ${{ secrets.PROD_PROJECT_ID }}
-      - name: Creating client-secrets.json
-        run: gcloud auth activate-service-account ${{ secrets.PROD_GCP_SA_EMAIL }} --key-file=client-secret.json
-      - name: Publish app to Google App Engine
-        run: |
-          # This client-secret.json is converted by PROD_GCP_SA_KEY.
-          gcloud config set project ${{ secrets.PROD_PROJECT_ID }}
-          gsutil cp -r dist/spa/* gs://inspector.tykn.tech
+
+      - name: Build
+        run: quasar build
+
+      - name: Deploy
+        run: gsutil cp -r dist/spa/* gs://inspector.tykn.tech
