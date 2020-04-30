@@ -2,13 +2,15 @@
   <div
     :id="`NODE${item.rootHash}`"
     v-if="item"
-    :style="`border-left:3px ${color} solid`"
+    :style="`border-left:3px ${color} solid;`"
     class="q-pa-none q-ma-none q-pa-none"
   >
     <div :style="`color: ${color}`" :class="`row q-ma-sm tx_header`">
-      {{ type }} - {{ formatDate(item.txnMetadata.txnTime) }}<q-space />
+      {{ type }} - {{ formatDate(item.txnMetadata.txnTime) }}
+      <q-space />
       <div class="float-right text-h5 tx_number">#{{ item.txnMetadata.seqNo }}</div>
     </div>
+    <div style="height:24px">&nbsp;</div>
     <q-expansion-item
       dense
       expand-icon-toggle

@@ -1,4 +1,5 @@
 resource "google_storage_bucket" "inspector" {
+    project = data.google_project.project.project_id
     name = "${var.subdomain}inspector.tykn.tech"
     location = var.region
     force_destroy = true

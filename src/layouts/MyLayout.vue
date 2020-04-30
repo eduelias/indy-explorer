@@ -4,12 +4,12 @@
       <q-toolbar class="tykn_bar">
         <q-toolbar-title class="q-ma-lg rubik row">
           <div class="column">
-            <img src="statics/icons/32x32.png" />
+            <img width="32" height="32" src="statics/icons/128x128.png" />
           </div>
-          <div class="column q-ml-lg tykn_title">
+          <div class="column q-ml-sm tykn_title">
             tykn
           </div>
-          <div class="column q-ml-sm q-mt-xs">
+          <div style="font-size: 24px" class="column q-ml-sm">
             Indy Inspector
           </div>
         </q-toolbar-title>
@@ -47,9 +47,14 @@
       </q-toolbar>
     </q-header>
     <q-page-container>
-      <q-banner inline-actions rounded style="width=80%" class="q-ma-lg bg-green-11">
-        The tykn Indy Scan is now available for beta testing. We welcome you to try it and provide
-        your <b>feedback</b>.
+      <q-banner inline-actions rounded style="width=80%" class="text-center q-ma-lg bg-green-11">
+        The <b class="tykn_font">tykn</b> Indy Inspector is now available for beta testing. We
+        welcome you to try it and provide your
+        <b
+          ><a style="color:#000000; text-decoration:none" href="mailto:hello@tykn.tech"
+            >feedback</a
+          ></b
+        >.
       </q-banner>
       <router-view />
     </q-page-container>
@@ -81,6 +86,10 @@ export default {
   top: 0px;
 
   background: #44368e;
+}
+
+.tykn_font {
+  font-family: RubikBlack;
 }
 
 .tykn_title {

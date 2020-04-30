@@ -19,7 +19,7 @@
           <txn-metadata
             :item="item.txnMetadata"
             :txnmetadata="item.txn.metadata"
-            color="teal float-right"
+            :color="color"
             type="NYM"
           ></txn-metadata>
         </div>
