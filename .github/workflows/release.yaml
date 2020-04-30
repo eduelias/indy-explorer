@@ -1,12 +1,9 @@
 name: Release CD
 
-# on:
-#   release:
-#     types: [published]
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [published]
+
 jobs:
   terraform:
     name: Provisioning infrastructure
