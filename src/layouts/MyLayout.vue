@@ -51,7 +51,7 @@
         The <b class="tykn_font">tykn</b> Indy Inspector is now available for beta testing. We
         welcome you to try it and provide your
         <b
-          ><a style="color:#000000; text-decoration:none" href="mailto:hello@tykn.tech"
+          ><a style="color:#000000; text-decoration:none" href="mailto:dev@tykn.tech"
             >feedback</a
           ></b
         >.
