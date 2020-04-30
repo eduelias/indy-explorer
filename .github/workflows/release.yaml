@@ -67,24 +67,20 @@ jobs:
           node-version: '10.x'
       - run: npm ci
       - run: npm test
-      - name: Initialize Google Cloud SDK
-        uses: zxyle/publish-gae-action@master
+      - name: Authenticate on GCS
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           service_account_email: ${{ secrets.PROD_GCP_SA_EMAIL }}
           service_account_key: ${{ secrets.PROD_GCP_SA_KEY }}
           project_id: ${{ secrets.PROD_PROJECT_ID }}
-      - name: Activating GCloud account
-        run: gcloud auth activate-service-account ${{ secrets.PROD_GCP_SA_EMAIL }} --key-file=client-secret.json
-      - name: Authenticate on GCS
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-        with:
-          version: '270.0.0'
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: '../client-secret.json'
+          export_default_credentials: true
+        # env:
+        #   GOOGLE_APPLICATION_CREDENTIALS: '../client-secret.json'
+      - run: gcloud info
       - name: Build
         run: npm run build
 
       - name: Deploy
         run: gsutil cp -r dist/spa/* gs://inspector.tykn.tech
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: '../client-secret.json'
+        # env:
+        #   GOOGLE_APPLICATION_CREDENTIALS: '../client-secret.json'
