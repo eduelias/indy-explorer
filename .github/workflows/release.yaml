@@ -71,9 +71,8 @@ jobs:
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: '270.0.0'
-
       - name: Build
-        run: quasar build
+        run: npm run build
 
       - name: Deploy
         run: gsutil cp -r dist/spa/* gs://inspector.tykn.tech

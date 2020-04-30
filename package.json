@@ -1,6 +1,6 @@
 {
     "name": "indy-inspector",
-    "version": "0.2.0",
+    "version": "1.0.2-Beta",
     "description": "Indy Inspector",
     "productName": "Indy Inspector",
     "cordovaId": "org.cordova.quasar.app",
@@ -9,7 +9,8 @@
     "private": true,
     "scripts": {
         "lint": "eslint --ext .js,.vue src --fix",
-        "test": "echo \"No test specified\" && exit 0"
+        "test": "echo \"No test specified\" && exit 0",
+        "build": "quasar build"
     },
     "dependencies": {
         "@quasar/extras": "^1.6.4",
