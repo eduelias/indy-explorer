@@ -59,7 +59,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: infra
+    needs: terraform
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
