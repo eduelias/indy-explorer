@@ -76,3 +76,5 @@ jobs:
 
       - name: Deploy
         run: gsutil cp -r dist/spa/* gs://inspector.tykn.tech
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: '../client-secret.json'
