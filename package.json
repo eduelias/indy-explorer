@@ -1,10 +1,8 @@
 {
     "name": "indy-inspector",
-    "version": "1.0.2-Beta",
-    "description": "Indy Inspector",
+    "version": "1.0.5-Beta",
+    "description": "Inspect Hyperledger Indy Transactions in Real-Time. Use the Tykn Indy Inspector to see your transactions happen in the Sovrin network (or your own network) right away.",
     "productName": "Indy Inspector",
-    "cordovaId": "org.cordova.quasar.app",
-    "capacitorId": "",
     "author": "Eduardo Elias Saleh <du7@msn.com>",
     "private": true,
     "scripts": {

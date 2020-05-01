@@ -17,8 +17,12 @@
     <!-- End Google Tag Manager -->
     <title><%= htmlWebpackPlugin.options.productName %></title>
 
+
+    <meta property="og:title" content="<%= htmlWebpackPlugin.options.productName %>" />
+    <meta property="og:url" content="https://inspector.tykn.tech/" />
     <meta charset="utf-8" />
     <meta
+      property="og:description"
       name="description"
       content="<%= htmlWebpackPlugin.options.productDescription %>"
     />
