@@ -5,10 +5,13 @@
     :style="`border-left:3px ${color} solid`"
     class="q-pa-none q-ma-none q-pa-none"
   >
-    <div :style="`color: ${color}`" :class="`row q-ma-sm tx_header`">
-      {{ type }} - {{ formatDate(item.txnMetadata.txnTime) }}<q-space />
-      <div class="float-right text-h5 tx_number">#{{ item.txnMetadata.seqNo }}</div>
-    </div>
+    <tx-header
+      :color="color"
+      :type="type"
+      :date="item.txnMetadata.txnTime"
+      :seqNo="item.txnMetadata.seqNo"
+      v-on:click="openDialog(item)"
+    ></tx-header>
     <q-card-section class="row q-ma-none q-pa-none q-mx-xs bg-white">
       <div class="row">
         <div class="column" style="width: 70%">
@@ -29,7 +32,6 @@
     <q-expansion-item
       dense
       expand-icon-toggle
-      :label="formatLabel(item.txn.data.dest)"
       class="text-grey-9 text-caption"
       expand-icon-class="text-grey-9"
     >
@@ -49,21 +51,13 @@
 </template>
 
 <script>
-import moment from 'moment';
-import { date } from 'quasar';
-
-const roles = {
-  '0': 'TRUSTEE',
-  '2': 'STEWARD',
-  '101': 'TRUST_ANCHOR',
-};
-
 export default {
-  name: 'RevocRegDef',
+  name: 'PoolConfig',
   components: {
     RequiredSignature: () => import('../props/ReqSignature.vue'),
     TxnMetadata: () => import('../props/TxnMetadata.vue'),
     TxnData: () => import('../props/TxDataRouter.vue'),
+    TxHeader: () => import('../common/CardHeader.vue'),
   },
   props: {
     item: Object,
@@ -76,30 +70,6 @@ export default {
   methods: {
     openDialog: function(data) {
       this.$emit('openDialog', data);
-    },
-    formatDate: function(inputDate) {
-      return date.formatDate(new Date(inputDate * 1000), 'MMMM Do YYYY, HH:mm:ss (Z)');
-    },
-    formatLabel: function(data) {
-      return `<b> Onboarding: </b> ${data}`;
-    },
-    translateRole: function(role) {
-      switch (role) {
-        case '0':
-          return 'TRUSTEE';
-        case '2':
-          return 'STEWARD';
-        case '101':
-          return 'TRUST_ANCHOR';
-        case '201':
-          return 'NETWORK_MONITOR';
-        case '':
-          return 'ROLE_REMOVE';
-        case undefined:
-          return 'COMMON_USER';
-        default:
-          return role;
-      }
     },
   },
 };

@@ -79,6 +79,7 @@ export async function getPage({ state, commit, dispatch }, { network, ledger, do
 }
 
 export async function getNymByVerkey({ state }, { network, from, setter }) {
+  network = network || state.network;
   const tx = {
     operation: {
       type: '105',
@@ -94,6 +95,6 @@ export async function getNymByVerkey({ state }, { network, from, setter }) {
   const resp = await Axios.get(`${state.apiurl}/${network}/tx/domain/${nym.data.seqNo}/1`);
   if (resp.status !== 200) throw Error(resp.data);
 
-  state.nymCache[from] = resp.data[0];
+  state.nets[network].nymCache[from] = resp.data[0];
   setter(resp.data[0]);
 }

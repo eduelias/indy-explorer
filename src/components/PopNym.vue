@@ -25,9 +25,9 @@ export default {
   methods: {
     getNym: function(from) {
       return (
-        this.$store.state.transactions.txns.DOMAIN.find(
-          tx => tx?.txn?.data?.dest?.indexOf(from.slice(0, 6)) > 0
-        ) || from
+        this.$store.state.transactions.nets[
+          this.$store.state.transactions.network
+        ].DOMAIN.txns.find(tx => tx?.txn?.data?.dest?.indexOf(from.slice(0, 6)) > 0) || from
       );
     },
     setNym: function(nym) {
@@ -43,7 +43,9 @@ export default {
     },
   },
   async mounted() {
-    const hereItem = this.$store.state.transactions.txns.DOMAIN.find(
+    const hereItem = this.$store.state.transactions.nets[
+      this.$store.state.transactions.network
+    ].DOMAIN.txns.find(
       tx =>
         tx?.txn?.type === '1' &&
         (tx?.txn?.data?.dest?.indexOf(this.fromAddress) > 0 ||

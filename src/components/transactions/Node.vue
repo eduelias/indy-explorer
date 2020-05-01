@@ -5,11 +5,13 @@
     :style="`border-left:3px ${color} solid;`"
     class="q-pa-none q-ma-none q-pa-none"
   >
-    <div :style="`color: ${color}`" :class="`row q-ma-sm tx_header`">
-      {{ type }} - {{ formatDate(item.txnMetadata.txnTime) }}
-      <q-space />
-      <div class="float-right text-h5 tx_number">#{{ item.txnMetadata.seqNo }}</div>
-    </div>
+    <tx-header
+      :color="color"
+      :type="type"
+      :date="item.txnMetadata.txnTime"
+      :seqNo="item.txnMetadata.seqNo"
+      v-on:click="openDialog(item)"
+    ></tx-header>
     <div style="height:24px">&nbsp;</div>
     <q-expansion-item
       dense
@@ -29,35 +31,21 @@
 </template>
 
 <script>
-import TxnMetadata from '../props/TxnMetadata.vue';
-import TxnData from '../props/TxDataRouter.vue';
-import moment from 'moment';
-import { date } from 'quasar';
-
-const roles = {
-  '0': 'TRUSTEE',
-  '2': 'STEWARD',
-  '101': 'TRUST_ANCHOR',
-};
-
 export default {
   components: {
-    TxnData,
+    TxnData: () => import('../props/TxDataRouter.vue'),
+    TxHeader: () => import('../common/CardHeader.vue'),
   },
   props: {
     item: Object,
     type: String,
     color: {
       type: String,
-      default: 'grey',
     },
   },
   methods: {
     openDialog: function(data) {
       this.$emit('openDialog', data);
-    },
-    formatDate: function(inputDate) {
-      return date.formatDate(new Date(inputDate * 1000), 'MMMM Do YYYY, HH:mm:ss (Z)');
     },
     formatLabel: function(data) {
       return `http://${data.node_ip}:${data.node_port}`;
