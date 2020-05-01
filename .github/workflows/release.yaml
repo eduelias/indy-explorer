@@ -48,8 +48,9 @@ jobs:
           tf_actions_working_dir: terraform
           tf_actions_comment: true
           args: '-var-file=conf/prod.tfvars -out=plan.tfout'
-        # env:
-        #   GOOGLE_APPLICATION_CREDENTIALS: '../client-secret.json'
+        env:
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
       - name: 'Terraform Apply'
         uses: hashicorp/terraform-github-actions@master
         # if: env.GIT_DIFF
@@ -59,8 +60,9 @@ jobs:
           tf_actions_working_dir: terraform
           tf_actions_comment: true
           args: '"plan.tfout"'
-        # env:
-        #   GOOGLE_APPLICATION_CREDENTIALS: '../client-secret.json'
+        env:
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
 
   deploy:
     runs-on: ubuntu-latest
