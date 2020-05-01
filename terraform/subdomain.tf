@@ -7,4 +7,5 @@ resource "cloudflare_record" "inspector" {
     name = "${var.subdomain}inspector"
     type = "CNAME"
     value = "c.storage.googleapis.com"
+    proxied = true
 }
