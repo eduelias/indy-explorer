@@ -12,7 +12,7 @@ resource "google_storage_bucket" "inspector" {
     }
 
     cors {
-        origin = ["http://${var.subdomain}.tykn.tech"]
+        origin = ["http://${var.subdomain}.tykn.tech", "https://${var.subdomain}.tykn.tech"]
         method          = ["GET"]
         response_header = ["*"]
         max_age_seconds = 3600
