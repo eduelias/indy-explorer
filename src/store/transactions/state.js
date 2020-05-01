@@ -1,7 +1,7 @@
 export default {
   network: 'sovbuilder',
   pagesize: 10,
-  apiurl: 'https://rest.api.tykn.tech',
+  apiurl: 'https://rest-api.tykn.tech',
   wsurl: 'rest.api.tykn.tech',
   isUpdateLive: false,
   intervals: {
