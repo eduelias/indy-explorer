@@ -26,7 +26,7 @@ jobs:
       - name: Activating GCloud account
         run: |
           env | grep GOOGLE_APPLICATION_CREDENTIALS
-          gcloud auth activate-service-account ${{ secrets.PROD_GCP_SA_EMAIL }} --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+          gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
         # if: env.GIT_DIFF
       - name: 'Terraform Init'
         uses: hashicorp/terraform-github-actions@master
