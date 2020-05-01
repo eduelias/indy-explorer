@@ -1,12 +1,12 @@
 name: Release CD
 
-# on:
-#   release:
-#     types: [published]
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [published]
+# on:
+#   push:
+#     branches:
+#       - master
 
 jobs:
   terraform:
