@@ -13,8 +13,8 @@ jobs:
       # - uses: technote-space/get-diff-action@v1
       #   with:
       #     SUFFIX_FILTER: .tf
-      - name: Authenticate on GCS
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      - name: Initialize Google Cloud SDK
+        uses: zxyle/publish-gae-action@master
         with:
           service_account_key: ${{ secrets.PROD_GCP_SA_KEY }}
           project_id: ${{ secrets.PROD_PROJECT_ID }}
