@@ -6,6 +6,7 @@
           <div class="column">
             <img width="32" height="32" src="statics/icons/128x128.png" />
           </div>
+          <h1 style="display:none">Tykn Indy Inspector</h1>
           <div class="column q-ml-sm tykn_title">
             tykn
           </div>
@@ -51,7 +52,7 @@
         The <b class="tykn_font">tykn</b> Indy Inspector is now available for beta testing. We
         welcome you to try it and provide your
         <b
-          ><a style="color:#000000; text-decoration:none" href="mailto:dev@tykn.tech"
+          ><a style="color:#000000; text-decoration:underline" href="mailto:dev@tykn.tech"
             >feedback</a
           ></b
         >.

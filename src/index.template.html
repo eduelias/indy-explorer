@@ -17,16 +17,24 @@
     <!-- End Google Tag Manager -->
     <title><%= htmlWebpackPlugin.options.productName %></title>
 
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:site" content="https://inspector.tykn.tech/" />
+    <meta property="twitter:creator:id" content="tykn_tech" />
+    <meta property="twitter:description" content="<%= htmlWebpackPlugin.options.productDescription %>" />
+    <meta property="twitter:title" content="<%= htmlWebpackPlugin.options.productName %>" />
+    <meta property="twitter:image" content="https://inspector.tykn.tech/statics/thumbnail.jpg"/>
+
 
     <meta property="og:title" content="<%= htmlWebpackPlugin.options.productName %>" />
     <meta property="og:url" content="https://inspector.tykn.tech/" />
+    <meta property="og:type" content="website" />
     <meta http-equiv="Expires" content="3600">
     <meta charset="utf-8" />
     <meta
       property="og:description"
-      name="description"
       content="<%= htmlWebpackPlugin.options.productDescription %>"
     />
+    <meta property="og:image" content="https://inspector.tykn.tech/statics/thumbnail.jpg">
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
     <meta
