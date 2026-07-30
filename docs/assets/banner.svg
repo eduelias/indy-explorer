@@ -1,0 +1,48 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="indy-explorer promotional banner">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0A0E0C"/>
+      <stop offset="0.55" stop-color="#0D1712"/>
+      <stop offset="1" stop-color="#16281F"/>
+    </linearGradient>
+    <style>
+      .kicker { font: 700 22px 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #4ADE80; letter-spacing: 4px; }
+      .title  { font: 700 72px 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #FFFFFF; }
+      .sub    { font: 600 32px 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #CFE3D8; }
+      .bullet { font: 400 26px 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #E8F0EB; }
+      .footl  { font: 700 22px 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #8FAE9E; }
+      .footr  { font: 400 22px 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; fill: #7E8F87; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <text class="kicker" x="56" y="80">VUE · REAL-TIME EXPLORER</text>
+
+  <!-- decorative live-pulse rings top-right -->
+  <g transform="translate(1030,80)" stroke="#4ADE80" fill="none">
+    <circle cx="60" cy="40" r="16" stroke-width="2.5"/>
+    <circle cx="60" cy="40" r="40" stroke-width="2.5" stroke-opacity="0.55"/>
+    <circle cx="60" cy="40" r="64" stroke-width="2.5" stroke-opacity="0.3"/>
+    <circle cx="60" cy="40" r="5" fill="#4ADE80" stroke="none"/>
+    <path d="M-30 96 l40 -34 l28 16 l44 -40" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.6"/>
+  </g>
+
+  <text class="title" x="52" y="165">indy-explorer</text>
+
+  <text class="sub" x="56" y="225">Watch Hyperledger Indy transactions</text>
+  <text class="sub" x="56" y="268">happen — live, as they land on the ledger.</text>
+
+  <g fill="#4ADE80">
+    <circle cx="66" cy="352" r="7"/>
+    <circle cx="66" cy="406" r="7"/>
+    <circle cx="66" cy="460" r="7"/>
+  </g>
+  <text class="bullet" x="92" y="361">Live tail across the domain, pool, and config ledgers</text>
+  <text class="bullet" x="92" y="415">Point it at Sovrin — or your own Indy network</text>
+  <text class="bullet" x="92" y="469">Vue/Quasar UI · Terraform deployment included</text>
+
+  <line x1="56" y1="540" x2="1144" y2="540" stroke="#FFFFFF" stroke-opacity="0.14" stroke-width="2"/>
+  <text class="footl" x="56" y="588">Self-hostable · typed, colour-coded transaction cards</text>
+  <text class="footr" x="1144" y="588" text-anchor="end">MIT · unofficial, not affiliated with Hyperledger or Sovrin</text>
+</svg>
